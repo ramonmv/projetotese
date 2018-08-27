@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+
+   
+<script type="text/javascript" src="//code.jquery.com/jquery-2.0.2.js"></script>
+
+
+
+  <style type="text/css">
+
+$i: 0;
+$icons: 1;
+
+@keyframes float {
+  0% {
+       transform: translate(0px, 0px);
+   }
+
+   50% {
+       transform: translate(0px,16px);
+   }
+
+   100% {
+       transform: translate(0px, 0px);
+   }
+}
+
+@while $i <= $icons {
+    a:nth-child(#{$i}) { 
+      display: inline-block;
+      animation: float 4s infinite ease-in-out;
+      animation-delay: #{$i/2}s;
+
+    }
+    $i: $i + 1;
+  }
+
+
+
+.contentxx {
+  position: absolute;
+    left: 100px;
+    top: 150px;
+    /*z-index: 1000;*/
+}
+
+h1 {
+  text-align: center;
+  font-size: 24px;
+}
+.icons {
+  margin-top: 240px;
+  text-align: center;
+  
+}
+.icons a {
+  font-size: 26px;
+  color: #4BF7D3;
+  padding: 3px 2px;
+  margin: 2px 3px;
+  transition: all 0.3s ease;
+
+ }
+
+.icons a:hover {
+    color: #C54D32;
+  }
+}
+
+  </style>
+
+  <title>Ramon Menu Contexto by raamon</title>
+
+   
+
+
+
+<script type='text/javascript'>//<![CDATA[
+$(window).load(function(){
+if (!window.x) {
+    x = {};
+}
+
+x.Selector = {};
+x.Selector.getSelected = function() {
+    var t = '';
+    if (window.getSelection) {
+        t = window.getSelection();
+    } else if (document.getSelection) {
+        t = document.getSelection();
+    } else if (document.selection) {
+        t = document.selection.createRange().text;
+    }
+    return t;
+}
+
+var pageX;
+var pageY;
+
+$(document).ready(function() {
+    $(document).bind("mouseup", function() {
+        var selectedText = x.Selector.getSelected();
+        if(selectedText != ''){
+            $('ul.tools').css({
+                'left': pageX + 5,
+                'top' : pageY - 60
+            }).fadeIn(200);
+        } else {
+            $('ul.tools').fadeOut(200);
+        }
+    });
+    $(document).on("mousedown", function(e){
+        pageX = e.pageX;
+        pageY = e.pageY;
+    });
+});
+});//]]> 
+
+
+
+    // $(function() {
+    //   $('#actionButton').click(function() {
+    //     if (selectedRange) {
+    //       $('#result').text(selectedRange.toString());
+    //       clearInterval(timer);
+    //     }else{
+    //      $('#result').text("eroooo2");
+    //    }
+    //  });
+
+    //   timer = setInterval(getSelectedRange, 150);
+    // });
+
+    // var timer = null;
+    // var cont = 1;
+
+    // var selectedRange = null;
+
+    // var getSelectedRange = function() {
+    //   try {
+    //     if (window.getSelection) {
+    //       selectedRange = window.getSelection().getRangeAt(0);
+    //       cont = 100;
+    //     } else {
+    //       cont = 200;
+    //       selectedRange = document.getSelection().getRangeAt(0);
+    //     }
+    //   } catch (err) {
+    //     cont++;
+    //     $('#result').text("eroooo"+cont);
+    //   }
+
+    // };
+
+    // $( "inserirConceito" ).click(function() {
+    //   // $( this ).slideUp();
+    //   alert('I am foo!');
+    //   console.log("CONSOLE1");
+    // });
+
+    // $('#xlink').click(function() {
+    //   // $( this ).slideUp();
+    //   alert('I am foo!');
+    //   console.log("CONSOLE2");
+    // });
+
+// var el = document.getElementById('xlink');
+// el.onclick = showFoo;
+
+
+
+
+</script>
+</head>
+<body>
+
+<p>Vestibulum vel orci hendrerit ligula pharetra volutpat et sed dui. Phasellus vitae feugiat dolor. Mauris eleifend neque ac iaculis aliquet. Nunc malesuada nisi in dictum tristique. Vestibulum mauris eros, varius sed faucibus sed, pellentesque et nunc. Curabitur ultricies blandit urna. Pellentesque ut augue mollis, lacinia dui non, rutrum justo. Nunc et odio dapibus, blandit leo eget, aliquet urna. Etiam lorem dolor, vehicula a purus in, fermentum congue diam. Integer vel urna nec turpis posuere tempor eu lacinia purus. Praesent mattis viverra lacus bibendum fringilla. Nulla commodo posuere ante, at cursus est rhoncus quis. In iaculis viverra neque in blandit. Pellentesque eleifend arcu diam, sed sodales ligula pharetra at. Morbi ac nisl adipiscing sem interdum convallis. </p>
+
+<ul class="tools">
+  <li><a href="globo.com" >inserir </a></li>
+</ul>
+  <script>
+  // tell the embed parent frame the height of the content
+  if (window.parent && window.parent.parent){
+    window.parent.parent.postMessage(["resultsFrame", {
+      height: document.body.getBoundingClientRect().height,
+      slug: "b1mLffgh"
+    }], "*")
+  }
+
+
+//https://stackoverflow.com/questions/43842996/delete-a-value-from-a-laravel-5-4-database
+
+$('#datatable-account').DataTable({
+    processing: true,
+    serverSide: true,
+    "ajax": '{!! url('api/user') !!}',
+    "columns": [
+        {data: 'username', name: 'username'},
+        {data: 'lastname', name: 'lastname'},
+        {data: 'firstname', name: 'firstname'},
+        {data: 'role', name: 'role',
+            render: function (data, types, full, meta) {
+                if (data == 0){ return 'Admin' } else return 'User';}
+        },
+        {data: 'email', name: 'email'},
+        {data: 'id', name: "id",
+            render: function (data, types, full, meta) {
+                return '<a href="{{ url('delete')}}" data-method="delete" button type="button" class="btn btn-danger btn-xs delete-user" name="delete"><i class="fa fa-times"></i> Delete</button></a>';
+            }
+        }
+    ]
+});
+
+
+</script>
+</body>
+</html>
+
+
+
+
+=================================
+acervo
+
+@extends('layout_documento')
+
+
+@section('conteudo')
+
+
+
+<div class="blog-header">
+  <div class="container">
+    <h1 class="blog-title">Meu Acervo</h1>
+    <p class="lead blog-description">Meu respositório de certezas provisórias e Dúvidas temporárias sobre <a href="/abrir/{{$doc->id}}"> {{$doc->titulo}}</a></p>
+  </div>
+</div>
+
+
+
+
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-sm-8 blog-main"> <!-- /.blog-main -->
+
+
+
+
+      <div class="blog-post">
+
+
+        @include('form_acervo')
+
+        <br> 
+        <hr>
+
+        <p class="blog-post-meta">
+
+           Lista das minhas <a href="#">Dúvidas</a>
+
+        </p>
+
+
+
+        
+        @foreach ($duvidas as $duvida)
+        
+          <i class="fa fa-question-circle" style="color:#E7A394" aria-hidden="true"> 
+
+              &nbsp;&nbsp;&nbsp;
+
+          </i>  
+
+              {{ $duvida->texto  }}
+
+              &nbsp;&nbsp;&nbsp;  
+
+              <i class="fa fa-chevron-down" style="color:#E7A394" aria-hidden="true"> 
+
+              &nbsp;&nbsp;&nbsp;
+
+              </i> 
+
+        <br>
+
+        @endforeach
+        
+
+
+
+        <br> 
+        <hr>
+
+        <p class="blog-post-meta">
+
+          Lista das minhas <a href="#">Certezas</a>
+
+        </p>
+
+
+        @foreach ($certezas as $certeza)
+
+      
+         <i class="fa fa-check-circle" style="color:#B0BAE7" aria-hidden="true"> 
+
+            &nbsp;&nbsp;&nbsp; 
+         
+         </i>  
+
+            {{ $certeza->texto  }}
+
+            &nbsp;&nbsp;&nbsp;  
+
+        <a href="#" data-idd="171"><i class="fa fa-chevron-down" style="color:#B0BAE7" aria-hidden="true">   </i> </a>
+        <div name="detalhes" class="detalhes" style='display: none;' id="171">
+          Lista de itens
+        </div>
+
+
+        <br>
+
+        @endforeach
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+
+
+
+
+      <nav class="blog-pagination">
+
+        <a class="btn btn-outline-primary" href="#">Somente as certezas</a>
+        <a class="btn btn-outline-primary " href="#">Somente as Dúvidas</a>
+
+      </nav>
+
+
+
+
+
+
+    </div><!-- /.blog-main -->
+
+
+
+
+
+
+
+
+    <div class="col-sm-3 offset-sm-1 blog-sidebar">
+
+
+     @include('abrir.menuLateral_meuAcervo')
+
+
+
+   </div><!-- /.blog-sidebar -->
+
+
+
+
+
+ </div><!-- /.row -->
+
+</div><!-- /.container -->
+
+<script type="text/javascript">
+
+
+ jquery("#divFormAcervo").show(1000);
+ // jquery(".detalhes").hide(1000);
+
+
+jquery(document).ready(function(){
+  
+  jquery("#bthide").click(function(){
+  
+    event.preventDefault();
+  
+    if(form_acervo_visivel)
+    {
+      jquery("#divFormAcervo").hide(1000);
+    }
+  
+    else
+    {
+      jquery("#divFormAcervo").show(1000);
+    }
+
+    form_acervo_visivel = !form_acervo_visivel;
+
+  });
+
+});
+
+
+
+</script>
+
+
+
+
+@endsection
+
+@include('formModal_resposta')
+
+
+
+
+

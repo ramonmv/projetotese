@@ -1,0 +1,314 @@
+body {
+	padding-top: 20px;
+}
+
+.footer {
+	padding-top: 40px;
+	padding-bottom: 40px;
+	margin-top: 40px;
+	border-top: 1px solid #eee;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+	text-align: center;
+	background-color: transparent;
+	padding-bottom: 0px;
+}
+.jumbotron .btn {
+	padding: 14px 24px;
+	font-size: 21px;
+}
+
+.navbar {
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7),to(#eee));
+	background-image: -webkit-linear-gradient(top, #f7f7f7 0%,#eee 100%);
+	background-image: -o-linear-gradient(top, #f7f7f7 0%,#eee 100%);
+	background-image: linear-gradient(to bottom, #f7f7f7 0%,#eee 100%);
+	border: 1px solid #e5e5e5;
+}
+
+@media (min-width: 768px) {
+	.navbar-nav {
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+	}
+
+	.navbar-nav .nav-item {
+		-webkit-box-flex: 1;
+		-webkit-flex: 1 0 auto;
+		-ms-flex: 1 0 auto;
+		flex: 1 0 auto;
+	}
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+	/* Remove the padding we set earlier */
+	.masthead,
+	.marketing,
+	.footer {
+		padding-right: 0;
+		padding-left: 0;
+	}
+}
+
+
+
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+/*body {
+  font-family: 'Open Sans', arial, sans-serif;
+  font-weight: 300;
+}
+*/
+.header {
+	text-align: center;
+	background: linear-gradient(to bottom right, #fdfdfa, #c0b8c1);
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.header2 {
+	text-align: center;
+	background: linear-gradient(to bottom right, white, #617784);
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.header3 {
+	text-align: center;
+	background: linear-gradient(to bottom right, white, #d4a31f);
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+
+.header .nav {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin-right: 20px;
+	display: flex;
+}
+.header .nav a {
+	padding: 20px;
+}
+.header h1 {
+	font-size: calc(4vw + 1.5rem);
+	margin-bottom: 1vh;
+	max-width: 80%;
+}
+.header h2 {
+	font-size: calc(1rem + 1vw);
+	font-weight: 400;
+	color: #444;
+	max-width: 80%;
+}
+
+.body {
+	-webkit-column-width: 300px;
+	column-width: 300px;
+	-webkit-column-gap: 40px;
+	column-gap: 40px;
+	column-spacing: 30px;
+	-webkit-column-rule: 1px solid #ccc;
+	column-rule: 1px solid #ccc;
+	overflow: scroll;
+	margin: 30px;
+}
+.body img {
+	width: 100%;
+}
+.body p {
+	margin-bottom: 20px;
+	line-height: 1.4em;
+	font-size: 17px;
+
+}
+
+.box {
+
+	padding:  10px 0px 0px 40px;
+
+}
+
+.perfilDoc {
+
+	border-top-style: solid;
+	border-top-color: red;
+	border-top-width: 0.8px;
+	padding:  10px 0px 20px 0px;
+	text-align: left;
+	
+}
+
+.perfilDoc_conteudo{
+
+	text-align: left;
+	/*padding:  10px 0px 0px 0px;*/
+	margin-left: 0px;
+	/*color: red;*/
+}
+
+.perfilDoc_conteudo ul{
+	font-family: "Whitney SSm A","Whitney SSm B",sans-serif;
+	font-size: 13px;
+	list-style: none;
+	list-style-type: none;
+	padding:  10px 0px 0px 0px;
+	margin-left: 0px;
+	/*color: red;*/
+}
+
+.ultimasNoticias{
+	display: none;
+
+	text-align: left;
+	/*padding:  10px 0px 0px 0px;*/
+	margin-left: 0px;
+	/*color: red;*/
+}
+
+.ultimasNoticias ul{
+	font-family: "Whitney SSm A","Whitney SSm B",sans-serif;
+	font-size: 13px;
+	list-style: none;
+	list-style-type: none;
+	padding:  10px 0px 0px 0px;
+	margin-left: 0px;
+	/*color: red;*/
+}
+
+
+.tituloResumo {
+	font-family: "Whitney SSm A","Whitney SSm B",sans-serif;
+	text-align: center; 
+	padding:  0px 0px 10px 0px;
+	color: #712a2a ;
+
+}
+
+.conteudoResumo {
+	font-family: "Whitney SSm A","Whitney SSm B",sans-serif;
+	font-size: 14px;
+	text-align:justify; 
+	padding:  0px 20px 10px 90px;
+
+	
+}
+
+.rodapeCover {
+
+	height: 9px; 
+
+	background: #712a2a;
+
+	
+}
+
+.cover1_finalizaResumo{
+	display: none;
+	border-left-style: solid;
+	border-left-color: #712a2a;
+/*	-webkit-animation: cssAnimation 5s forwards; 
+    animation: cssAnimation 5s forwards;*/
+
+}
+
+.cover2_btEsquerda{
+	display: none;
+	border-left-style: solid;
+	border-left-color: #712a2a;
+/*	-webkit-animation: cssAnimation 5s forwards; 
+    animation: cssAnimation 5s forwards;*/
+
+}
+
+
+.cover2_btDireita{
+	/*display: none;*/
+	border-right-style: solid;
+	border-right-color: #712a2a;
+/*	-webkit-animation: cssAnimation 5s forwards; 
+    animation: cssAnimation 5s forwards;*/
+
+}
+
+.botao2{
+
+	color: #fff;
+    background-color: #486782;
+    border-color: #486782;
+}
+
+/* #734408  #ca7c21  */
+
+.tituloJumbo{
+
+	color: #3c4852;
+	padding-bottom: 0px;
+}
+
+.iconeDuvida{
+	color: #fff;
+
+}
+
+.linha {
+
+	padding:  0px 0px 0px 40px;*/
+/*	border-bottom-style: solid;
+	border-bottom-color: white;
+	border-bottom-width: 0.8px;*/
+
+}
+
+.lista {
+
+	/*padding:  80px 0px 0px 0px;*/
+	/*padding-top: 50px;*/
+	border-top-style: solid;
+	border-top-color: white;
+	border-top-width: 1.8px;
+	/*background-color: red;*/
+	/*border-color: #486782;*/
+
+}
+
+
+
+.titulo_lista_duvidas{
+	text-align: left;
+	font-size: 12px;
+	color: white;
+
+
+}
+
+/*.aparecer {
+    -webkit-animation: cssAnimation 5s forwards; 
+    animation: cssAnimation 5s forwards;
+}*/
+
+/*@keyframes cssAnimation {
+    100%   {opacity: 0;}
+    90%  {opacity: 1;}
+    0% {opacity: 1;}
+}
+@-webkit-keyframes cssAnimation {
+    100%   {opacity: 0;}
+    90%  {opacity: 1;}
+    0% {opacity: 1;}
+}*/
