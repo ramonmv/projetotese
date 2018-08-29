@@ -31,7 +31,6 @@ class CreateAcessosTable extends Migration
             $table->boolean('logon')->default(true); //registra se esta logado ou se é visitante
 
             $table->integer('user_id')->unsigned();
-);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('tipo_id')->unsigned();
             $table->foreign('tipo_id')->references('id')->on('tipos')->onDelete('cascade');
