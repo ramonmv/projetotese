@@ -10,7 +10,7 @@
         </div>
 
         <div class="links">
-            <a href="/docs">Materiais</a>
+            <a href="/docs">Materiaisss</a>
             <a href="/docs/editor">Criar</a>
             <a href="">Autores</a>
             <a href="">Contato</a>
