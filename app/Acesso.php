@@ -50,18 +50,34 @@ class Acesso extends Model
   // dd($dataPosition->regionName);
 
 
-	public function add($doc_id)
+	public function salvarInicioLeitura($doc_id)
+
+	{    	 
+
+		$this->salvar($doc_id, 1);
+
+	}
+
+
+	public function salvarFimLeitura($doc_id)
+	
+	{    	 
+
+		$this->salvar($doc_id, 2);
+
+	}
+
+
+
+	public function salvar($doc_id, $tipo)
 
 	{    	 
 		$this->unguard();
 
 	 	$ip = \Request::ip();
-  		$Position = \Location::get($ip);
+  		// $Position = \Location::get($ip);
+  		$Position = \Location::get("52.67.24.16");
   		
-  		// dd(auth()->id());
-  		 // dd($Position);
-  		 
-
 		return $this->create([
 
 			'logon'=> auth()->check(), 
@@ -87,10 +103,14 @@ class Acesso extends Model
 			'uf' => $Position->regionName,
 			'pais'=> $Position->countryCode,
 			
-			'tipo_id'=> 1,
+			'tipo_id'=> $tipo,
 			'doc_id' =>  $doc_id
 
 		]);
 
 	}
+
+
+
+
 }

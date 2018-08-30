@@ -19,8 +19,8 @@ class CreatePerguntasTable extends Migration
             $table->tinyInteger('tipo'); // 1  conceitual 2 argumentativa 3 posicionamento 4 exemplo 5 outro  
             $table->boolean('personalizado')->default(true);
             //$table->boolean('padrao')->default(false);
-            $table->integer('conceito_id')->unsigned();
-            $table->foreign('conceito_id')->references('id')->on('conceitos')->onDelete('cascade');               
+            $table->integer('conceito_id')->nullable();
+            // $table->foreign('conceito_id')->references('id')->on('conceitos')->onDelete('cascade');   TODO            
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');             
             $table->integer('doc_id')->unsigned();

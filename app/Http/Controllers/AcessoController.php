@@ -10,12 +10,7 @@ class AcessoController extends Controller
     //
 
 
-	public function coletardadosNavegacao(Request $request, $vetor)
 
-	{
-
-
-	}
 
 	public function salvarInicioLeitura(Request $request)
 
@@ -29,9 +24,9 @@ class AcessoController extends Controller
 		// $local = \Location::get("216.58.202.100");
 		// $user_id = auth()->id();
 		// $doc_id = auth()->id();
-		
+
 		$Acesso = new Acesso();
-        return $Acesso->add(request('doc_id'));
+        $Acesso->salvarInicioLeitura(request('doc_id'));
 
 
 
@@ -46,12 +41,7 @@ class AcessoController extends Controller
 	{
 
 		$Acesso = new Acesso();
-   		// $Acesso->add(1,1,1,1);
-
-		$Duvida = $Duvida->add(request('texto'),request('doc_id'),auth()->id());
-
-		// return redirect(  '/abrir/'.request('doc_id') );
-		return $Duvida->id;
+		$Acesso->salvarFimLeitura(request('doc_id'));
 
 	}
 

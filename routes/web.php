@@ -39,8 +39,8 @@ Route::get('/abrir/{id}', 'DocsController@abrir');
 
 // ACESSO =============================================================
 Route::get('/acesso/inicioLeitura/', 'AcessoController@salvarInicioLeitura');
-Route::get('/acesso/inicioLeitura/{doc_id}', 'AcessoController@salvarInicioLeitura');
-Route::get('/acesso/fimLeitura/{doc_id}', 'AcessoController@salvarInicioLeitura');
+// Route::get('/acesso/inicioLeitura/{doc_id}', 'AcessoController@salvarInicioLeitura');
+Route::get('/acesso/fimLeitura/', 'AcessoController@salvarFimLeitura');
 
 
 

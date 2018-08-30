@@ -298,7 +298,7 @@
 
 
     <nav class="blog-pagination">
-      <a class="btn btn-outline-primary" href="#">Finalizar Leitura</a>
+      <a class="btn btn-outline-primary" id="btFinalizarLeitura" href="#">Finalizar Leitura</a>
       {{-- <a class="btn btn-outline-secondary disabled" href="#">Newer</a> --}}
   </nav>
 
@@ -1015,12 +1015,19 @@ function isVazio(str){
      jquery('#close').click(function() {
 
              $("#popAviso").toggle();
-              console.log(" >>>>>>>>>>>>>>>>>> CLOSEEEE");
+              console.log(" >>>>>>>>>>>>>>>>>> Inicio leitura");
               jquery(".BlackScreen").hide(600);
               salvarInicioLeitura({{ $doc->id }});
         
       });
 
+     jquery('#btFinalizarLeitura').click(function() {
+              event.preventDefault();
+
+              console.log(" >>>>>>>>>>>>>>>>>> Fim leitura");
+              salvarFimLeitura({{ $doc->id }});
+        
+      });
 
 
 

@@ -16,7 +16,8 @@ class CreateConceitosTable extends Migration
         Schema::create('conceitos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('conceito',1500); //deveria ser texto ou trecho
-            $table->integer('pergunta_id')->unsigned();
+            // $table->integer('pergunta_id')->unsigned();
+            $table->integer('pergunta_id')->nullable();
             $table->integer('doc_id')->unsigned();
             $table->foreign('doc_id')->references('id')->on('docs')->onDelete('cascade');
             // $table->foreign('user_id')->references('id')->on('users');

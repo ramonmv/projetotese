@@ -410,23 +410,49 @@
                console.log(data);              
             },
             error: function(data){
-              alert("Erro: REG01 - Erro no Registro de Leitura: ão Iniciada ")
+              alert("Erro: REG01 - Erro no Registro de Leitura: não Iniciada ")
               // console.log('buuummm'); 
               // console.log(data);     
             },
 
-        });
-    
-
-
-   // location.reload(); 
-    
+        });  
 
     return false;
 
   }
 
 
+// ======================================================================
+// ================ Aviso > Abrir > Fim de Leitura ===================
+// ======================================================================
+
+  function salvarFimLeitura(doc_id) {
+
+
+     $.ajax({
+            method: 'get',
+            url: '/acesso/fimLeitura',
+            data: {
+       
+             'doc_id': doc_id
+
+             },
+            //async: true,
+            success: function(data){
+               console.log('Sucesso: REG01 - Leitura Finalizada ');              
+               console.log(data);              
+            },
+            error: function(data){
+              alert("Erro: REG01 - Erro no Registro de Leitura: não Finalizada ")
+              // console.log('buuummm'); 
+              // console.log(data);     
+            },
+
+        });  
+
+    return false;
+
+  }
 
 </script>
 

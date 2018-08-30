@@ -5,7 +5,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="icon" href="../../favicon.ico">
 
-<title>Blog Template for Bootstrap</title>
+<title>HiperDidático - Desenvolvido por R.R.M. Vieira Junior</title>
 <link href="{{ asset('css/app.css') }}" rel="stylesheet"> {{-- Css do template do laravel para menu --}}
 <link href="/css//rodape.css" rel="stylesheet"> {{-- Css do template do laravel para menu --}}
 

@@ -8,7 +8,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'HiperDidatico - Desenvolvido por R. R. M. Vieira Junior') }}</title>
+    {{-- <title>{{ config('app.name', 'HiperDidatico - Desenvolvido por R. R. M. Vieira Junior') }}</title> --}}
+    <title> HiperDidatico - Desenvolvido por R. R. M. Vieira Junior </title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -29,7 +30,8 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'HiperDidatico') }}
+                        {{-- {{ config('app.name', 'HiperDidatico') }} --}}
+                        HiperDidático
                     </a>
                 </div>
 
