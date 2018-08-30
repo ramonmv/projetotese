@@ -15,19 +15,26 @@ class CreateAcessosTable extends Migration
     {
         Schema::create('acessos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('device');
-            $table->boolean('desktop');
-            $table->string('so');
-            $table->string('browser'); //family
-            $table->string('posicao');
-            $table->string('cidade');
-            $table->string('uf');
-            $table->string('pais');
-            $table->integer('latitude')->unsigned();
-            $table->integer('longitude')->unsigned();
-            $table->string('detalhes'); //User-Agent \Request::server('HTTP_USER_AGENT');
+
+            $table->string('deviceFamily')->nullable();
+            $table->string('deviceModel')->nullable();
+            $table->boolean('isDesktop')->default(true);
+
+            $table->string('so')->nullable();
+            $table->string('plataforma')->nullable();
+
+            $table->string('browser')->nullable(); //family
+            $table->string('browserVersion')->nullable(); //family
+            $table->boolean('isChrome')->default(true); //family
             
-            $table->ipAddress('ip'); 
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('cidade')->nullable();
+            $table->string('uf')->nullable();
+            $table->string('pais')->nullable();
+
+            $table->string('detalhes')->nullable(); //User-Agent \Request::server('HTTP_USER_AGENT');
+            $table->ipAddress('ip')->nullable(); 
             $table->boolean('logon')->default(true); //registra se esta logado ou se é visitante
 
             $table->integer('user_id')->unsigned();
@@ -39,6 +46,7 @@ class CreateAcessosTable extends Migration
             $table->timestamps();         
         });
     }
+                                                
 
         
     /**

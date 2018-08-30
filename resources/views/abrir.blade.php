@@ -46,8 +46,10 @@
 
                 </ul>
 
-            </div></div>
+            </div>
+          </div>
     </div>
+    <!-- popup -->
 @endif
 
 
@@ -1013,8 +1015,9 @@ function isVazio(str){
      jquery('#close').click(function() {
 
              $("#popAviso").toggle();
-              // console.log(" >>>>>>>>>>>>>>>>>> CLOSEEEE");
+              console.log(" >>>>>>>>>>>>>>>>>> CLOSEEEE");
               jquery(".BlackScreen").hide(600);
+              salvarInicioLeitura({{ $doc->id }});
         
       });
 

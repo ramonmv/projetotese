@@ -121,8 +121,7 @@
 
         $( "#menuConceitos" ).append( semlink_conceito+link_remover );
 
-      }
-          
+      }          
   }
 
    function criarVetorConceitos(doc_id) {
@@ -271,9 +270,9 @@
              },
             //async: true,
             success: function(data){
-               console.log('posicionamento salvo');
+               console.log('POS01 - Posicionamento salvo');
                console.log(data);
-               console.log('---------------');
+               
               
             },
             error: function(data){
@@ -383,6 +382,47 @@
     
 
     return true;
+
+  }
+
+
+
+// RamonVieira
+
+// ======================================================================
+// ================ Aviso > Abrir > Inicio de Leitura ===================
+// ======================================================================
+
+  function salvarInicioLeitura(doc_id) {
+
+
+     $.ajax({
+            method: 'get',
+            url: '/acesso/inicioLeitura',
+            data: {
+       
+             'doc_id': doc_id
+
+             },
+            //async: true,
+            success: function(data){
+               console.log('Sucesso: REG01 - Leitura Iniciada ');              
+               console.log(data);              
+            },
+            error: function(data){
+              alert("Erro: REG01 - Erro no Registro de Leitura: ão Iniciada ")
+              // console.log('buuummm'); 
+              // console.log(data);     
+            },
+
+        });
+    
+
+
+   // location.reload(); 
+    
+
+    return false;
 
   }
 

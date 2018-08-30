@@ -116,7 +116,7 @@
 
 
           <div class="conteudoResumo">
-            {{ $resumo->texto }} {{ $resumo->texto }} {{ $resumo->texto }} 
+            {{ $resumo->texto }} 
           </div>
 
         </div>

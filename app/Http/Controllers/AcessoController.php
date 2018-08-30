@@ -17,25 +17,26 @@ class AcessoController extends Controller
 
 	}
 
-	public function salvarInicioleitura(Request $request)
+	public function salvarInicioLeitura(Request $request)
 
 	{
-		$ip = \Request::ip();
-		$local = \Location::get("216.58.202.100");
-		$user_id = auth()->id();
-		$doc_id = auth()->id();
-		$Acesso = new Acesso();
-    // $Acesso->add(1,1,1,1);
-
-		dd($local);
-
 		
-		$Duvida = new Duvida();
+		
 
-		$Duvida = $Duvida->add(request('texto'),request('doc_id'),auth()->id());
+		// dd(auth()->id());
+
+		// $ip = \Request::ip();
+		// $local = \Location::get("216.58.202.100");
+		// $user_id = auth()->id();
+		// $doc_id = auth()->id();
+		
+		$Acesso = new Acesso();
+        return $Acesso->add(request('doc_id'));
+
+
 
 		// return redirect(  '/abrir/'.request('doc_id') );
-		return $Duvida->id;
+		// return $Duvida->id;
 
 	}
 
@@ -44,8 +45,8 @@ class AcessoController extends Controller
 
 	{
 
-		
-		$Duvida = new Duvida();
+		$Acesso = new Acesso();
+   		// $Acesso->add(1,1,1,1);
 
 		$Duvida = $Duvida->add(request('texto'),request('doc_id'),auth()->id());
 

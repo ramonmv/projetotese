@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 
+
 class Acesso extends Model
 {
     //
@@ -33,13 +34,13 @@ class Acesso extends Model
     // $doc_id = auth()->id();
 
     // //https://github.com/hisorange/browser-detect
-    // $dataPosition = \Request::server('HTTP_USER_AGENT');
-    // $dataPosition = \Request::header('User-Agent');
-    // $dataPosition = \Browser::browserFamily(); //Chrome  
-    // $dataPosition = \Browser::platformFamily(); //"GNU/Linux"
-    // $dataPosition = \Browser::platformName(); //n
-    // $dataPosition = \Browser::deviceFamily(); //n
-    // $dataPosition = \Browser::deviceModel(); //n
+    // $dataPosition = \Request::server('HTTP_USER_AGENT'); x
+    // $dataPosition = \Request::header('User-Agent'); 
+    // $dataPosition = \Browser::browserFamily(); //Chrome   x
+    // $dataPosition = \Browser::platformFamily(); //"GNU/Linux" x
+    // $dataPosition = \Browser::platformName(); //n x
+    // $dataPosition = \Browser::deviceFamily(); //n x
+    // $dataPosition = \Browser::deviceModel(); //n x
     // $dataPosition = \Browser::browserName(); //"Chrome 68.0.3440"
     // $dataPosition = \Browser::isChrome(); // true
     // $dataPosition2 = \Browser::isDesktop(); // true
@@ -49,37 +50,45 @@ class Acesso extends Model
   // dd($dataPosition->regionName);
 
 
-	public function add($device, $so, $web, $user_id)
+	public function add($doc_id)
 
-	{    
+	{    	 
+		$this->unguard();
 
 	 	$ip = \Request::ip();
-  		$local = \Location::get($ip);
+  		$Position = \Location::get($ip);
   		
   		// dd(auth()->id());
+  		 // dd($Position);
+  		 
 
 		return $this->create([
 
-			'logon'=> Auth::check(), 
+			'logon'=> auth()->check(), 
 			'user_id' => auth()->id(),
 			'ip'=> $ip,
 			'detalhes' => \Request::server('HTTP_USER_AGENT'),
 
-			'device' => $user_id,
-			'desktop' => \Browser::isDesktop(),
+			'deviceFamily' => \Browser::deviceFamily(),
+			'deviceModel' => \Browser::deviceModel(),
+			'isDesktop' => \Browser::isDesktop(),
 
 			'so' => \Browser::platformFamily(),
-			'browser' => \Browser::browserFamily(),
-
+			'plataforma' => \Browser::platformName(),
 			
-			'latitude' => $latitude->latitude,
-			'longitude' => $latitude->longitude,			
+			'browser' => \Browser::browserFamily(),
+			'browserVersion' => \Browser::browserName(),
+			'isChrome' => \Browser::isChrome(),
+			
+		
+			'latitude' => $Position->latitude,
+			'longitude' => $Position->longitude,			
 			'cidade' => $Position->cityName,
 			'uf' => $Position->regionName,
 			'pais'=> $Position->countryCode,
 			
-			'tipo_id'=> $user_id,
-			'doc_id' =>  $user_id
+			'tipo_id'=> 1,
+			'doc_id' =>  $doc_id
 
 		]);
 

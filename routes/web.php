@@ -30,10 +30,23 @@ Route::get('/', 'DocsController@index');
 Route::get('/docs', 'DocsController@listarDocs');
 Route::get('/docs/editor', 'DocsController@editor');
 Route::post('/docs/add', 'DocsController@add');
+
+// ABRIR DOCUMENTO =============================================================
+// ABRIR DOCUMENTO =============================================================
+// ABRIR DOCUMENTO =============================================================
 Route::get('/abrir/{id}', 'DocsController@abrir');
 
 
-//Resumo
+// ACESSO =============================================================
+Route::get('/acesso/inicioLeitura/', 'AcessoController@salvarInicioLeitura');
+Route::get('/acesso/inicioLeitura/{doc_id}', 'AcessoController@salvarInicioLeitura');
+Route::get('/acesso/fimLeitura/{doc_id}', 'AcessoController@salvarInicioLeitura');
+
+
+
+//Resumo========================================================================
+//Resumo========================================================================
+//Resumo========================================================================
 Route::get('/docs/{doc_id}/resumo', 'DocsController@formCadastroResumo');
 Route::post('/docs/{doc_id}/resumo/add', 'DocsController@addResumo');
 
@@ -42,16 +55,21 @@ Route::get('/resumo/{doc_id}', 'DocsController@abrirPreleituraResumo');
 // Route::get('/resumo/{doc_id}/orientaoes', 'DocsController@abrirResumo'); // confirmacoes
 Route::get('/resumo/{doc_id}/duvidas', 'DocsController@abrirPreleituraDuvidas');
 Route::get('/resumo/{doc_id}/certezas', 'DocsController@abrirPreleituraCertezas');
-//Resumo 
 
 
-//respostas
+
+//respostas========================================================================
+//respostas========================================================================
+//respostas========================================================================
 Route::get('/docs/respostas/{doc}', 'DocsController@minhasRespostas');
 Route::post('/respostas/save', 'RespostasController@respostaFormModal');
 // ---------JSON ajaX--------||||| PosicionamentoCarrossel
 Route::get('/respostas/save', 'RespostasController@saveInDuvida');
 
-// conceito
+
+// conceito========================================================================
+// conceito========================================================================
+// conceito========================================================================
 // ---------JSON ajaX--------
 Route::get('/salvarConceito', 'PerguntaController@add');
 Route::get('/conceitos/{doc_id}', 'DocsController@listarConceitos');
@@ -61,7 +79,9 @@ Route::get('/conceitos/remover/{id}', 'DocsController@removerConceito');
 Route::get('/posicionamento/save', 'PosicionamentoController@save');
 
 
-//acervo 
+//acervo ========================================================================== 
+//acervo ========================================================================== 
+//acervo ========================================================================== 
 Route::post('/acervo/certezas/add', 'AcervoController@addCerteza');
 Route::post('/acervo/duvidas/add', 'AcervoController@addDuvida');
 Route::get('/docs/{id}/acervo', 'AcervoController@abrir');
@@ -72,7 +92,9 @@ Route::get('/certeza/apagar/{id}','AcervoController@apagarCerteza');
 Route::get('/duvida/save', 'AcervoController@salvarDuvida');
 
 
-//perguntas
+//perguntas ========================================================================
+//perguntas ========================================================================
+//perguntas ========================================================================
 Route::get('/docs/{id}/pergunta/{textoConceito?}', 'PerguntaController@abrir');
 Route::post('pergunta/add', 'PerguntaController@add');
 
