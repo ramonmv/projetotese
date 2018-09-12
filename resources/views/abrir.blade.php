@@ -298,7 +298,7 @@
 
 
     <nav class="blog-pagination">
-      <a class="btn btn-outline-primary" id="btFinalizarLeitura" href="#">Finalizar Leitura</a>
+      <a class="btn btn-outline-primary" id="btFinalizarLeitura" onclick="iniciarCarrosselDuvidas()" href="#">Finalizar Leitura</a>
       {{-- <a class="btn btn-outline-secondary disabled" href="#">Newer</a> --}}
   </nav>
 
@@ -951,27 +951,55 @@ var form_acervo_visivel = false;
 jquery("#bthide").click(function()
 
 {
-  console.log(" >>>>>>>>>>>>>>>>>> Abrir Blade");
+      console.log(" >>>>>>>>>>>>>>>>>> Abrir Blade");
 
-  event.preventDefault();
+      event.preventDefault();
 
-  if(form_acervo_visivel)
-  {
+      if(form_acervo_visivel)
+      {
 
-    jquery("#divFormAcervo").hide(1000);
+        jquery("#divFormAcervo").hide(1000);
 
-}
+     }
 
-else
-{
+    else
+    {
 
-    jquery("#divFormAcervo").show(1000);
-    $('#botao').prop('disabled', true); 
-}
+        jquery("#divFormAcervo").show(1000);
+        $('#botao').prop('disabled', true); 
+    }
 
-form_acervo_visivel = !form_acervo_visivel;
+    form_acervo_visivel = !form_acervo_visivel;
 
 });
+
+
+
+jquery("#bthide2").click(function()
+
+{
+      console.log(" >>>>>>>>>>>>>>>>>> Bt Lateral Suspenso");
+
+      event.preventDefault();
+
+      if(form_acervo_visivel)
+      {
+
+        jquery("#divFormAcervo").hide(1000);
+
+     }
+
+    else
+    {
+
+        jquery("#divFormAcervo").show(1000);
+        $('#botao').prop('disabled', true); 
+    }
+
+    form_acervo_visivel = !form_acervo_visivel;
+
+});
+
 
 
 

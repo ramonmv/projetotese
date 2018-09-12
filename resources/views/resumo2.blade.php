@@ -88,16 +88,16 @@
 							</li>
 							<li >  &nbsp; </li>
 							
-							<li style="color:#923925"> Desejo editar o resumo desse documento:  &nbsp;
+{{-- 							<li style="color:#923925"> Desejo editar o resumo desse documento:  &nbsp;
 								<a href="#" style="color:#923925">
 									<i class="fa fa-square-o fa-hover-hidden"> </i> 
 									<i class="fa fa-check-square-o fa-hover-show"> </i> 
 									Sim
 								</a>
-							</li>   
+							</li>   --}} 
 
-							<li >  &nbsp; </li>     
-							<li >  &nbsp; </li> 
+{{-- 							<li >  &nbsp; </li>     
+							<li >  &nbsp; </li>  --}}
 							<li >  &nbsp; </li> 
 							<li >  &nbsp; </li> 
 
@@ -462,7 +462,7 @@ var ultimasNoticias_flag = false;
 	$(document).ready(function() {
 
 					//APARECER O BOTAO APÓS 5 SEGUNDOS QUANDO APRESENTAR O RESUMO
-					$('#finalizaResumo').delay(8000).fadeIn(1500); // 5 seconds x 1000 milisec = 5000 milisec
+					$('#finalizaResumo').delay(3000).fadeIn(500); // 5 seconds x 1000 milisec = 5000 milisec
 					
 					// $('finalizaResumo').fadeOut(5000); // 5 seconds x 1000 milisec = 5000 milisec
 					// $('#bott').fadeOut(3000); // 5 seconds x 1000 milisec = 5000 milisec

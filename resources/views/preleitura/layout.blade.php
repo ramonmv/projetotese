@@ -33,7 +33,7 @@
     $(document).ready(function() {
 
                     //APARECER O BOTAO APÓS 5 SEGUNDOS QUANDO APRESENTAR O RESUMO
-                    $('#finalizaResumo').delay(6000).fadeIn(1500); // 5 seconds x 1000 milisec = 5000 milisec
+                    $('#finalizaResumo').delay(1200).fadeIn(1500); // 5 seconds x 1000 milisec = 5000 milisec
                     
                     // $('finalizaResumo').fadeOut(5000); // 5 seconds x 1000 milisec = 5000 milisec
                     // $('#bott').fadeOut(3000); // 5 seconds x 1000 milisec = 5000 milisec

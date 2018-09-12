@@ -43,7 +43,7 @@
                 Título original: <a href="/abrir/{{$doc->id}}">{{$doc->titulo}}</a> 
               </li> 
               <li >  &nbsp; </li>
-              <li> 
+              {{-- <li> 
                 <i class="fa fa-file-text-o" aria-hidden="true" style="color:#923925">  &nbsp; </i>
                 Acessos: <a href="/abrir/{{$doc->id}}"> 209 acessos</a> 
               </li> 
@@ -61,25 +61,25 @@
               <li> 
                 <i class="fa fa-file-text-o" aria-hidden="true" style="color:#923925">  &nbsp; </i>
                 Dúvidas Registradas: <a href="/abrir/{{$doc->id}}">19 leituras</a> 
-              </li> 
+              </li> --}} 
               <li >  &nbsp; </li>
               <li> 
                 <i class="fa fa-book" aria-hidden="true" style="color:#923925">  &nbsp; </i>
-                Referência Bibliográfica: <a href="#">G. F. M. Silva-Calpa, A. B. Raposo and M. Suplino, "CoASD: A tabletop game to support the collaborative work of users with autism spectrum disorder," 2018 IEEE 6th International Conference on Serious Games and Applications for Health (SeGAH), Vienna, 2018, pp. 1-8.</a> 
+                Referência Bibliográfica: <a href="#">DE LA TAILLE, Y. (2008). Ética em pesquisa com seres humanos: dignidade e liberdade. GUERRIERO, Iara C. Zito; SCHMIDT, Maria Luisa S, 268-279.</a> 
               </li>
               <li >  &nbsp; </li>
               
-              <li style="color:#923925"> Desejo editar o resumo desse documento:  &nbsp;
+{{--               <li style="color:#923925"> Desejo editar o resumo desse documento:  &nbsp;
                 <a href="#" style="color:#923925">
                   <i class="fa fa-square-o fa-hover-hidden"> </i> 
                   <i class="fa fa-check-square-o fa-hover-show"> </i> 
                   Sim
                 </a>
-              </li>   
+              </li>   --}} 
 
-              <li >  &nbsp; </li>     
+{{--               <li >  &nbsp; </li>     
               <li >  &nbsp; </li> 
-              <li >  &nbsp; </li> 
+ --}}              <li >  &nbsp; </li> 
               <li >  &nbsp; </li> 
 
               <div class="col-lg-12 cover1_finalizaResumo" id="finalizaResumo">
@@ -116,7 +116,9 @@
 
 
           <div class="conteudoResumo">
-            {{ $resumo->texto }} 
+        
+             {!! $resumo->texto !!}
+             
           </div>
 
         </div>

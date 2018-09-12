@@ -178,14 +178,14 @@
                 <li> <i class="fa fa-file-text-o" aria-hidden="true" style="color:#BECCD5">  &nbsp; </i>
                 Documento <a href="/abrir/{{$doc->id}}">{{$doc->titulo}}</a> </li>
                 
-                <li> <i class="fa fa-commenting" aria-hidden="true" style="color:#BECCD5">  &nbsp; </i>
+{{--                 <li> <i class="fa fa-commenting" aria-hidden="true" style="color:#BECCD5">  &nbsp; </i>
                 Contribuições: <a href="/abrir/{{$doc->id}}">3 Comentários</a> </li>
 
                 <li> <i class="fa fa-thumbs-up" aria-hidden="true" style="color:#BECCD5">  &nbsp; </i>
                 Posicionamentos: <a href="/abrir/{{$doc->id}}">3 votos</a> </li>
+ --}}
 
-
-                <li style="color:#923925"> 
+{{--                 <li style="color:#923925"> 
                   <i class="fa fa-question-circle" style="color:#E7A394" aria-hidden="true">  &nbsp; </i> 
                   Converter essa certeza em dúvida:  &nbsp;
                   <a href="#" style="color:#923925">
@@ -193,7 +193,7 @@
                     <i class="fa fa-check-square-o fa-hover-show"> </i> 
                     Sim
                   </a>
-                </li>
+                </li> --}}
 
                 <li >  &nbsp; </li>
                 <li style="color:#31698A"> Desejo excluir esta certeza definitivamente:  &nbsp;
