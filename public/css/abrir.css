@@ -1841,11 +1841,11 @@ cursor: pointer;
   }
 
 #concordar { 
-  background: #3D79D0;
+  background: #3D79D0!important;;
   }
 
 #discordar { 
-  background: #D21111;
+  background: #D21111!important;;
   }
 
 .popScroll em {
