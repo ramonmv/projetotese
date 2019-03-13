@@ -25,6 +25,7 @@
 
 
 
+
 Route::get('/', 'DocsController@index');
 
 Route::get('/docs', 'DocsController@listarDocs');
@@ -34,19 +35,43 @@ Route::post('/docs/add', 'DocsController@add');
 // ABRIR DOCUMENTO =============================================================
 // ABRIR DOCUMENTO =============================================================
 // ABRIR DOCUMENTO =============================================================
-Route::get('/abrir/{id}', 'DocsController@abrir');
+Route::get('/abrir/{id}/', 'DocsController@abrir');
+Route::get('/abrir/{id}/admin', 'DocsController@admin');
+Route::get('/abrir/{id}/revisao', 'DocsController@abrirRevisao');
+Route::get('/abrir/{id}/analise', 'DocsController@abrirAnalise')->name('pagina-analise');
+Route::get('/abrir/{id}/participantes', 'DocsController@listarParticipantes');
+Route::get('/abrir/{id}/acesso/{user_id}', 'AcessoController@listarAcessos');
 
 
 // ACESSO =============================================================
-Route::get('/acesso/inicioLeitura/', 'AcessoController@salvarInicioLeitura');
-// Route::get('/acesso/inicioLeitura/{doc_id}', 'AcessoController@salvarInicioLeitura');
-Route::get('/acesso/fimLeitura/', 'AcessoController@salvarFimLeitura');
+Route::get('/acesso/inicioLeitura/', 'AcessoController@salvarInicioLeitura'); // ok
+Route::get('/acesso/fimLeitura/', 'AcessoController@salvarFimLeitura'); // ok
+Route::get('/acesso/salvarConcordanciaTermos/', 'AcessoController@salvarConcordanciaTermos'); // ok
+Route::get('/acesso/salvarDiscordanciaTermos/', 'AcessoController@salvarDiscordanciaTermos'); // ok
+Route::get('/acesso/salvarApresentaPergunta/', 'AcessoController@salvarApresentaPergunta'); // ok
+Route::get('/acesso/salvarInicioIntervencaoAutomatica/', 'AcessoController@salvarInicioIntervencaoAutomatica'); // ok
+Route::get('/acesso/salvarFimIntervencaoAutomatica/', 'AcessoController@salvarFimIntervencaoAutomatica'); // ok
+Route::get('/acesso/salvarApresentaPergunta/', 'AcessoController@salvarApresentaPergunta'); // ok
+Route::get('/acesso/salvarApresentaDuvida/'	 , 'AcessoController@salvarApresentaDuvida'); // ok
+Route::get('/acesso/salvarDesistencia/'		 , 'AcessoController@salvarDesistencia'); ///ok
+
+Route::get('/acesso/salvarResposta/'		 , 'AcessoController@salvarResposta');
+
+//Route::get('/acesso/salvarEsclareceDuvida/'	 , 'AcessoController@salvarEsclareceDuvida');
+//Route::get('/acesso/salvarJustificativa/'	 , 'AcessoController@salvarJustificativa');
+//Route::get('/acesso/salvarPosicionamento/'	 , 'AcessoController@salvarPosicionamento');
 
 
 
-//Resumo========================================================================
-//Resumo========================================================================
-//Resumo========================================================================
+// Status========================================================================
+// Status========================================================================
+// Status========================================================================
+Route::get('/docs/status/{doc_id}', 'AcessoController@abrir');
+
+
+// Resumo========================================================================
+// Resumo========================================================================
+// Resumo========================================================================
 Route::get('/docs/{doc_id}/resumo', 'DocsController@formCadastroResumo');
 Route::post('/docs/{doc_id}/resumo/add', 'DocsController@addResumo');
 
@@ -72,7 +97,7 @@ Route::get('/respostas/save', 'RespostasController@saveInDuvida');
 // conceito========================================================================
 // ---------JSON ajaX--------
 Route::get('/salvarConceito', 'PerguntaController@add');
-Route::get('/conceitos/{doc_id}', 'DocsController@listarConceitos');
+Route::get('/conceitosduvida/s/{doc_id}', 'DocsController@listarConceitos');
 Route::get('/conceitos/remover/{id}', 'DocsController@removerConceito');
 // Route::get('/docs/{id}/conceito/{textoConceito}', 'ConceitoController@redirecionar');
 // ---------JSON ajaX--------||||| PosicionamentoCarrossel
@@ -90,6 +115,7 @@ Route::get('/duvida/apagar/{id}', 'AcervoController@apagarDuvida');
 Route::get('/certeza/apagar/{id}','AcervoController@apagarCerteza');
 // ---------JSON ajaX--------||||| DuvidaCarrossel - Respostas Pendentes > Menu Suspenso
 Route::get('/duvida/save', 'AcervoController@salvarDuvida');
+Route::get('/duvida/pular', 'AcervoController@salvarPularDuvida');
 
 
 //perguntas ========================================================================

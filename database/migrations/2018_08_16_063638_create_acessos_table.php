@@ -43,6 +43,31 @@ class CreateAcessosTable extends Migration
             $table->foreign('tipo_id')->references('id')->on('tipos')->onDelete('cascade');
             $table->integer('doc_id')->unsigned();
             $table->foreign('doc_id')->references('id')->on('docs')->onDelete('cascade');
+
+
+            // $table->integer('user_id')->unsigned();
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->integer('pergunta_id')->nullable()->unsigned();
+            $table->foreign('pergunta_id')->references('id')->on('perguntas');
+
+            $table->integer('resposta_id')->nullable()->unsigned();
+            $table->foreign('resposta_id')->references('id')->on('respostas');
+
+            $table->integer('conceito_id')->nullable()->unsigned();
+            $table->foreign('conceito_id')->references('id')->on('conceitos');
+
+            $table->integer('duvida_id')->nullable()->unsigned();
+            $table->foreign('duvida_id')->references('id')->on('duvidas');
+
+            $table->integer('certeza_id')->nullable()->unsigned();
+            $table->foreign('certeza_id')->references('id')->on('certezas');            
+
+            $table->integer('posicionamento_id')->nullable()->unsigned();
+            $table->foreign('posicionamento_id')->references('id')->on('posicionamentos');
+
+            $table->string('texto', 1500)->nullable();
+
             $table->timestamps();         
         });
     }

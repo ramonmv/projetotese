@@ -6,28 +6,32 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use App\Resposta;
 use App\Duvida;
+use App\Acesso;
 use App\Http\Controllers\DocsController;
 
 class RespostasController extends Controller
 {
     //
 
-  public function __construct()
+	public function __construct()
 
-  {
+	{
 
     //$this->middleware('auth');
         // dd(auth()->user()->id );
      // dd(auth()->id() );
 
-  }
-
+	}
+  	
 
 	public function save(Request $request)
 
 	{
 
-		// dd($request->all() );
+		  // dd($request->all() );
+		 // dd( $request->session()->all() );
+
+		$doc_id = $request->doc_id ;
 		
 		// $resposta = Resposta::find(request('resposta_id'));		
 
@@ -35,6 +39,12 @@ class RespostasController extends Controller
 		if (   $this->respostaJaRespondida( request('conceito_id'), auth()->id()  )   ) 
 
 		{
+
+			//Registro dos Acessos do Registro da edicao da resposta
+			// @todo so posso registrar o acesso apos a edicao ser efetuada , ainda nao tenho controle sobre possiveis erros 
+			$acesso = new Acesso();
+			$acesso->salvarEdicaoResposta($doc_id,request('resposta_id'),request('texto') );
+
 			
 			$resposta = Resposta::find(request('resposta_id'));
 			
@@ -42,12 +52,21 @@ class RespostasController extends Controller
 
 		} 
 
+
 		else 
 
 		{
-			$resposta = new Resposta();        
 
-			return $resposta->add(request('texto'),request('conceito_id'),auth()->id());
+			$resposta = new Resposta();        
+			$novaResposta = $resposta->add(request('texto'),request('conceito_id'),auth()->id(), request('pergunta_id'));
+			
+
+			//Registro dos Acessos do Registro da nova resposta
+			$acesso = new Acesso();
+			$acesso->salvarResposta($doc_id, $novaResposta->id, request('texto') );;
+
+
+			return true;
 
 		}
 
@@ -59,8 +78,30 @@ class RespostasController extends Controller
 	{
 
 		$resposta = new Resposta();      
+		$resposta = $resposta->add( request('texto'), null, auth()->id(), null );		
 
-		$resposta = $resposta->add( request('texto'), null, auth()->id() );
+		//Registro dos Acessos do Registro da nova resposta
+		$acesso = new Acesso();
+		$acesso->salvarEsclareceDuvida(request('doc_id'),$resposta->id, request('texto') );
+		
+		$duvida = Duvida::find(request('duvida_id'));
+
+		$duvida->respostas()->attach($resposta);
+		// $duvida->respostas()->attach($resposta)->withTimestamps();
+
+		return $resposta->id;
+
+		
+	}
+
+	// para teste
+	public function saveIn($texto, $conceito, $user )
+
+	{
+
+		$resposta = new Resposta();      
+
+		$resposta = $resposta->add( $texto, $conceito, $user );
 		
 		// var_dump($resposta->id);
 		
@@ -76,7 +117,6 @@ class RespostasController extends Controller
 		
 	}
 
-
 	/*
 	/
 	/ 
@@ -86,7 +126,7 @@ class RespostasController extends Controller
 	public function respostaJaRespondida($conceito_id, $user_id)
 	
 	{
-	
+
 		$registros = Resposta::where('conceito_id', $conceito_id)->where('user_id', $user_id)->count();
 
 		$resultado = ($registros > 0) ? true : false; 
@@ -96,25 +136,54 @@ class RespostasController extends Controller
 	}
 
 
+	private function vazio($texto){
 
+		$texto = trim($texto);
+
+
+
+		if( is_null($texto) || empty($texto)){
+
+			return true;
+		}
+
+		return false;
+
+
+	}
 
 
 	//form em documentos - /abrir
 	// invoca o metodo Save passando o request como parametro que será tratado
-
+	//@todo message caso vazio : "conteúdo inexistente ou insuficiente"
+	//@todo Alterar a rota para rota /?param=value , assim nao precisara usar a funcao back
 	public function respostaFormModal (Request $request)
 	
 	{
 		
-		// var_dump((int)request('form_id'));
-		//dd($request->all() );
-		 // $previousUrl = app('url')->previous();
-		 // dd($previousUrl);
 
-		$this->save($request);
+		if( !($this->vazio($request['texto']) ) )
+
+		{
+
+			$this->save($request);
+
+		}
+
+		else
+
+		{
+
+			return back();
+			// return response()->json([ 'success' => true , 'message' => 'conteúdo inexistente ou insuficiente']);
+
+		}
+
+
+
 
 		if ( !is_null(request('conceito_id')) )
-		// if(false)
+			
 		{
 
 			$conceito_id = request('conceito_id');
@@ -127,15 +196,12 @@ class RespostasController extends Controller
 
 		{
 
-			return true;
-		
-		}
-		// $conceito_id = $request('conceito_id');
-		
-		// return back()->withInput(['conceitoid_Scroll' => $docu, 'msg_type' => $docu]);
-		// return view('abrir',compact('doc', 'certezas', 'duvidas','autor') );
-		//return redirect($previousUrl)->with('conceitoid_Scroll', '13'   );
+			return back();
 
+		}
+
+
+		
 		
 
 	}

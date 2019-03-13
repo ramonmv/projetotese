@@ -15,7 +15,8 @@ class CreatePosicionamentosTable extends Migration
     {
         Schema::create('posicionamentos', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('concorda')->nullable();
+            $table->boolean('concorda')->default(false);
+            $table->boolean('discorda')->default(false);
             $table->boolean('naosei')->default(false);            
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

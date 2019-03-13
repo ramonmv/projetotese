@@ -8,7 +8,7 @@
 <div class="blog-header">
   <div class="container">
     <h1 class="blog-title">Meu Acervo</h1>
-    <p class="lead blog-description">Meu respositório de certezas provisórias e Dúvidas temporárias sobre <a href="/abrir/{{$doc->id}}"> {{$doc->titulo}}</a></p>
+    <p class="lead blog-description">Meu repositório de certezas provisórias e Dúvidas temporárias sobre <a href="/abrir/{{$doc->id}}"> {{$doc->titulo}}</a></p>
   </div>
 </div>
 
@@ -229,11 +229,11 @@
       </div>
 
 
-      <nav class="blog-pagination">
+{{--       <nav class="blog-pagination">
         <a class="btn btn-outline-primary" href="#">Somente as certezas</a>
         <a class="btn btn-outline-primary " href="#">Somente as Dúvidas</a>
       </nav>
-
+ --}}
 
 
 

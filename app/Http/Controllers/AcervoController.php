@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Certeza;
 use App\Duvida;
+use App\Acesso;
 use App\Doc;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
@@ -13,15 +14,15 @@ class AcervoController extends Controller
 {
     //
 
-  public function __construct()
+	public function __construct()
 
-  {
+	{
 
-    $this->middleware('auth')->except(['index','show']);
+		$this->middleware('auth')->except(['index','show']);
         // dd(auth()->user()->id );
      // dd(auth()->id() );
 
-  }
+	}
 
 
 	public function addCerteza(Request $request)
@@ -34,14 +35,14 @@ class AcervoController extends Controller
 		
 		$Certeza = new Certeza();
 
-		$Certeza->add(request('conteudoAcervo'),request('doc_id'),auth()->id());
+		$certeza = $Certeza->add(request('conteudoAcervo'),request('doc_id'),auth()->id());
+		$certeza_id =  $certeza->id;
+		//Registro dos Acessos do Registro da Certeza
+		$acesso = new Acesso();
+		$acesso->salvarCerteza(request('doc_id'),request('conteudoAcervo'),$certeza_id);
 
-		//return back();
 
 		return Redirect::to(URL::previous() . "?s=1");
-
-		// return redirect(  "/".$request->path() );
-		//return redirect(  '/abrir/'.request('doc_id') );
 
 	}
 
@@ -51,8 +52,12 @@ class AcervoController extends Controller
 
 		
 		$Duvida = new Duvida();
+		$Duvida = $Duvida->add(request('conteudoAcervo'),request('doc_id'),auth()->id());
+		$duvida_id = $Duvida->id;
 
-		$Duvida->add(request('conteudoAcervo'),request('doc_id'),auth()->id());
+		//Registro dos Acessos do Registro da Certeza
+		$acesso = new Acesso();
+		$acesso->salvarDuvida(request('doc_id'),request('conteudoAcervo'), $duvida_id );
 
 		// return redirect(  '/abrir/'.request('doc_id') );
 		return Redirect::to(URL::previous() . "?s=1");
@@ -96,18 +101,55 @@ class AcervoController extends Controller
 
 
 
-
+	// Requisição do ajax do carrossel
+	// não sei se outros metodos/requsicoes chamam essa fx
+	// apropriar duvida no carrossel
+	// 'texto': duvida,
+  	//            'doc_id': doc_id,
+  	//            'duvida_id': duvida_id
 	public function salvarDuvida(Request $request)
 
 	{
-
+		
+		$apropriado = true;
+		$duvidaPai_id = request('duvidaPai_id'); //@todo adicionar no Acesso e no BD DUVIDAS para er referencia da duvida PAI na apropriação das duvidas
 		
 		$Duvida = new Duvida();
+		$Duvida = $Duvida->add(request('texto'),request('doc_id'),auth()->id(), $duvidaPai_id, true );
 
-		$Duvida = $Duvida->add(request('texto'),request('doc_id'),auth()->id());
+
+		// Regisro dos acessos
+		$Acesso = new Acesso();
+		$Acesso->salvarApropriaDuvida( request('doc_id'),request('texto'), $Duvida->id );
+
 
 		// return redirect(  '/abrir/'.request('doc_id') );
-		return $Duvida->id;
+		return $Duvida;
+		// return $Duvida->id;
+
+	}
+
+	// Salvar o registro (acesso) da atividade do user:  pular duvida (outrem) na F3 Esclarecimento de Duvida
+	// Requisição do ajax do carrossel
+	// JS funcao pularDuvida (abrir.blade)
+	// JS funcao salvarPularDuvidaAjax (template_documento.blade) 
+	// Param REQUEST: duvida_id, doc_id
+	public function salvarPularDuvida(Request $request)
+
+	{
+
+		$Duvida = new Duvida();
+		$Duvida = Duvida::find(request('duvida_id'));
+		$duvida_texto = $Duvida->texto;	
+
+		// Regisro dos acessos
+		$Acesso = new Acesso();
+		$Acesso->salvarPularDuvida( request('doc_id'), request('duvida_id'), $duvida_texto );
+
+
+		//@todo adicionar verificacao de retorno, se for necessario
+		// return response(true); 
+
 
 	}
 
@@ -131,7 +173,12 @@ class AcervoController extends Controller
 		// dd(compact('doc', 'certezas', 'duvidas') );
 		// dd(session('autor') ); 
 
-		 return view('acervo',compact('doc', 'certezas', 'duvidas'));
+		//Registro dos Acessos a página das Certezas
+		$acesso = new Acesso();
+		$acesso->salvarAcessoAcervo($id);		
+		
+
+		return view('acervo',compact('doc', 'certezas', 'duvidas'));
 		//return view('acervo',compact('doc'));
 	}
 
@@ -142,7 +189,7 @@ class AcervoController extends Controller
 
 		// dd(compact('doc', 'certezas', 'duvidas') );
 
-		 return view('bak.bak');
+		return view('bak.bak');
 		//return view('acervo',compact('doc'));
 	}
 }

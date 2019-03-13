@@ -36,6 +36,71 @@ class Pergunta extends Model
 
 	}
 
+
+
+	public function colecaoPerguntas($doc_id)
+
+	{
+
+		return $this->where('doc_id', $doc_id)->get();	
+
+	}
+
+
+
+
+
+
+	public function colecaoPerguntasComRespostas($doc_id, $user_id = null)
+
+	{
+
+		
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+		
+		// return $this->where('doc_id', $doc_id)
+		// 			     ->with('respostas')
+		// 				 ->whereHas('respostas', function ($query) use ($user_id) {
+		// 					$query->where('user_id', $user_id );
+		// 				  })
+		// 				 ->get();
+
+
+		return $this->where('doc_id', $doc_id)
+						  ->with('user') 	
+					     ->with(['respostas' => function ($query) use ($user_id){
+						    $query->where('user_id', $user_id );
+						  }])
+						 ->whereHas('respostas', function ($query) use ($user_id) {
+							$query->where('user_id', $user_id );
+						  })
+						 ->get();						 
+		 
+	}
+
+
+
+
+
+	public function colecaoPerguntasSemRespostas($doc_id, $user_id = null)
+
+	{
+
+		
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+		
+		return Pergunta::where('doc_id', $doc_id)
+					     ->with('respostas')
+						 ->whereDoesntHave('respostas', function ($query) use ($user_id) {
+							$query->where('user_id', $user_id );
+						  })
+						 ->get();
+		 
+	}
+
+
 	public function doc()
 
 	{
@@ -49,6 +114,14 @@ class Pergunta extends Model
     {
        
         return $this->hasOne(Conceito::class);
+
+    }
+
+    public function user()
+   
+    {
+       
+        return $this->belongsTo(User::class);
 
     }
 

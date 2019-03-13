@@ -8,16 +8,40 @@ class Posicionamento extends Model
 
 {
 
-	protected $fillable = [	'concorda', 'naosei', 'resposta_id','user_id' ];
+	protected $fillable = [	'concorda', 'discorda', 'naosei', 'resposta_id','user_id' ];
+	// var autoria = '';
+
+	// public function add($concorda, $naosei, $resposta_id, $user_id)
+
+	// {
+
+	// 	return $this->create([
+
+	// 		'concorda' => $concorda,
+	// 		'naosei' => $naosei,		
+	// 		'resposta_id' => $resposta_id,
+	// 		'user_id' => $user_id
+
+	// 		]);
+
+	// }
+
+    // public function setAutoriaAttribute($value)
+    // {
+    //     $this->attributes['autoria'] = strtolower($value);
+    // }
 
 
-	public function add($concorda, $naosei, $resposta_id, $user_id)
+	public function add($concorda, $discorda, $naosei, $resposta_id, $user_id)
 
 	{
+
+		$this->setAutoria($concorda, $discorda, $naosei);
 
 		return $this->create([
 
 			'concorda' => $concorda,
+			'discorda' => $discorda,
 			'naosei' => $naosei,		
 			'resposta_id' => $resposta_id,
 			'user_id' => $user_id
@@ -26,31 +50,70 @@ class Posicionamento extends Model
 
 	}
 
-	public function edit($naosei, $concorda)
+	// Utilizado na interface do Acesso
+	// atribui ao atributo autoria strings referente ao seu posicionamento
+	public function setAutoria($concorda, $discorda, $naosei)
 
 	{
 
-		if(  ($naosei != 0) && ($naosei != false )  )
+		if( $concorda == TRUE ){
 
-		{
-
-			$naosei = 1;
-			$concorda = null;
-
+			$this->autoria = "Sim";
 		}
+
+		elseif( $discorda == TRUE ){
+
+			$this->autoria = "Não";
+		}
+
+		else{
+
+			$this->autoria = "Não sei";
+		}
+
+
+	}
+
+	// public function edit($naosei, $concorda)
+
+	// {
+
+	// 	if(  ($naosei != 0) && ($naosei != false )  )
+
+	// 	{
+
+	// 		$naosei = 1;
+	// 		$concorda = null;
+
+	// 	}
 		
-		else
+	// 	else
 
-		{
+	// 	{
 
-			$naosei = 0;
+	// 		$naosei = 0;
 
 
-		}
+	// 	}
 
-		// = $this->verificarPosicionamento($nãosei, $concorda);
+	// 	// = $this->verificarPosicionamento($nãosei, $concorda);
+
+	// 	$this->concorda = $concorda;
+	// 	$this->naosei = $naosei;
+
+	// 	$this->save();
+
+	// }	
+
+
+	public function edit($concorda, $discorda, $naosei)
+
+	{
+
+		$this->setAutoria($concorda, $discorda, $naosei);
 
 		$this->concorda = $concorda;
+		$this->discorda = $discorda;
 		$this->naosei = $naosei;
 
 		$this->save();
@@ -87,4 +150,5 @@ class Posicionamento extends Model
 
 
 	}
+		
 }

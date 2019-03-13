@@ -17,11 +17,13 @@ class CreateRespostasTable extends Migration
 
             $table->increments('id');
             
-            $table->string('texto', 1000);
-            //$table->integer('pergunta_id');
-            
-            $table->integer('conceito_id')->unsigned(); // #mod 
-            $table->foreign('conceito_id')->references('id')->on('conceitos')->onDelete('cascade');
+            $table->string('texto', 1500);
+            // $table->integer('pergunta_id');
+
+            $table->integer('pergunta_id')->nullable(); // #mod 
+            // $table->foreign('pergunta_id')->references('id')->on('perguntas');            
+            $table->integer('conceito_id')->nullable()->unsigned(); // #mod 
+            $table->foreign('conceito_id')->references('id')->on('conceitos');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

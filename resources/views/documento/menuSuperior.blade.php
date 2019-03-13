@@ -8,7 +8,7 @@
         <a class="nav-link" href="/docs/{{ $doc->id }}/pergunta/">Perguntas</a>
         @endif
         <a class="nav-link" href="/docs/respostas/{{ $doc->id }}">Minhas Respostas</a>
-        
+        {{-- <a class="nav-link" href="/docs/status/{{ $doc->id }}">Status</a> --}}
         @if( Auth::check() )
 
             <span class="nav-link ml-auto" >

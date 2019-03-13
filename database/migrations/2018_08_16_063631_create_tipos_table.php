@@ -24,7 +24,7 @@ class CreateTiposTable extends Migration
             $table->boolean('is_intervencao')->default(false);
             $table->integer('fase')->default(0); 
             $table->integer('etapa')->unsigned();
-            $table->timestamps();
+            // $table->timestamps(); //@todo remover
             //  is acesso
             //  is autoria
             //  is intervencao

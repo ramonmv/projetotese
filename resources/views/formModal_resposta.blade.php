@@ -12,10 +12,11 @@
 			<form method="POST" action="/respostas/save" role="form" id="formResposta"> 
 
 				{{ csrf_field() }}
-				<input type="hidden" id="conceito_id" value="" name="conceito_id" form="formResposta" />
-				<input type="hidden" id="docs_id" 	  value="" name="docs_id"	  form="formResposta" />
-				<input type="hidden" id="resposta_id" value="" name="resposta_id"	  form="formResposta" />
-				<input type="hidden" id="form_id" value="" name="form_id"	  form="formResposta" />
+				<input type="hidden" id="conceito_id" value="" 				name="conceito_id" 	  form="formResposta" />
+				<input type="hidden" id="doc_id" 	  value="{{$doc->id}}"  name="doc_id"	  	  form="formResposta" />
+				<input type="hidden" id="resposta_id" value="" 				name="resposta_id"	  form="formResposta" />
+				<input type="hidden" id="form_id" 	  value="" 				name="form_id"	  	  form="formResposta" />
+				<input type="hidden" id="pergunta_id" value="" 				name="pergunta_id"	  form="formResposta" />
 
 
 				<div class="modal-body">

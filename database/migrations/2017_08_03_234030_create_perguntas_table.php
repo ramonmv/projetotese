@@ -20,6 +20,8 @@ class CreatePerguntasTable extends Migration
             $table->boolean('personalizado')->default(true);
             //$table->boolean('padrao')->default(false);
             $table->integer('conceito_id')->nullable();
+            
+            // $table->integer('antecipada')->nullable(); ou PREVIA , QUE PODE OCORRER ANTES DE INICIAR A LEITURA
             // $table->foreign('conceito_id')->references('id')->on('conceitos')->onDelete('cascade');   TODO            
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');             

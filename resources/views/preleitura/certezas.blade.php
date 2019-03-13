@@ -14,7 +14,7 @@
 
 			<p >
 
-				Após a leitura do título, do resumo e da elaboração das suas dúvidas, convidamos você a elaborar suas certezas. Isto é, aquilo que você pode afirmar que você já sabe sobre o assunto. As certezas podem estar associadas ao assunto central do documento ou aos aspectos relacionados, conforme destacado pelo resumo. Suas certezas podem ser elaboradas sob formas de afirmação ou negação. Entendemos que as certezas são provisórias e que podem ser reconstruidas a todo momento, ou ainda podem ser validadas em a partir das suas experiências (leitura, experimentações, etc.).
+				Após a leitura do título, do resumo e da elaboração das suas dúvidas, convidamos você a elaborar suas certezas. Isto é, aquilo que você pode afirmar que você já sabe sobre o assunto. As certezas podem estar associadas ao assunto central do documento ou aos aspectos relacionados, conforme destacado pelo resumo. Suas certezas podem ser elaboradas sob formas de afirmação ou negação. Entendemos que as certezas são provisórias e que podem ser reconstruidas a todo momento, ou ainda podem ser validadas posterioremente a partir das suas experiências (leitura, reflexões, experimentações, etc.).
 
 			</p>     
 
@@ -28,7 +28,7 @@
 					<div class="col-lg-12 cover_btEsquerda">
 
 						<a class="btn btn-primary botao2" href="/resumo/{{$doc->id}}/duvidas" role="button" id="bott">
-							<i class="fa  fa-hand-o-right" aria-hidden="true" style="color:white">  &nbsp; </i> Voltar a etapa anterior. &raquo;
+							<i class="fa  fa-hand-o-right" aria-hidden="true" style="color:white">  &nbsp; </i> Voltar a etapa anterior &raquo;
 						</a>
 
 					</div>   
@@ -46,7 +46,7 @@
 
 					<div class="col-lg-12 cover_btDireita">
 						<a class="btn btn-primary botao2" href="/abrir/{{$doc->id}}" role="button" id="bott">
-							<i class="fa  fa-hand-o-right" aria-hidden="true" style="color:white">  &nbsp; </i> Não tenho dúvidas e gostaria de prosseguir &raquo;
+							<i class="fa  fa-hand-o-right" aria-hidden="true" style="color:white">  &nbsp; </i> Não tenho mais certezas e gostaria de prosseguir &raquo;
 						</a>
 					</div>
 

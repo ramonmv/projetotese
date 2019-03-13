@@ -8,25 +8,29 @@ class Resposta extends Model
 {
     //
 
-	public function add($texto, $conceito_id = null, $user_id)
+	public function add($texto, $conceito_id = null, $user_id, $pergunta_id = null)
 
 	{
 
 		return $this->create([
 
-  			// 'titulo' => request('titulo'),
-     //        'conteudo' => request('conteudo')
-
 
 			'texto' => $texto,
 			'conceito_id' => $conceito_id,
-			// 'pergunta_id' => $pergunta_id,
+			'pergunta_id' => $pergunta_id,
 			'user_id' => $user_id
 
 			]);
 
 	}
 
+    public function teste($id,$co, $texto)
+
+    {
+
+        return "teste com sucesso";
+
+    }
 
 
 	public function edit($id, $texto)
@@ -46,6 +50,22 @@ class Resposta extends Model
 // $flight->save();
 
 	}
+
+
+    public function respostaJaRespondida($conceito_id, $user_id)
+    
+    {
+    
+        $registros = Resposta::where('conceito_id', $conceito_id)->where('user_id', $user_id)->count();
+
+        $resultado = ($registros > 0) ? true : false; 
+
+        return $resultado;      
+
+    }
+
+
+
 
 
     public function conceito()
@@ -86,7 +106,8 @@ class Resposta extends Model
     }    
 
 
-    
+    //@todo verificar se esta relação é a melhor
+    //Esta relação cria um conjunto de dúvidas para uma unica Resposta.
     public function duvidas()
 
     {

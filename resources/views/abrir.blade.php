@@ -6,61 +6,15 @@
 
 
 
+@include('abrir.aviso')
 
-@if(session('primeiraLeitura'))
-{{-- @if(false) --}}
-    <!-- popup -->
-    <div class="popScroll" id="popAviso">
-        <div class="popup">
-            <span class="ribbon top-left ribbon-primary">
-                <small>Aviso</small>
-            </span> 
-            <h1>Início da Leitura</h1>
-            <div class="subscribe-widget"> 
-                <!-- form -->
-
-                <!-- end form-->
-            </div>
-            <p>Por favor, sobre a leitura eu desejo...</p>
-            <div id="option">
-                <a href="#" id="home" class="boxi">Voltar</a> 
-                <em>ou</em>
-                <a href="#" id="close" class="boxi closei">Iniciar</a>
-                <p class="adstext"><u>Importante!</u></p>
-                <ul>
-                    <li class="listaAviso">
-                        <span><b>Para tentar compreender os impactos das intervenções na leitura, este ambiente virtual foi programado para capturar e armazenar as ações dos leitores durante as atividades de leitura e de escrita, tais como: </b> tempo de leitura; data e hora de cada registro de escrita; registro da navegação entre páginas; data e hora das projeções das intervenções; </span>
-                    </li>
-                    
-                    <li class="listaAviso">
-                        <span> Registro temporal das ações como tempo de leitura e de escrita</span>
-                    </li>
-                    
-                    <li class="listaAviso">
-                        {{-- <span> Todos os dados produzidos no ambiente serão registrados em uma base de dados</span> --}}
-                    </li>
-
-                    <li class="listaAviso">
-                        <span><b>Todos os dados produzidos no ambiente serão registrados em uma base de dados;   </b> </span>
-                    </li>
-
-                </ul>
-
-            </div>
-          </div>
-    </div>
-    <!-- popup -->
-@endif
 
 
 
 <div class="blog-header">
     <div class="container">
         <h1 class="blog-title">{{ $doc->titulo}}</h1>
-        <p class="lead blog-description">
-            {{ ' ' /* subtitulo  */ }} 
-        </p>
-
+        <p class="lead blog-description">    {{ ' ' /* subtitulo  */ }}   </p>
     </div>
 </div>
 
@@ -115,6 +69,8 @@
 
     console.log("  >>> Carrossel De respostas Criadas   ");
 
+
+
     totalItensCarrossell = {!! count($respostas) !!};
 
     if(totalItensCarrossell == 0)
@@ -123,6 +79,13 @@
   }
 
 </script>
+
+
+
+
+
+
+
 
 <div class="LightBox" id="openLightBoxUpsell" style="display: none;">
 
@@ -211,16 +174,16 @@
 
         <script type="text/javascript">
 
-          console.log("  +++ Carrossel De Duvidas Criadas   ");
+        console.log("  +++ Carrossel De Duvidas Criadas   ");
 
 
 
 
-          totalItensCarrossel_duvidasInRespostas = {!! count($duvidas_outros) !!};
-          carrossel_duvidasInRespostas = true;
+        totalItensCarrossel_duvidasInRespostas = {!! count($duvidas_outros) !!};
+        carrossel_duvidasInRespostas = true;
 
-          if(totalItensCarrossel_duvidasInRespostas == 0)
-          {
+        if(totalItensCarrossel_duvidasInRespostas == 0)
+        {
             form_carrossel_visivel = false;
         }
 
@@ -243,7 +206,7 @@
               <div class="carousel-item active" data-codigo="{{$duvida->id}}" >
                 @include('abrir.carrossel',[
                   'usuario' => $duvida->user->primeiroNome(),
-                  'desc' => 'Possui a segunte dúvida...',
+                  'desc' => 'Possui a seguinte dúvida...',
                   'pergunta' => $duvida->texto ,
                   'resposta' => null ,
                   'duvida_id' => $duvida->id ,
@@ -298,7 +261,7 @@
 
 
     <nav class="blog-pagination">
-      <a class="btn btn-outline-primary" id="btFinalizarLeitura" onclick="iniciarCarrosselDuvidas()" href="#">Finalizar Leitura</a>
+      <a class="btn btn-outline-primary" id="btFinalizarLeitura" {{-- onclick="iniciarCarrosselDuvidas()"  --}}href="#">Finalizar Leitura</a>
       {{-- <a class="btn btn-outline-secondary disabled" href="#">Newer</a> --}}
   </nav>
 
@@ -311,7 +274,10 @@
 
 
 {{-- PLANO PRETO DE FUNDO --}}
-<div class="BlackScreen" style="display: none;"></div> 
+<div class="BlackScreen" id="BlackScreen_Duvidas" style="display: none;"></div> 
+<div class="BlackScreen" id="BlackScreen_Respostas" style="display: none;"></div> 
+<div class="BlackScreen" id="BlackScreen_AvisoTermos" style="display: none;"></div> 
+{{-- <div class="WhiteScreen" id="WhiteScreen" style="display: none;"></div>  --}}
 
 
 
@@ -321,9 +287,9 @@
 
  @include('abrir.menuLateral_meuAcervo')
 
- @if ($autor)
- @include('abrir.menuLateral_conceitosSelecionados')
- @endif
+ {{-- @if ($autor) --}}
+ @includeWhen($autor,'abrir.menuLateral_conceitosSelecionados')
+ {{-- @endif --}}
 
  @include('abrir.menuLateral_trechos')
 
@@ -361,11 +327,14 @@
 <script type="text/javascript">
 
 
+  var doc_id = {{ $doc->id }};   
   var contador_itemCarrossel = 1;   
   // var form_acervo_visivel = false;
   var form_carrosel_visivel = true;
   var vetorCarrossel = new Array(totalItensCarrossel_duvidasInRespostas);
   var contVetorCarrosel = -1;
+  var adminLimiteQtdPosicionamentos = 2;
+  var adminLimiteQtdEsclarecimentos = 2;
 
 
   jquery("#divFormAcervo").hide();
@@ -382,6 +351,8 @@
       var button = jquery(event.relatedTarget) // Button that triggered the modal //xxx
 
       var recipient = button.data('whatever') // Extract info from data-* attributes
+
+      console.log(" - Abriu Modal 1 - "+ recipient);
 
       var modal = jquery(this) //xxx
 
@@ -403,7 +374,7 @@
          // respostaDigitadaNoCarrossel = jquery('.active').find('#respostaInDuvida').val().trim();
          var respostaTextarea = jquery('.active').find('#respostaInDuvida').val().trim();
 
-         console.log(" ppppppmmmmm"+respostaTextarea.length);
+         console.log(" - - "+respostaTextarea.length);
 
           // $('#botao').attr("disabled", "disabled");
           
@@ -435,6 +406,10 @@
      });
 
 
+
+
+
+
     // Função de interface
     // Desabilita o botao do carrossel ativo
     // deve utilizar a funcao find, pq o ID é unico, porem foi criado varios botao para cada resposta 
@@ -443,7 +418,11 @@
       jquery('.active').find('#botao').css("background-color",'#0080FF'); 
       jquery('.active').find('#botao').css("border-color",'#0080FF');     
       jquery('.active').find('#botao').prop('disabled', false);
-  }
+    }
+
+
+
+
 
     // Função de interface
     // habilita o botao do carrossel ativo
@@ -454,10 +433,16 @@
           jquery('.active').find('#botao').css("background-color",'#d3e0e9');     
           jquery('.active').find('#botao').css("border-color",'#d3e0e9');     
           jquery('.active').find('#botao').prop('disabled', true); 
-      }
+    }
 
 
-      function respostaPosicionamentoSim(dados) {
+
+
+
+
+
+
+    function respostaPosicionamentoSim(dados) {
 
 
      // console.log("  carrossel sim "+ jquery('.active').data('codigo') );
@@ -468,36 +453,38 @@
 
 
       var concorda = 1;
+      var discorda = 0;
       var naosei = 0;
       var resposta_id = dados.getAttribute("data-resposta_id");
       var posicionamento_id = dados.getAttribute("data-posicionamento_id");
 
-      salvarPosicionamentoAjax(concorda,naosei,resposta_id);
+      salvarPosicionamentoAjax(concorda,discorda,naosei,resposta_id,doc_id);
 
       verificarNavegacaoCarrosel();
       
 
-  }
+    }
 
 
 
 
 
-  function respostaPosicionamentoNao(dados) {
+    function respostaPosicionamentoNao(dados) {
 
 
-     var concorda = 0;
-     var naosei = 0;
+      var concorda = 0;
+      var discorda = 1;
+      var naosei = 0;
      var resposta_id = dados.getAttribute("data-resposta_id");
      var posicionamento_id = dados.getAttribute("data-posicionamento_id");
 
-     salvarPosicionamentoAjax(concorda,naosei,resposta_id);
-
+     salvarPosicionamentoAjax(concorda,discorda,naosei,resposta_id,doc_id);
+     
      verificarNavegacaoCarrosel();
 
      // console.log(" >>>>>>>>>>>>>>>>>>>>>>>>>>> carrossel nao "+resposta_id);
 
- }
+    }
 
 
 
@@ -507,12 +494,14 @@
 
  {
 
-     var concorda = 0;
-     var naosei = 1;
+
+      var concorda = 0;
+      var discorda = 0;
+      var naosei = 1;
      var resposta_id = dados.getAttribute("data-resposta_id");
      var posicionamento_id = dados.getAttribute("data-posicionamento_id");
 
-     salvarPosicionamentoAjax(concorda,naosei,resposta_id);
+     salvarPosicionamentoAjax(concorda, discorda, naosei,resposta_id,doc_id);
 
      verificarNavegacaoCarrosel();
 
@@ -530,6 +519,129 @@
 
 
 
+
+
+
+
+
+
+//OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+
+
+ 
+
+
+ //    function respostaPosicionamentoSim(dados) {
+
+
+ //     // console.log("  carrossel sim "+ jquery('.active').data('codigo') );
+ //     // console.log("  buuuuuuuu sim "+ $('.active').data('codigo') );      
+ //      // console.log("  carrossel sim "+ jquery('.active').html );
+ //      // console.log("  carrossel sim "+ jquery('.active').html(value) );
+ //      // console.log("  buuuuuuuu sim "+ $('.active').html() );
+
+
+ //      var concorda = 1;
+ //      var naosei = 0;
+ //      var resposta_id = dados.getAttribute("data-resposta_id");
+ //      var posicionamento_id = dados.getAttribute("data-posicionamento_id");
+
+ //      salvarPosicionamentoAjax(concorda,naosei,resposta_id,doc_id);
+
+ //      verificarNavegacaoCarrosel();
+      
+
+ //    }
+
+
+
+
+
+ //    function respostaPosicionamentoNao(dados) {
+
+
+ //     var concorda = 0;
+ //     var naosei = 0;
+ //     var resposta_id = dados.getAttribute("data-resposta_id");
+ //     var posicionamento_id = dados.getAttribute("data-posicionamento_id");
+
+ //     salvarPosicionamentoAjax(concorda,naosei,resposta_id,doc_id);
+     
+ //     verificarNavegacaoCarrosel();
+
+ //     // console.log(" >>>>>>>>>>>>>>>>>>>>>>>>>>> carrossel nao "+resposta_id);
+
+ //    }
+
+
+
+
+
+ // function respostaPosicionamentoEuNaoSei(dados) 
+
+ // {
+
+ //     var concorda = 0;
+ //     var naosei = 1;
+ //     var resposta_id = dados.getAttribute("data-resposta_id");
+ //     var posicionamento_id = dados.getAttribute("data-posicionamento_id");
+
+ //     salvarPosicionamentoAjax(concorda,naosei,resposta_id,doc_id);
+
+ //     verificarNavegacaoCarrosel();
+
+ //     // console.log(" ...PULOU" );
+
+ //     // jquery('.carousel').carousel('next');
+
+ //      // console.log(" >>>>>>>>>>>>>>>>>>>>>>>>>>> carrossel nao sei"+resposta_id);
+
+ //  }
+
+
+
+
+
+
+
+
+
+//OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //fx utilizada pelo carrossel de respostas 
 function verificarNavegacaoCarrosel() 
 
@@ -537,23 +649,35 @@ function verificarNavegacaoCarrosel()
 
   console.log(contador_itemCarrossel +" >>>>>>> total: "+totalItensCarrossell);
 
+
+
+
   if(contador_itemCarrossel < totalItensCarrossell)
   {
+
+    
+    //Acesso - Registro quando a pergunta é apresentada pela 
+    salvarApresentarPergunta(doc_id);
 
     jquery('.carousel').carousel('next');
 
     contador_itemCarrossel++;
 
+   
+
 }
 
 else
 {
+    //Acesso - Registro fim da sequencia da IntervencaoAutomatica
+    salvarFimIntervencaoAutomatica(doc_id);
 
     form_carrosel_visivel = false;
 
-
     fecharCarrossel();
 
+    
+
 }
 
 
@@ -563,44 +687,46 @@ else
 
 
 
-// ======================================================================
-// =====================Duvidas de outros================================
-// ======================================================================
+// ====================================================================== |||||||||||||||||||||||||||||||||
+// =====================Duvidas de outros================================ |||||||||||||||||||||||||||||||||
+// ====================================================================== |||||||||||||||||||||||||||||||||
 
 
 //todo trocar o nome para o nome : tenhoMesmaDuvida()
+// Apropriação da duvida de outro
 function addDuvida(dados) {
 
 
- var duvida = dados.getAttribute("data-duvida-texto");    
+ var duvida_texto = dados.getAttribute("data-duvida-texto");    
 
  var $box = jquery('.box');
 
- var id = dados.getAttribute("data-duvida_id");
- document.getElementById("opc3id"+id).innerHTML = "Dúvida adicionada!";
+ var duvida_id = dados.getAttribute("data-duvida_id");
 
-
- // jquery(".BlackScreen").show(600);
+ //todo somente se o salvarDuvida for realizada com sucesso
+ document.getElementById("opc3id"+duvida_id).innerHTML = "Dúvida adicionada!";
  
- salvarDuvidaAjax(duvida,doc_id);
+ // console.log("**** DUVIDA ID:"+duvida_id+" ##>>>> DOC_ID: "+doc_id);
 
-     // proximaDuvida();
+ apropriarDuvida(duvida_texto , doc_id , duvida_id);
 
-     // verificarNavegacaoCarrosel();
-
-     // jquery('.carousel').carousel('next');
-
-     // console.log(" >>>>>>>>>>>>>>>>>>>>>>>>>>> carrossel nao sei"+resposta_id);
+  
 
  }
 
  function pularDuvida(dados) {
 
-   // confirmaRespostaNoVetor();
+      
+   var duvida_id = dados.getAttribute("data-duvida_id");
+
+    // var duvida_texto = dados.getAttribute("data-duvida-texto");   //NAO TEVE SUCESSO - NAO FUNCIONA
+  
+   //Registro / Acesso da ação de "não querer responder" (pular a pergunta)
+   salvarPularDuvidaAjax(duvida_id, doc_id);
 
    proximaDuvida();
 
-    //verificarNavegacaoCarrosel();
+  // console.log("$$$$ **** DUVIDA ID:"+duvida_id+" ##>>>> DOC_ID: "+doc_id +" DUVIDA TEXTO:"+duvida_texto);
 
 
 }
@@ -619,7 +745,7 @@ function confirmarRespostaDuvida(dados) {
      if  ( !isVazio( resposta) )
      {
 
-       if( salvarRespostaInDuvidaAjax(resposta, duvida_id) )
+       if( salvarRespostaInDuvidaAjax(resposta, duvida_id, doc_id) )
        {
 
          confirmaRespostaDuvida();
@@ -656,7 +782,7 @@ function confirmarRespostaDuvida(dados) {
 function exibirCarrosselDuvidas() 
 
 {
-  jquery(".BlackScreen").show(600);
+  jquery("#BlackScreen_Duvidas").show(600);
 
   jquery("#carrossel_duvidas").show(600);
 
@@ -666,7 +792,7 @@ function fecharCarrossel()
 
 {
 
-  jquery(".BlackScreen").hide(600);
+  jquery("BlackScreen_Duvidas").hide(600);
 
   jquery(".LightBox").hide(600);
 
@@ -682,36 +808,42 @@ function iniciarCarrosselDuvidas()
     // reiniciar o contador para quando abrir novamente apresentar os itens que não foram respondidos/pulados; 
     contVetorCarrosel = -1; 
     
-  // imprimirVetorCarrossel();
+    // imprimirVetorCarrossel();
 
-  if( haDuvidasPendentes() )
+    if( haDuvidasPendentes() )
 
-  {
-    exibirCarrosselDuvidas();
+    {
+        console.log(" ABRIU - CARROSSEL DE DUVIDAS - ESCLARECIMENTOS ");
 
-    proximaDuvida();
+        //Registro Acesso - Inicio intervencao automatica - esclarecimentos de duvidas de outrem
+        salvarInicioIntervencaoAutomatica(doc_id);
 
-}
+        // salvarApresentarDuvida(doc_id);
 
-else
+        exibirCarrosselDuvidas();
 
-{
+        proximaDuvida();
 
-    console.log(" Não há itens a ser respondidos no carrossel_duvidas ");
+    }
 
-}
+    else
+
+    {
+
+        console.log(" Não há itens a ser respondidos no carrossel_duvidas ");
+
+    }
 
 
 
-if(form_carrosel_visivel && contador_itemCarrossel)
+    if(form_carrosel_visivel && contador_itemCarrossel)
 
-{
+    {
 
 
-}
+    }
 
-    // console.log(" Abrindo,,,");
-    // console.log(" Form Carrossel visivel: "+form_carrosel_visivel +" >>>>>>> contador_itemCarrossel: "+totalItensCarrossel_duvidasInRespostas);
+
 }
 
 
@@ -728,22 +860,44 @@ function proximaDuvida()
 
     {
 
+      salvarApresentarDuvida(doc_id);  
+
       jquery('.carousel').carousel(indice);
 
-  }
+      console.log(" ####### ###### Abrindo ProximaDuvida");
 
-  else
 
-  {
+    }
 
-      fecharCarrossel();
+    else
 
-  }
+    {
 
-  imprimirVetorCarrossel();
+        fecharCarrossel();
+        console.log(" ####### ###### Fechou,,,");
+    }
+
+  // Função ativa, apenas desabiltada para reduzir textos no console do browser  
+  // imprimirVetorCarrossel();
+
 
 }
 
+
+
+// Definir o limite 
+// Calculo entre o limite definido pelo admin e a quantidade restante ainda nao esclarecida/respondida
+// o caluclo ée necessario pois o admin pode definir como 5 , mas ter apenas 3 duvidas no carrossel
+function definirLimiteCarrosselDuvidas(limiteDuvidas = 5) 
+
+{
+
+
+
+  console.log(" ####### ###### TAMANHO VETOR CARROSSEL: "+ vetorCarrossel.length);
+
+
+}
 
 
 
@@ -752,7 +906,10 @@ function haDuvidasPendentes()
 
 {
 
+  // definirLimiteCarrosselDuvidas();
+
     for (cont = 0; cont < vetorCarrossel.length; cont++) 
+    
 
     {
 
@@ -777,12 +934,6 @@ return false;
 
 
 
-
-
-
-
-
-
 function inicializandoVetorCarrossel() 
 
 {
@@ -793,7 +944,7 @@ function inicializandoVetorCarrossel()
 
       vetorCarrossel[cont] = true;    
 
-  }
+    }
 
 }
 
@@ -812,10 +963,9 @@ function imprimirVetorCarrossel() {
 
     {
 
-
       console.log(" VETOR  >> [ "+cont+" ] = "+vetorCarrossel[cont] ); 
 
-  }
+    }
 
 }
 
@@ -881,7 +1031,7 @@ function proximoVetorDuvida() {
 // 
 jquery(document).ready(function(){
 
-  inicializandoVetorCarrossel();
+    inicializandoVetorCarrossel();
 
     //console.log("  MAIN:  "+  form_acervo_visivel +" -- "+ form_carrosel_visivel +" -- "+totalItensCarrossell );
 
@@ -891,8 +1041,15 @@ jquery(document).ready(function(){
     if(   ( form_carrosel_visivel ) && ( totalItensCarrossell > 0 )   )   
     {
 
+      console.log(" Abriu PERGUNTAS: Intervencao Automatica ");  
+     
+      salvarInicioIntervencaoAutomatica(doc_id);
 
-      jquery(".BlackScreen").show(600);
+      salvarApresentarPergunta(doc_id);
+
+      //@todo diferente da funcao  fecharCarrossel()  exibirCarrosselDuvidas() ???
+      
+      jquery("#BlackScreen_Respostas").show(600);
 
       jquery("#openLightBoxUpsell").show(600);
 
@@ -902,45 +1059,87 @@ jquery(document).ready(function(){
 
     }
 
-    console.log("  OOM === ");
-
-
 
 });
 
-    {{-- @if(Session::get('primeiraLeitura')) --}}
 
-        // jquery(".BlackScreen").show(600);
-        // console.log("  UUU === ");
 
-    {{-- @endif --}}
+
 
     @if(session('primeiraLeitura'))
 
-        jquery(".BlackScreen").show(600);
-        console.log("  M === ");
+        jquery("#BlackScreen_AvisoTermos").show(600);
+        console.log("  M === PRIMEIRA LEITURA (VERIFICAR TRECHO) ");
 
     @endif
 
 
-jquery(".BlackScreen").click(function(){
+    jquery("#BlackScreen_Respostas").click(function(){
+
+      console.log("@@@@@ ======== @@@@@ CLICOU NO BLACK Respostas");
+      console.log(" ==============================================");
+      console.log(" >>>>>>>>>>> TAMANHO DO VETOR-DUVIDAS:  "+vetorCarrossel.length);
+      console.log(" >>>>>>>>>>> indice DO VETOR-DUVIDAS:  "+contVetorCarrosel);
+
+      console.log(" >>>>>>>>>>> TAMANHO DO VETOR-RESPOSTAS:  "+totalItensCarrossell);
+      console.log(" >>>>>>>>>>> indice DO VETOR-RESPOSTAS:  "+contador_itemCarrossel);
 
       //carrossel_duvidasInRespostas = true , quando verificado que há >0 no vetor duvidas_outros 
-      if(carrossel_duvidasInRespostas){
+      // if(carrossel_duvidasInRespostas){  
+      if(adminLimiteQtdPosicionamentos < contador_itemCarrossel ){
 
-       jquery(".BlackScreen").hide(600);
+          //Acesso - Registro ao clicar fora e fechar o carrossel  
+          salvarDesistencia(doc_id);
 
-       jquery(".LightBox").hide(600);
+          //todo diferente da funcao  fecharCarrossel() ?
+          jquery("#BlackScreen_Respostas").hide(600);
+          jquery(".LightBox").hide(600);
 
-        //habilita o botao SIM do carrossel
-        $('#botao').prop('disabled', true); 
-        
-
-    }
+            //habilita o botao SIM do carrossel ???????????
+          $('#botao').prop('disabled', true); 
 
 
-});
+       }
 
+
+    });
+
+
+
+
+    jquery("#BlackScreen_Duvidas").click(function(){
+
+          console.log("@@@@@ ======== @@@@@ CLICOU NO BLACK Duvidas");
+          console.log(" ==============================================");
+          console.log(" >>>>>>>>>>> TAMANHO DO VETOR-DUVIDAS:  "+vetorCarrossel.length);
+          console.log(" >>>>>>>>>>> indice DO VETOR-DUVIDAS:  "+contVetorCarrosel);
+
+          console.log(" >>>>>>>>>>> TAMANHO DO VETOR-RESPOSTAS:  "+totalItensCarrossell);
+          console.log(" >>>>>>>>>>> indice DO VETOR-RESPOSTAS:  "+contador_itemCarrossel);
+
+      //carrossel_duvidasInRespostas = true , quando verificado que há >0 no vetor duvidas_outros 
+      // if(carrossel_duvidasInRespostas){ - ??????????????????????
+          if(adminLimiteQtdEsclarecimentos <= contVetorCarrosel){
+
+          //Acesso - Registro ao clicar fora e fechar o carrossel  
+          salvarDesistencia(doc_id);
+
+
+          //todo diferente da funcao  fecharCarrossel() ?
+          jquery("#BlackScreen_Duvidas").hide(600);
+          jquery(".LightBox").hide(600);
+
+          // jquery("#WhiteScreen").show(600);
+          // include('f3.fimLeitura')
+
+          //habilita o botao SIM do carrossel - ???????????
+          $('#botao').prop('disabled', true); 
+
+
+      }
+
+
+  });
 
 // ======================================================================
 // ======================================================================
@@ -1040,20 +1239,41 @@ function isVazio(str){
 
 
 
-     jquery('#close').click(function() {
+     jquery('#concordar').click(function() {
 
              $("#popAviso").toggle();
-              console.log(" >>>>>>>>>>>>>>>>>> Inicio leitura");
-              jquery(".BlackScreen").hide(600);
+              console.log(" >>>>>>>>>>>>>>>>>> Aceitou & Inicio leitura");
+              jquery("#BlackScreen_AvisoTermos").hide(600);
               salvarInicioLeitura({{ $doc->id }});
+              salvarConcordanciaTermos({{ $doc->id }});
+
+              
         
       });
 
+
+     jquery('#discordar').click(function() {
+
+             $("#popAviso").toggle();
+              console.log(" >>>>>>>>>>>>>>>>>> Discordou dos termos");
+              jquery("#BlackScreen_AvisoTermos").hide(600);
+              salvarDiscordanciaTermos({{ $doc->id }});
+              history.back(1); 
+        
+      });
+
+
+
      jquery('#btFinalizarLeitura').click(function() {
-              event.preventDefault();
+              // event.preventDefault();
 
               console.log(" >>>>>>>>>>>>>>>>>> Fim leitura");
+              
+              // Registro Acesso Ajax
               salvarFimLeitura({{ $doc->id }});
+
+              //Abre a interface do carrossel de duvidas : sequencias de esclarecimentos
+              iniciarCarrosselDuvidas();
         
       });
 

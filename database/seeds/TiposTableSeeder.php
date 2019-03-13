@@ -220,7 +220,13 @@ class TiposTableSeeder extends Seeder
     		'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
     	]);
 
-
+        DB::table('tipos')->insert([
+            'desc' => "Quando o usuário desiste da intervenção",
+            'nome' => 'Fechou/Saiu da Pergunta ',
+            'etapa' => 21,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
 
     }
 }

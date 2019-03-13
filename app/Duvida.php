@@ -9,7 +9,7 @@ class Duvida extends Model
     //
 
 
-	public function add($texto, $doc_id,$user_id)
+	public function add($texto, $doc_id,$user_id, $duvidaPai_id = null, $apropriado = false )
 
 	{
 
@@ -17,9 +17,10 @@ class Duvida extends Model
 
   			// 'titulo' => request('titulo'),
      		// 'conteudo' => request('conteudo')
-
+			'apropriado' => $apropriado,
 			'texto' => $texto,
 			'doc_id' => $doc_id,
+			'duvida_id' => $duvidaPai_id,
 			 'user_id' => $user_id
 			]);
 
@@ -59,6 +60,15 @@ class Duvida extends Model
     {
 
         return $this->belongsTo(User::class);
+
+
+    }
+
+    public function duvida()
+
+    {
+
+        return $this->belongsTo(Duvida::class);
 
 
     }

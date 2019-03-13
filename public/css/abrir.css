@@ -773,6 +773,24 @@ button {
     z-index: 999;
 }
 
+.WhiteScreen {
+    display: none;
+    position: fixed;
+}
+.WhiteScreen {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, .8);
+    z-index: 999;
+}
+
+
+
+
+
+
 
 /*Quadro Carrossel*/
 
@@ -1700,11 +1718,11 @@ body {
 /* CSS Code */
 .popScroll
 {
-position:fixed; z-index:1000; top:0;
-display:    table;
-text-align: center;
-width:      100%;
-height:     100%;
+  position:fixed; z-index:1000; top:0;
+  display:    table;
+  text-align: center;
+  width:      100%;
+  height:     100%;
 
 }
 
@@ -1822,11 +1840,11 @@ cursor: pointer;
   -o-transition: all 0.1s linear;
   }
 
-#home { 
+#concordar { 
   background: #3D79D0;
   }
 
-#close { 
+#discordar { 
   background: #D21111;
   }
 
@@ -1842,8 +1860,8 @@ cursor: pointer;
   border-radius: 50px;
   }
 
-#home:hover { background: #1852C7;  }
-#close:hover { background: #B30E0E; }
+#concordar:hover { background: #1852C7; color:white;  }
+#discordar:hover { background: #B30E0E; color:white;  }
 
 
 body.overlay:after{

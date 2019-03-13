@@ -1,4 +1,17 @@
 
+
+@php
+    // Para colocar o texto da duvida em menor tamanho quando ultrapassar 150 caracteres
+    $estilo = "";
+
+    if( (strlen($pergunta)) > 150 )
+    {
+       $estilo = "style=font-size:small";
+    }
+
+@endphp
+
+
 <div class="nova-c-carousel__slide slick-slide slick-active" data-index="3" tabindex="1" style="outline: none; width: 575px; max-width: 575px;" data-reactid="303" id="yui_3_14_1_1_1502287347107_426">
   <div class="nova-c-card nova-c-card--spacing-xl nova-c-card--elevation-1-above authors-suggestions-target-account-section" >
     <div class="nova-c-card__body nova-c-card__body--spacing-inherit" >
@@ -58,9 +71,10 @@
                     <div class="nova-v-publication-item__stack nova-v-publication-item__stack--gutter-m" >
                       <div class="nova-v-publication-item__stack-item" >
 
-                        <div class="nova-e-text nova-e-text--size-l nova-e-text--family-sans-serif nova-e-text--spacing-none nova-v-publication-item__title nova-v-publication-item__title--clamp-3" itemprop="headline" >
+                        <div class="nova-e-text nova-e-text--size-l nova-e-text--family-sans-serif nova-e-text--spacing-none nova-v-publication-item__title nova-v-publication-item__title--clamp-3" itemprop="headline" {{$estilo}}>
 
-                          {{$pergunta}}
+
+                          {{$pergunta}} 
 
                         </div>
                         <br>

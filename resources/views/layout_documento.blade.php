@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -175,7 +174,7 @@
               criarVetorConceitos(doc_id);
             },
             error: function(data){
-              alert("Erro: trecho selecionado é maior do que o permitido pelo sistema.\n\nPor favor, selecione um trecho menor.")
+              alert("Erro CADRESP01: o procedimento não foi concluído com sucesso")
             },
 
         });
@@ -254,7 +253,9 @@
   }
 
 
-  function salvarPosicionamentoAjax(concorda,naosei, resposta_id, posicionamento_id = null) {
+  function salvarPosicionamentoAjax(concorda,discorda, naosei, resposta_id, doc_id, posicionamento_id = null,) {
+
+  // console.log("(((((((((((((((((( - " +doc_id);
 
 
      $.ajax({
@@ -264,7 +265,9 @@
        
              'resposta_id':resposta_id,
              'concorda': concorda,
+             'discorda': discorda,
              'naosei': naosei,
+             'doc_id': doc_id,
              'posicionamento_id': posicionamento_id
 
              },
@@ -321,7 +324,10 @@
 // =================Duvidas de outros > Abrir > Carrossel================
 // ======================================================================
 
-  function salvarDuvidaAjax(duvida, doc_id) {
+  
+  // function salvarDuvidaAjax(duvida, doc_id) {  ALTERADO
+    // duvidaPai = duvida original que será apropriada 
+  function apropriarDuvida(duvida, doc_id, duvidaPai_id) {
 
 
      $.ajax({
@@ -329,30 +335,66 @@
             url: '/duvida/save',
             data: {
        
-             'texto':duvida,
-             'doc_id': doc_id
+             'texto': duvida,
+             'doc_id': doc_id,
+             'duvidaPai_id': duvidaPai_id
 
              },
             //async: true,
             success: function(data){
-               console.log('Sucesso: DUV01 - Duvida registrada ');              
+               console.log('Sucesso: DUV17 - Duvida registrada (Apropriada) ');              
             },
-            error: function(data){
-              alert("Erro: DUV01 - Registro não realizado ")
-            },
+            error: function( data )
+            {
+                if(!data.responseJSON){
+                    console.log(data.responseText);
+                    $('#err').html(data.responseText);
+                }else{
+                    $('#err').html('');
+                    $.each(data.responseJSON.errors, function (key, value) {
+                        $('#err').append(key+": "+value+"<br>");
+                        //console.log(key);
+                    });
+                }
+            }
 
         });
     
 
+    // $.ajax({
+    //          url: '/duvida/save',
+    //         data: $(this).serialize(),
+    //         type: 'post',
+    //         dataType: 'json',
+    //         //processData: false,
+    //         //contentType: false,
+    //         success: function(data){
+    //             //console.log(data);
+    //             $('#suc').html(data);
+    //         },
+    //         error: function( data )
+    //         {
+    //             if(!data.responseJSON){
+    //                 console.log(data.responseText);
+    //                 $('#err').html(data.responseText);
+    //             }else{
+    //                 $('#err').html('');
+    //                 $.each(data.responseJSON.errors, function (key, value) {
+    //                     $('#err').append(key+": "+value+"<br>");
+    //                     //console.log(key);
+    //                 });
+    //             }
+    //         }
+    //     });
+
 
    // location.reload(); 
     
-
     return false;
 
   }
 
-  function salvarRespostaInDuvidaAjax(resposta,duvida_id) {
+  function salvarRespostaInDuvidaAjax(resposta,duvida_id,doc_id) {
 
 
      $.ajax({
@@ -361,16 +403,18 @@
             data: {
        
              'texto':resposta,
-             'duvida_id':duvida_id
+             'duvida_id':duvida_id,
+             'doc_id': doc_id
 
              },
             // async: false,
             success: function(data){
-               console.log('Sucesso: REP01 - Resposta registrada ');
+               console.log(data);
+               console.log('Sucesso: REP16 - Resposta registrada ');
                return true;
             },
             error: function(data){
-              alert("Erro: REP01 - Registro não realizado ")
+              alert("Erro: REP16 - Registro não realizado ")
               return false;
             },
 
@@ -387,7 +431,47 @@
 
 
 
-// RamonVieira
+// ======================================================================
+// =================Duvidas de outros > Abrir > Carrossel================
+// ======================================================================
+
+  function salvarPularDuvidaAjax(duvida_id, doc_id) {
+
+
+     $.ajax({
+            method: 'get',
+            url: '/duvida/pular',
+            data: {
+       
+             'duvida_id':duvida_id,
+             'doc_id': doc_id
+             
+
+             },
+            //async: true,
+            success: function(data){
+               console.log('Sucesso: DUV21 - Duvida Pulada ');              
+            },
+            error: function( data )
+            {
+                if(!data.responseJSON ){
+                    console.log(data.responseText);
+                    $('#err').html(data.responseText);
+                }else{
+                    $('#err').html('');
+                    $.each(data.responseJSON.errors, function (key, value) {
+                        $('#err').append(key+": "+value+"<br>");
+                        //console.log(key);
+                    });
+                }
+            }
+
+        });
+    
+
+    return false;
+
+  }
 
 // ======================================================================
 // ================ Aviso > Abrir > Inicio de Leitura ===================
@@ -407,7 +491,7 @@
             //async: true,
             success: function(data){
                console.log('Sucesso: REG01 - Leitura Iniciada ');              
-               console.log(data);              
+               // console.log(data);              
             },
             error: function(data){
               alert("Erro: REG01 - Erro no Registro de Leitura: não Iniciada ")
@@ -422,16 +506,12 @@
   }
 
 
-// ======================================================================
-// ================ Aviso > Abrir > Fim de Leitura ===================
-// ======================================================================
-
-  function salvarFimLeitura(doc_id) {
+ function salvarConcordanciaTermos(doc_id) {
 
 
      $.ajax({
             method: 'get',
-            url: '/acesso/fimLeitura',
+            url: '/acesso/salvarConcordanciaTermos',
             data: {
        
              'doc_id': doc_id
@@ -439,11 +519,13 @@
              },
             //async: true,
             success: function(data){
-               console.log('Sucesso: REG01 - Leitura Finalizada ');              
-               console.log(data);              
+               console.log('Sucesso: REG02 - Concordancia com os Termos ');              
+               // console.log(data);     
+             
+                        
             },
             error: function(data){
-              alert("Erro: REG01 - Erro no Registro de Leitura: não Finalizada ")
+              alert("Erro: REG02 - Erro no Registro da concordancia dos termos")
               // console.log('buuummm'); 
               // console.log(data);     
             },
@@ -453,6 +535,216 @@
     return false;
 
   }
+
+
+ function salvarDiscordanciaTermos(doc_id) {
+
+
+     $.ajax({
+            method: 'get',
+            url: '/acesso/salvarDiscordanciaTermos',
+            data: {
+       
+             'doc_id': doc_id
+
+             },
+            //async: true,
+            success: function(data){
+               console.log('Sucesso: REG04 - Discordancia com os Termos ');              
+               // console.log(data);
+                
+            },
+            error: function(data){
+              alert("Erro: REG04 - Erro no Registro da escolha da discordancia dos termos");
+              console.log('Erro: REG04 - Erro no Registro da escolha da discordancia dos termos ');              
+       
+              // console.log('buuummm'); 
+              // console.log(data);     
+            },
+
+        });  
+
+    return false;
+
+  }
+// ======================================================================
+// ================ Aviso > Abrir > Fim de Leitura ===================
+// ======================================================================
+
+  function salvarFimLeitura(doc_id) {
+
+     $.ajax({
+            method: 'get',
+            url: '/acesso/fimLeitura',
+            data: {
+             'doc_id': doc_id
+             },
+            // async: false,
+            success: function(data){
+               console.log('Sucesso: REG03 - Leitura Finalizada');                        
+            },
+            error: function(data){
+              alert("Erro: REG03 - Erro no Registro de fim de Leitura: não Finalizada ")
+              // console.log('buuummm'); 
+              // console.log(data);     
+            },
+        });  
+
+    return false;
+
+  }
+
+
+  function salvarDesistencia(doc_id) {
+
+     $.ajax({
+            method: 'get',
+            url: '/acesso/salvarDesistencia',
+            data: {              
+             'doc_id': doc_id
+             },
+            // async: false,
+            success: function(data){
+               console.log('Sucesso: RD01 - Desistência Acionada');                        
+            },
+            error: function(data){
+              alert("Erro: RD01 - Erro no Registro de salvarDesistencia")
+              // console.log('buuummm'); 
+              // console.log(data);     
+            },
+        });  
+
+    return false;
+
+  }
+
+
+// ======================================================================
+// ================                                   ===================
+// ======================================================================
+
+  function salvarInicioIntervencaoAutomatica(doc_id) {
+
+
+     $.ajax({
+            method: 'get',
+            url: '/acesso/salvarInicioIntervencaoAutomatica',
+            data: {
+       
+             'doc_id': doc_id
+
+             },
+            //async: true,
+            success: function(data){
+               console.log('Sucesso:  Iniciou Intervencao Automatica ');              
+               // console.log(data);              
+            },
+            error: function(data){
+              alert("Erro: RIA08 - Erro no Registro do inicio salvarInicioIntervencaoAutomatica ")
+              // console.log('buuummm'); 
+              // console.log(data);     
+            },
+
+        });  
+
+    return false;
+
+  }
+
+
+
+  function salvarFimIntervencaoAutomatica(doc_id) {
+
+
+     $.ajax({
+            method: 'get',
+            url: '/acesso/salvarFimIntervencaoAutomatica',
+            data: {
+       
+             'doc_id': doc_id
+
+             },
+            //async: true,
+            success: function(data){
+               console.log('Sucesso:  Finalizou Intervencao Automatica ');              
+               // console.log(data);              
+            },
+            error: function(data){
+              alert("Erro: RIA09 - Erro no Registro do salvarFimIntervencaoAutomatica ")
+              // console.log('buuummm'); 
+              // console.log(data);     
+            },
+
+        });  
+
+    return false;
+
+  }
+
+
+
+  function salvarApresentarPergunta(doc_id, pergunta_id = null) {
+
+ 
+
+     $.ajax({
+            method: 'get',
+            url: '/acesso/salvarApresentaPergunta',
+            data: {
+       
+             'doc_id': doc_id,
+             'pergunta_id': pergunta_id
+
+             },
+            //async: true,
+            success: function(data){
+               console.log('Sucesso: Pergunta Apresentada  ');              
+               // console.log(data);              
+            },
+            error: function(data){
+              alert("Erro: RAP14 - Erro no Registro de apresentar pergunta ")
+              // console.log('buuummm'); 
+              // console.log(data);     
+            },
+
+        });  
+
+    return false;
+
+  }
+
+
+
+
+  //f3 intervencao automatica - esclarecimentos -> salvar momento que apresenta a nova duvida
+  function salvarApresentarDuvida(doc_id) {
+
+
+     $.ajax({
+            method: 'get',
+            url: '/acesso/salvarApresentaDuvida',
+            data: {
+       
+             'doc_id': doc_id
+
+             },
+            //async: true,
+            success: function(data){
+               console.log('Sucesso: Duvida Apresentada  ');              
+               // console.log(data);              
+            },
+            error: function(data){
+              alert("Erro: RAD23 - Erro no Registro de apresentar duvida  ")
+              // console.log('buuummm'); 
+              // console.log(data);     
+            },
+
+        });  
+
+    return false;
+
+  }
+
 
 </script>
 
@@ -480,7 +772,7 @@
 
   <script>
 
-
+// var pergunta_id = 1;
 
 // $(document).ready(function(){
 
@@ -489,47 +781,52 @@
 //     });
 
 // });
-
+  // somemte consegue atribuir valores ao FORM, porque os elementos foram criados manualmente em formModal_resposta.blade
+  //TODO colocar formModal_resposta.blade na pasta correspondente ao MODAL
   jquery('#formModal_EditarResposta').on('show.bs.modal', function (event) {
       var button = jquery(event.relatedTarget) // Button that triggered the modal
       var conceito_textu = button.data('conceito_texto') // Extract info from data-* attributes
       var resposta_textu = button.data('resposta_texto') // Extract info from data-* attributes
       var pergunta_texto = button.data('pergunta') // Extract info from data-* attributes
+      var pergunta_id = button.data('pergunta_id') // Extract info from data-* attributes
+      var conceito_id = button.data('conceito_id') // Extract info from data-* attributes
       document.getElementById('conceito_id').value = button.data('conceito_id') // Extract info from data-* attributes
       document.getElementById('docs_id').value =   button.data('doc_id')
       document.getElementById('resposta_id').value = button.data('resposta_id')
       document.getElementById('form_id').value = button.data('form_id')
-      // document.getElementById('resposta_texto').value = button.data('resposta_texto')
-      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-      // var dado = modal.getAttribute("data-form-conceito")
-     
-      // console.log(document.getElementById('conceito_id').value)
-      // console.log(document.getElementById('docs_id').value)
-      // console.log(button.data('doc') )
-      // console.log(button.data('resposta') )
-      
-      // document.getElementById('conceito_id').value = 24
+      document.getElementById('pergunta_id').value = button.data('pergunta_id')
+
       var modal = jquery(this)
+
       modal.find('.modal-title').text(pergunta_texto)
       modal.find('.modal-body textarea').val(resposta_textu)
 
-
+      salvarApresentarPergunta(doc_id, pergunta_id);
+      //jquery(".BlackScreen").show(600);
     })
 
   jquery('#formModal_AddDuvida').on('show.bs.modal', function (event) {
       var button = jquery(event.relatedTarget) // Button that triggered the modal
       var recipient = button.data('whatever') // Extract info from data-* attributes
-      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+ 
       var modal = jquery(this)
+
       modal.find('.modal-title').text('O que você entende pelo conceito de ' + recipient + '?')
       modal.find('.modal-body textarea').val(recipient)
     })
 
+// // $('#formModal_EditarResposta .modal-footer button').on('click', function(event) {
+// $('#formModal_EditarResposta').on('click', function(event) {
+//   // var $button = $(event.target);
+//   bumm();
+// }
+
   
-
-
+//No momento o registro ocorre apenas quando a Janela do tipo Modal (Pergunta - Intervencao Manual) é fechada. O evento utilizado é apenas de encerramento do modal - quanto desiste de responder clicando fora ou cancelando.
+jquery("#formModal_EditarResposta").on('hide.bs.modal', function () {
+            // alert('The modal is about to be hidden.');
+            salvarDesistencia(doc_id);
+    });
 
 
 
@@ -540,6 +837,20 @@
       slug: "b1mLffgh"
     }], "*")
   }
+
+function isVazio(str){
+
+    // str = trim(str);
+    return str === null || str.match(/^ *$/) !== null;
+}
+
+function bumm(){
+
+    // str = trim(str);
+    console.log("BOMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+}
+
+
 </script> 
 </body>
 </html>

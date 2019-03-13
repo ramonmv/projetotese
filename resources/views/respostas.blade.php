@@ -30,26 +30,26 @@
 						
 						@if (count($conceito->respostas) === 0)
 
-							<p class="card-text"> Sem resposta </p>
+							<p class="card-text" style="color:#37778f; "> Sem resposta </p>
 							<br>
 
-							<a href="#" class="card-link" data-toggle="modal" data-target="#formModal_EditarResposta" data-conceito_texto="{{$conceito->conceito}}" data-conceito_id="{{$conceito->id}}"  data-pergunta="{{$conceito->pergunta->texto}}"data-doc_id="{{$doc->id}}"  data-form_id="2"data-toggle="tooltip" title="Clique aqui para escrever sua resposta.">Editar Resposta</a>
+							{{-- <a href="#" class="card-link" data-toggle="modal" data-target="#formModal_EditarResposta" data-conceito_texto="{{$conceito->conceito}}" data-conceito_id="{{$conceito->id}}"  data-pergunta="{{$conceito->pergunta->texto}}"data-doc_id="{{$doc->id}}"  data-form_id="2"data-toggle="tooltip" title="Clique aqui para escrever sua resposta.">Editar Resposta</a> --}}
 
 						@endif
 
 						@foreach ($conceito->respostas as $resposta)
 
-							<p class="card-text">  {{ $resposta->texto  }}</p>
+							<p class="card-text" style="color:#37778f; ">  {{ $resposta->texto  }}</p>
 							
 							<br>
 
-							<a href="#" class="card-link" data-toggle="modal" data-target="#formModal_EditarResposta" data-conceito_texto="{{$conceito->conceito}}" data-conceito_id="{{$conceito->id}}" data-resposta_id="{{$resposta->id}}" data-resposta_texto="{{$resposta->texto}}" data-pergunta="{{ $conceito->pergunta->texto }}"" data-doc_id="{{$doc->id}}" data-toggle="tooltip" title="Clique aqui para escrever sua resposta.">Editar Resposta</a>
+							{{-- <a href="#" class="card-link" data-toggle="modal" data-target="#formModal_EditarResposta" data-conceito_texto="{{$conceito->conceito}}" data-conceito_id="{{$conceito->id}}" data-resposta_id="{{$resposta->id}}" data-resposta_texto="{{$resposta->texto}}" data-pergunta="{{ $conceito->pergunta->texto }}"" data-doc_id="{{$doc->id}}" data-toggle="tooltip" title="Clique aqui para escrever sua resposta.">Editar Resposta</a> --}}
 							
 						@endforeach
 
 						
 						
-						<a href="#" class="card-link" data-toggle="modal" data-target="#formModal_AddDuvida" data-conceito_texto="{{$conceito->conceito}}" data-conceito="{{$conceito->id}}" data-pergunta="{{$conceito->pergunta->texto}}"  data-doc="{{$doc->id}}" data-toggle="tooltip" title="Ao clicar será adicionado ao seu seu acerco de dúvidas uma dúvida correspondente a este conceito.">Adicionar as minhas dúvidas</a>
+					{{-- 	<a href="#" class="card-link" data-toggle="modal" data-target="#formModal_AddDuvida" data-conceito_texto="{{$conceito->conceito}}" data-conceito="{{$conceito->id}}" data-pergunta="{{$conceito->pergunta->texto}}"  data-doc="{{$doc->id}}" data-toggle="tooltip" title="Ao clicar será adicionado ao seu seu acerco de dúvidas uma dúvida correspondente a este conceito.">Adicionar as minhas dúvidas</a> --}}
 
 						
 
