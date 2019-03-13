@@ -66,7 +66,7 @@ class CreateAcessosTable extends Migration
             $table->integer('posicionamento_id')->nullable()->unsigned();
             $table->foreign('posicionamento_id')->references('id')->on('posicionamentos');
 
-            $table->string('texto', 1500)->nullable();
+            $table->string('autoria', 1500)->nullable();
 
             $table->timestamps();         
         });
