@@ -52,6 +52,7 @@
 					@includeWhen($subPagina == 6 ,'analise.index')
 					@includeWhen($subPagina == 7 ,'analise.index')
 					@includeWhen($subPagina == 8 ,'analise.index')
+					@includeWhen($subPagina == 10 ,'analise.pag_leitura')
 					
 
 

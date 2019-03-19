@@ -4,7 +4,7 @@
 	@if($statusLeitura["seLeituraFinalizada"])
 		<h4 class="fw3 dark-gray mt0 mb0 green">
 			<i class="fa fa fa-check" aria-hidden="true" style="color:#a6d4a9"> &nbsp; </i>
-			Leitura do texto foi iniciada e finalizada. 
+			Uma Leitura do texto foi iniciada e finalizada. 
 		</h4>
 	@endif	
 
@@ -18,8 +18,10 @@
 		21 posicionamentos realizados - média de 3 posicionamentos por pergunta. 
 	</h4>						
 
-	<h4 class="fw3 dark-gray mt0 mb0 green"> 
-		<i class="fa fa fa-check" aria-hidden="true" style="color:#a6d4a9"> &nbsp; </i> 
-		3 esclarecimentos realizados em função de dúvidas de outros leitores.
-	</h4>
+	@if($statusLeitura["numDuvidasOutrosEsclarecidas"] > 0)
+		<h4 class="fw3 dark-gray mt0 mb0 green"> 
+			<i class="fa fa fa-check" aria-hidden="true" style="color:#a6d4a9"> &nbsp; </i> 
+			{{ $statusLeitura["numDuvidasOutrosEsclarecidas"] }} esclarecimento(s) realizado(s) em função de dúvidas de outros leitores.
+		</h4>
+	@endif
 </header>

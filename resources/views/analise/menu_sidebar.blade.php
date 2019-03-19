@@ -13,7 +13,7 @@
 			{{-- <a href="{{ url()->current() }}?p=1" class="block link dim blue">Acervo</a> --}}
 		</li>
 		<li class="mb2">
-			<a href="{{ url()->current() }}?s=5" class="block link dim blue">Sobre a leitura</a>
+			<a href="{{ url()->current() }}?s=10" class="block link dim blue">Sobre a leitura</a>
 		</li>
 		<li class="mb2">
 			<a href="{{ url()->current() }}?s=5" class="block link dim blue">Sobre suas ações</a>

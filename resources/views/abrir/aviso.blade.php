@@ -1,4 +1,4 @@
-@if(session('primeiraLeitura'))
+@if($habilitarAviso)
 {{-- @if(false) --}}
     <!-- popup -->
     <div class="popScroll" id="popAviso">

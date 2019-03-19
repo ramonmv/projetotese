@@ -1,5 +1,5 @@
 <div class="divide tc relative">
-	<h5 class="fw4 ttu mv0 dib bg-white ph3">Informações sobreoooo o seu Acervo</h5>
+	<h5 class="fw4 ttu mv0 dib bg-white ph3">Informações sobre o seu Acervo</h5>
 </div>
 <br>
 <div class="flex flex-wrap pt3 nl3 nr3">

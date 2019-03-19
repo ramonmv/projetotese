@@ -333,8 +333,8 @@
   var form_carrosel_visivel = true;
   var vetorCarrossel = new Array(totalItensCarrossel_duvidasInRespostas);
   var contVetorCarrosel = -1;
-  var adminLimiteQtdPosicionamentos = 2;
-  var adminLimiteQtdEsclarecimentos = 2;
+  var adminLimiteQtdPosicionamentos = 1;
+  var adminLimiteQtdEsclarecimentos = 1;
 
 
   jquery("#divFormAcervo").hide();
@@ -1066,10 +1066,9 @@ jquery(document).ready(function(){
 
 
 
-    @if(session('primeiraLeitura'))
+    @if($habilitarAviso)
 
         jquery("#BlackScreen_AvisoTermos").show(600);
-        console.log("  M === PRIMEIRA LEITURA (VERIFICAR TRECHO) ");
 
     @endif
 
@@ -1135,7 +1134,8 @@ jquery(document).ready(function(){
           //habilita o botao SIM do carrossel - ???????????
           $('#botao').prop('disabled', true); 
 
-
+          // REDIRECIONAR 
+          window.location.href = "/abrir/"+doc_id+"/analise/";
       }
 
 

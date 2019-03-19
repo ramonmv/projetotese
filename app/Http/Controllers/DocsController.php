@@ -29,6 +29,13 @@ class DocsController extends Controller
 	{
 
 		$this->middleware('auth')->except(['index','listarDocs']);
+		
+		//tradução
+		Carbon::setLocale('pt_BR');
+		//essas linhas abaixo parece nao fazer efeito
+		Carbon::setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+		setlocale (LC_TIME, 'pt_BR');
+		
 				// dd(auth()->user()->id );
 		 // dd(auth()->id() );
 
@@ -144,7 +151,7 @@ class DocsController extends Controller
 	public function recuperarTempoLeitura($doc_id, $user_id = null)
 
 	{
-	
+
 		$Acesso = new Acesso();
 		$tempo  = $Acesso->recuperarTempoLeitura($doc_id);
 		
@@ -161,8 +168,8 @@ class DocsController extends Controller
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
 		$numDuvidasEsclarecidas  =    Duvida::where('doc_id', $doc_id)
-											->where('esclarecida', true)
-											->where('user_id', $user_id)->latest()->get();
+		->where('esclarecida', true)
+		->where('user_id', $user_id)->latest()->get();
 
 		return count($numDuvidasEsclarecidas);
 	}
@@ -180,17 +187,17 @@ class DocsController extends Controller
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
 		$duvidas_outros  =    Duvida::where('doc_id', $doc_id)
-									->where('user_id', "<>" , auth()->id() )
-									->with('respostas')
-									->whereDoesntHave('respostas', function($q) use ($user_id)
-									{
+		->where('user_id', "<>" , auth()->id() )
+		->with('respostas')
+		->whereDoesntHave('respostas', function($q) use ($user_id)
+		{
 																									// dd($q);
-										$q->where('user_id',$user_id);
+			$q->where('user_id',$user_id);
 
-									})
+		})
 																					// // ->whereHas('respostas')
 																					//->latest()
-									->get();
+		->get();
 
 
 		// dd($duvidas_outros);
@@ -208,17 +215,17 @@ class DocsController extends Controller
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
 		$duvidas_outros  =    Duvida::where('doc_id', $doc_id)
-									->where('user_id', "<>" , auth()->id() )
-									->with('respostas')
-									->whereHas('respostas', function($q) use ($user_id)
-									{
+		->where('user_id', "<>" , auth()->id() )
+		->with('respostas')
+		->whereHas('respostas', function($q) use ($user_id)
+		{
 																									// dd($q);
-										$q->where('user_id',$user_id);
+			$q->where('user_id',$user_id);
 
-									})
+		})
 																					// // ->whereHas('respostas')
 																					//->latest()
-									->get();
+		->get();
 
 
 		// dd($duvidas_outros);
@@ -287,6 +294,9 @@ class DocsController extends Controller
 
 	{
 
+		// /setlocale (LC_TIME, 'pt_BR');
+		// Carbon::setLocale('pt_BR');
+
 		$doc = Doc::find($id);
 
 		$subPagina = $request->s ; // Menu lateral (sidebar) GET URL?s=
@@ -313,7 +323,6 @@ class DocsController extends Controller
 
 		// $this->recuperarDuvidasOutrosRespondidas($doc->id);
 
-
 		$statusLeitura["numTotalPerguntas"] = count($perguntas);
 		$statusLeitura["numTotalRespostas"] = count($perguntasComRespostas);
 		$statusLeitura["numPerguntasPendentes"] = count($perguntasSemRespostas);
@@ -322,18 +331,34 @@ class DocsController extends Controller
 		$statusLeitura["seLeituraFinalizada"] = $this->verificaSeLeituraFinalizada($doc->id) ; // boolean 
 		$statusLeitura["tempoLeitura"] = $this->recuperarTempoLeitura($doc->id);
 		$statusLeitura["seAcervoVazio"] = $this->verificaSeAcervoVazio($duvidas,$certezas) ; // boolean
- 	
 
- 		$statusLeitura["seHaPedencias"] = $this->verificaSeHaPendencias($statusLeitura);
+		$statusLeitura["seHaPedencias"] = $this->verificaSeHaPendencias($statusLeitura);
 		 // dd($statusLeitura);
 
 
  		// Recuperar a lista de acessos para a subpagina timeline/sobre suas ações
- 		$Acesso = new Acesso();
- 		$acessos = $Acesso->recuperarListaAcessos($doc->id);
+		$Acesso = new Acesso();
+
+		$acessos = $Acesso->recuperarListaAcessos($doc->id);
+
+		$listaLeituras = $Acesso->formatarCiclosLeitura($doc->id); 
+
+		$tempoTotalLeitura = $Acesso->recuperarTempoTotalLeitura($doc->id); 
+
+		$leituraIniciada_semFim = $Acesso->seLeituraPendente($doc->id);
+
+		// $ini = $li[0];
+		// $fim = $li[1];
+		// $li[0]->created_at
+		// $current->diffInHours($dt);         // 6
+		// dd($li);
+		// dd($listaLeituras);
+ 		// dd($fim->created_at->diff($ini->created_at)->format('%H:%I:%S'));
+ 		// dd($fim->created_at->diff($ini->created_at)->format('%d (dias) %H:%I:%S'));
 
 
-		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos"));
+
+		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim"));
 	}
 
 
@@ -677,14 +702,17 @@ class DocsController extends Controller
 	}
 
 
-	public function verificarPrimeiraLeitura($request) 
+
+	public function iniciarSessaoLeitura($request) 
 
 	{
+
 
 		if ($request->session()->exists('primeiraLeitura')) 
 
 		{
 
+			dd("ERRO SESSAO JA INICIADA");
 			$request->session()->put('primeiraLeitura', false);
 
 		}
@@ -693,11 +721,114 @@ class DocsController extends Controller
 
 		{
 
-
 			$request->session()->put('primeiraLeitura', true);
 			// $request->session()->put('acesso', true);
 
 		}
+
+	}
+
+
+
+	public function habilitarAviso($indice) 
+
+	{
+
+		//indice 0; // primeira leitura
+		//indice 1; // leitura em andamento
+		//indice 2; // leitura já finalizada, inicia-se uma nova leitura
+
+		return ($indice == 0) ? true : false;
+
+	}
+
+
+
+	private function registrarAcessoRetornoLeitura($request) 
+
+	{
+
+
+	}
+
+
+	//return 0; // primeira leitura
+	//return 1; // leitura em andamento
+	//return 2; // leitura já finalizada, inicia-se uma nova leitura
+	public function registrarLeitura($request,$doc_id) 
+
+	{
+
+		// caso1: primeira vez
+		// caso2: leitura iniciada (segunda vez) e nao finalizada 
+		// caso2: segunda leitura iniciada , apos uma leitura finalizada
+
+
+		// Abriu Documento
+
+		// Verifico se existe acesso Inicio leitura no BD
+		
+			// NAO, (nunca) então registra inicioleitura + Apresenta Aviso + inicia session
+		
+			// SIM, (SEGUNDA LEITURA)
+
+				// Verifico se a ultima Leitura-iniciada foi Finalizada (TEM UMA FINALIZACAO DEPOIS)
+
+					// NÃO,  
+		
+						// Verifico se Sessao Iniciada
+
+							// Sim, faça nada
+
+							// Nao, registro "retorno a leitura" e inicio sessao
+
+					// SIM 
+
+						// então registra inicioleitura + inicia session
+
+
+		$Acesso = new Acesso();
+
+		// verificar se há houve uma primeira leitura , então false == primeira leitura
+		if( $Acesso->verificarPrimeiraLeitura($doc_id) == false  )
+
+		{
+			// PRIMEIRA LEITURA
+			// $Acesso->salvarInicioLeitura($doc_id);
+			// $Acesso->iniciarSessaoLeitura($request); // APRESENTAR AVISO
+
+			return 0; // primeira leitura - usado para a habilitar aviso
+			
+		}
+		
+		
+		else
+
+		{
+			
+			if ($Acesso->verificarSeLeituraFinalizada($doc_id))
+
+			{
+
+				$Acesso->salvarInicioLeitura($doc_id);
+				
+				return 2; // leitura já finalizada, inicia-se uma nova leitura
+
+			}
+
+			else{
+
+				return 1; // leitura em andamento
+
+			}
+
+
+		}
+
+
+
+
+		
 
 		
 
@@ -712,11 +843,13 @@ class DocsController extends Controller
 	{
 
 		
+		// $habilitarAviso = true, se for a primeira leitura
+		$habilitarAviso = $this->habilitarAviso( $this->registrarLeitura($request,$id) );
 
-		$this->verificarPrimeiraLeitura($request);
 
-
-		Carbon::setLocale('pt');
+		
+		// setlocale (LC_TIME, 'pt_BR');
+		// Carbon::setLocale('pt_BR');
 
 		$doc = Doc::find($id);
 		
@@ -860,7 +993,7 @@ class DocsController extends Controller
 		$acesso->salvarAcessoDocumento($id);
 
 
-		return view('abrir', compact('doc', 'certezas', 'duvidas','duvidas_outros','autor', 'conceitoid_Scroll', 'ativarCarrosselAvaliacao', 'respostas') );
+		return view('abrir', compact('doc', 'certezas', 'duvidas','duvidas_outros','autor', 'conceitoid_Scroll', 'ativarCarrosselAvaliacao', 'respostas', 'habilitarAviso') );
 
 	}
 
