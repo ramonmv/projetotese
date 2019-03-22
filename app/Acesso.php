@@ -98,7 +98,7 @@ class Acesso extends Model
 					if($chave < count($acessos))
 
 						$Pergunta = new Pergunta();
-					$acesso->pergunta = $Pergunta;
+						$acesso->pergunta = $Pergunta;
 
 					
 					if(isset($acessos[$chave+1]->Resposta->Conceito->conceito)){
@@ -220,7 +220,7 @@ class Acesso extends Model
 
 
 
-
+	//USADO PARA STATUS LEITURA
 	public function recuperarInicioLeitura($doc_id, $user_id = null)
 
 	{    	 
@@ -346,6 +346,56 @@ class Acesso extends Model
 
 
 
+	// public function recuperarTempoTotalLeitura($doc_id, $user_id = null)
+
+	// { 
+	// 	$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+	// 	$acessoIni = $this->recuperarPrimeiroInicioLeitura($doc_id,$user_id);
+
+	// 	// caso não houver finalizado a leitura será retornado NULL
+	// 	$acessoFim = $this->recuperarUltimoFimLeitura($doc_id,$user_id);
+
+	// 	// type Acesso
+	// 	$ultimo_acessoLeitura = $this->recuperarUltimoAcessoLeitura($doc_id); 
+
+	// 	// dd($colecaoLeitura );
+
+
+
+
+
+
+	// 	// Caso seja NULL OU caso a leitura não seja finalizada , então pegue o horário atual
+	// 	// o ultimo registro está no primeiro pq a fx teve a ordem invertida, para o ultimos registros serem os primeiros 
+	// 	// se a leitura foi finalizada o ultimo registro necessariamente precisa ser o tipo == 2
+	// 	if( is_null($acessoFim) || $ultimo_acessoLeitura->tipo_id == 1 )
+
+	// 	{
+	// 		$agora = Carbon::now();
+
+	// 		$tempoTotal = $agora->diff($acessoIni->created_at);
+	// 	}
+
+	// 	else
+
+	// 	{
+
+	// 		$tempoTotal = $acessoFim->created_at->diff($acessoIni->created_at);
+
+	// 	}	
+
+	// 	// $acessoFim = ((is_null($acessoFim)) ? Carbon::now() :  $acessoFim;)
+
+
+
+
+
+	// 	return $tempoTotal;
+	// }
+
+
+
 
 	public function recuperarTempoTotalLeitura($doc_id, $user_id = null)
 
@@ -362,25 +412,45 @@ class Acesso extends Model
 
 		// dd($colecaoLeitura );
 
-		// Caso seja NULL OU caso a leitura não seja finalizada , então pegue o horário atual
+
+		$acessoIni = (is_null($acessoIni)) ? Carbon::now() :  $acessoIni->created_at;	
+		$acessoFim = (is_null($acessoFim)) ? Carbon::now() :  $acessoFim->created_at;	
+		// $ultimo_acessoLeitura = (is_null($ultimo_acessoLeitura)) ? Carbon::now() :  $ultimo_acessoLeitura;	
+
+
+
+
+		// Caso seja NULL OU caso a leitura não tenha sido finalizada , então pegue o horário de agora
 		// o ultimo registro está no primeiro pq a fx teve a ordem invertida, para o ultimos registros serem os primeiros 
 		// se a leitura foi finalizada o ultimo registro necessariamente precisa ser o tipo == 2
-		if( is_null($acessoFim) || $ultimo_acessoLeitura->tipo_id == 1 )
+		// if( (is_null($acessoFim)) || (is_null($ultimo_acessoLeitura)) )
+		if( is_null($ultimo_acessoLeitura) ) 
 
 		{
+			//somente entra nessa condicao , caso ainda não houver nenhuma leitura iniciada
 			$agora = Carbon::now();
 
-			$tempoTotal = $agora->diff($acessoIni->created_at);
+			$tempoTotal = $agora->diff($acessoIni);
+
+		}
+
+		elseif ($ultimo_acessoLeitura->tipo_id == 1) {
+			
+			$agora = Carbon::now();
+
+			$tempoTotal = $agora->diff($acessoIni);
+
 		}
 
 		else
 
 		{
 
-			$tempoTotal = $acessoFim->created_at->diff($acessoIni->created_at);
+			$tempoTotal = $acessoFim->diff($acessoIni);
 
 		}	
 
+		
 		// $acessoFim = ((is_null($acessoFim)) ? Carbon::now() :  $acessoFim;)
 
 		
@@ -443,9 +513,39 @@ class Acesso extends Model
 
 
 
+		public function calcularLeiturasIniciadas($doc_id, $user_id = null)
+
+		{
+
+			$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+			$listaLeituras = $this->recuperarCiclosLeitura($doc_id,$user_id); 
+
+			return $listaLeituras->filter(function ($acesso) {
+				return $acesso->tipo_id == 1 ;
+			})->count();
+
+			
+		}
+
+
+		public function calcularLeiturasFinalizadas($doc_id, $user_id = null)
+
+		{
+
+			$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+			$listaLeituras = $this->recuperarCiclosLeitura($doc_id,$user_id); 
+
+			return $listaLeituras->filter(function ($acesso) {
+				return $acesso->tipo_id == 2 ;
+			})->count();
+
+		}
 
 
 
+		// USADO PARA STATUS LEITURA EM PAG ANALISE
 		public function recuperarFimLeitura($doc_id, $user_id = null)
 
 		{    	 
@@ -487,40 +587,42 @@ class Acesso extends Model
 			$final = $this->recuperarFimLeitura($doc_id, $user_id);
 
 
-			if(!is_null($inicio))
+			if(is_null($inicio))
 			{
-				$tempo['inicio'] = $inicio;
-				$tempo['inicio2'] = $inicio->format('d/m/Y H:i:s');
+				
+				$inicio = Carbon::now();	
+				
 			}
-			else
+			
+			$tempo['inicio'] = $inicio;
+			$tempo['inicio2'] = $inicio->format('d/m/Y H:i:s');
+
+
+			if(is_null($final))
 			{
-				$tempo['inicio']  = null;
-				$tempo['inicio2'] = null;
-
+				
+				$final = Carbon::now();
 			}
 
+			$tempo['final']  = $final;
+			$tempo['final2'] = $final->format('d/m/Y H:i:s');
 
-			if(!is_null($final))
-			{
-				$tempo['final']  = $final;
-				$tempo['final2'] = $final->format('d/m/Y H:i:s');
+			$tempo['horas'] = $final->diffInHours($inicio);
+			$tempo['minutos'] = $final->diffInMinutes($inicio);
+			$tempo['segundos'] = $final->diffInSeconds($inicio);
+			$tempo['completo'] = gmdate('H:i:s', $tempo['segundos']);
+			
+			// else
+			// {
+			// 	$tempo['inicio']  = null;
+			// 	$tempo['inicio2'] = null;
 
-				$tempo['horas'] = $final->diffInHours($inicio);
-				$tempo['minutos'] = $final->diffInMinutes($inicio);
-				$tempo['segundos'] = $final->diffInSeconds($inicio);
-				$tempo['completo'] = gmdate('H:i:s', $tempo['segundos']);
-			}
-			else
-			{
-				$tempo['inicio']  = null;
-				$tempo['inicio2'] = null;
+			// 	$tempo['horas'] = null;;
+			// 	$tempo['minutos'] = null;;
+			// 	$tempo['segundos'] = null;;
+			// 	$tempo['completo'] = null;
 
-				$tempo['horas'] = null;;
-				$tempo['minutos'] = null;;
-				$tempo['segundos'] = null;;
-				$tempo['completo'] = null;
-
-			}
+			// }
 
 
 		// dd($tempo);

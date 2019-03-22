@@ -38,7 +38,7 @@
     <div class="author-suggestion-ignore-modal" >
       
 
-      <button class="nova-c-button nova-c-button--align-center nova-c-button--radius-m nova-c-button--size-s nova-c-button--color-blue nova-c-button--theme-bare nova-c-button--width-full" 
+      <button id="bt_opc3id{{$duvida_id}}" name="bt_opc3id{{$duvida_id}}" class="nova-c-button nova-c-button--align-center nova-c-button--radius-m nova-c-button--size-s nova-c-button--color-blue nova-c-button--theme-bare nova-c-button--width-full" 
       onclick="addDuvida(this)" data-duvida-texto="{{$duvida}}" data-duvida_id="{{$duvida_id}}">
       <span class="nova-c-button__label" id="opc3id{{$duvida_id}}" name="opc3id{{$duvida_id}}" >
 

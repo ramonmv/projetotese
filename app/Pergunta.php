@@ -92,6 +92,7 @@ class Pergunta extends Model
 
 		
 		return Pergunta::where('doc_id', $doc_id)
+						 ->with('user') 
 					     ->with('respostas')
 						 ->whereDoesntHave('respostas', function ($query) use ($user_id) {
 							$query->where('user_id', $user_id );

@@ -4,7 +4,7 @@
 
 		<div class="info-box-content">
 			<span class="info-box-text">Sobre a leitura</span>
-			<span class="info-box-number">O tempo total de leitura é calculado a partir do primeiro acesso ao texto</span>
+			<span class="info-box-number">O tempo total de acesso é calculado a partir do primeiro acesso ao texto até a última finalização</span>
 
 			<div class="progress">
 				<div class="progress-bar" style="width: 100%"></div>
@@ -14,7 +14,15 @@
 				@if($leituraIniciada_semFim)
 
 					Sua leitura ainda não foi assinalada como finalizada.
+				
+				@elseif ($statusLeitura["numLeiturasFinalizadas"] == 1)
 
+					Sua leitura foi finalizada.
+
+				@else
+
+					Você possui {{ $statusLeitura["numLeiturasFinalizadas"] }} leituras finalizadas	
+					
 				@endif	
 			</span>
 
@@ -33,9 +41,16 @@
 <header class="mb3">
 	<h3 class="mt0 mb1 f6 fw5 font-roxo">Tempo total de acesso ao material</h3>
 	
-	@if($tempoTotalLeitura->d >0)
+	@if($tempoTotalLeitura->d >0)  
 
-		<h4 class="fw3 dark-gray mt0 mb0">{{ $tempoTotalLeitura->format('%d (dias) %Hh %Im %Ss') }}</h4>
+		<h4 class="fw3 dark-gray mt0 mb0">{{ $tempoTotalLeitura->format('%d (dias) %Hh %Im %Ss') }}
+
+				<span class="horario-cinza">
+					{{ " - aprox. ". $statusLeitura["tempoTotalLeitura_compacto_formatado"]  }} 
+				</span>
+
+
+		</h4>
 
 	@else
 
@@ -58,8 +73,11 @@
 	@if($leitura->tipo_id == 2)
 		<header class="mb3">
 			<h3 class="mt0 mb1 f6 fw5 font-roxo">{{ $cont++ }}&ordm; Leitura realizada</h3>
-			<h4 class="fw3 dark-gray mt0 mb0">{{ $leitura->duracao->format('%Hh %Im %Ss') }} <span class="horario-cinza">
-				{{ " - ". $leitura->leitura_inicial->format('H:i:s').  " às ".$leitura->created_at->format('H:i:s') }} </span></h4>
+			<h4 class="fw3 dark-gray mt0 mb0">{{ $leitura->duracao->format('%Hh %Im %Ss') }} 
+				<span class="horario-cinza">
+				{{ " - ". $leitura->leitura_inicial->format('H:i:s').  " às ".$leitura->created_at->format('H:i:s') }} 
+				</span>
+			</h4>
 			
 		</header>
 	@endif

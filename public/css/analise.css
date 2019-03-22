@@ -565,6 +565,17 @@
       display: block;
       margin-left: 50px;
     }
+
+    .ajusteMargin{
+
+      margin-left: 0px !important;
+    }
+
+    .pos_color{
+
+      color: #c8a900 !important;
+    }
+
     .user-block .username {
       font-size: 16px;
       font-weight: 600;
@@ -592,7 +603,9 @@
       line-height: 90px;
       background: rgba(0, 0, 0, 0.2);
       */
-
+  .pergunta_pos{
+    margin: 0;
+  }
 
     .respostinha{
       /*margin-right: 45px;*/
@@ -835,7 +848,10 @@
       color: #fff !important;
       background-color: #a59bff !important;
     }
-
+    .bg-posicionamentos{
+      color: #fff !important;
+      background-color: #c8a900 !important;
+    }
     .bg-aqua {
       background-color: #00c0ef !important;
     }

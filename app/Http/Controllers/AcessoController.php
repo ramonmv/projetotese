@@ -40,7 +40,7 @@ class AcessoController extends Controller
 		$user = User::find($user_id);
 		
 		$Acesso = new Acesso();
-		$acessos = $Acesso->recuperarListaAcessos($doc->id);
+		$acessos = $Acesso->recuperarListaAcessos($doc->id,$user_id);
 
 
 		// $acessos = Acesso::where('doc_id', $id)->where('user_id', $user_id)->get();

@@ -147,6 +147,49 @@ class DocsController extends Controller
 
 
 
+	// Formatar o tempo total de leitura para ser apresentado formatado
+	// os minutos e segundos não estao multiplos de 60 apenas por uma questao estética
+	public function formatarTempoLeitura($tempo, $tempo_detalhado)
+	{
+	//     1 (dias) 10h 56m 38s 
+		// 1 (dias) 11h 06m 02s
+		$dias = $tempo->d;
+		// $horas = $tempo->h;
+		$horas = $tempo_detalhado["horas"]; 
+		$min = $tempo_detalhado["minutos"]; 
+		$segundos = $tempo_detalhado["segundos"];;
+
+
+		if($horas > 71 )
+		{
+			$tempo_formatado = $dias." dias"; 
+		}
+		elseif ($min > 119) //98 
+		{
+			$tempo_formatado = $horas."h"; 	
+		}
+		elseif ($segundos > 119) // 98
+		{
+			$tempo_formatado = $min."min"; 		
+		}
+		else
+		{
+
+			$tempo_formatado = $segundos."s"; 
+		}
+
+		 // dd($tempo);
+		 // dd($tempo_detalhado);
+		 return $tempo_formatado;
+		
+		
+		 // return $tempo["completo"];
+	}
+
+
+
+
+
 
 	public function recuperarTempoLeitura($doc_id, $user_id = null)
 
@@ -155,7 +198,8 @@ class DocsController extends Controller
 		$Acesso = new Acesso();
 		$tempo  = $Acesso->recuperarTempoLeitura($doc_id);
 		
-		return $tempo["completo"];
+		// return $tempo["completo"];
+		return $tempo;
 	}
 
 
@@ -289,7 +333,6 @@ class DocsController extends Controller
 
 
 
-
 	public function abrirAnalise(Request $request, $id)
 
 	{
@@ -315,7 +358,7 @@ class DocsController extends Controller
 		$perguntasSemRespostas = $Pergunta->colecaoPerguntasSemRespostas($doc->id );
 
 
-		 // dd($perguntasComRespostas);
+		 // dd($perguntasSemRespostas);
 
 		$numPerguntasProgramadas = count($perguntas);
 		// $numMinimoEsclarecimenos = 3; //@todo admin deve setar
@@ -329,7 +372,7 @@ class DocsController extends Controller
 		$statusLeitura["numDuvidasOutrosEsclarecidas"] = count($this->recuperarDuvidasOutrosEsclarecidas($doc->id));
 		$statusLeitura["numDuvidasOutrosPendentes"] = $this->calcularNumDuvidasOutrosPendentes($doc->id);
 		$statusLeitura["seLeituraFinalizada"] = $this->verificaSeLeituraFinalizada($doc->id) ; // boolean 
-		$statusLeitura["tempoLeitura"] = $this->recuperarTempoLeitura($doc->id);
+		
 		$statusLeitura["seAcervoVazio"] = $this->verificaSeAcervoVazio($duvidas,$certezas) ; // boolean
 
 		$statusLeitura["seHaPedencias"] = $this->verificaSeHaPendencias($statusLeitura);
@@ -338,27 +381,33 @@ class DocsController extends Controller
 
  		// Recuperar a lista de acessos para a subpagina timeline/sobre suas ações
 		$Acesso = new Acesso();
-
 		$acessos = $Acesso->recuperarListaAcessos($doc->id);
 
+		//SOBRE OS REGISTROS (INICIO E FIM) DE LEITURAS
 		$listaLeituras = $Acesso->formatarCiclosLeitura($doc->id); 
 
+		// SOBRE O TEMPO DE LEITURA
 		$tempoTotalLeitura = $Acesso->recuperarTempoTotalLeitura($doc->id); 
+		$tempo_detalhado = $this->recuperarTempoLeitura($doc->id); // este oferece a quantidade de tempo total em horas. 
+		
+		$statusLeitura["tempoTotalLeitura_compacto_formatado"] = $this->formatarTempoLeitura($tempoTotalLeitura, $tempo_detalhado); 
+		$statusLeitura["numLeiturasFinalizadas"] = $Acesso->calcularLeiturasFinalizadas($doc->id) ;
+		$statusLeitura["numLeiturasIniciadas"] = $Acesso->calcularLeiturasIniciadas($doc->id) ;
 
 		$leituraIniciada_semFim = $Acesso->seLeituraPendente($doc->id);
 
-		// $ini = $li[0];
-		// $fim = $li[1];
-		// $li[0]->created_at
-		// $current->diffInHours($dt);         // 6
-		// dd($li);
-		// dd($listaLeituras);
- 		// dd($fim->created_at->diff($ini->created_at)->format('%H:%I:%S'));
- 		// dd($fim->created_at->diff($ini->created_at)->format('%d (dias) %H:%I:%S'));
 
 
+		// PAGINA POSICIONAMENTO
 
-		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim"));
+		$pos = new Posicionamento();
+		$listaPosicionamentos = $pos->recuperarPosicionamentos($doc->id);
+		$posicionamentosEmGrupo = $pos->recuperarPosicionamentosAgrupados($doc->id);
+		$pos->calcularPorcentagem(null, null, $listaPosicionamentos);
+		// dd($listaPosicionamentos);
+
+
+		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo"));
 	}
 
 
@@ -421,7 +470,9 @@ class DocsController extends Controller
 
 		$numDuvidasEsclarecidas  =  Duvida::where('doc_id', $id)
 		->where('esclarecida', true)
-		->where('user_id', auth()->id())->latest()->get();
+		->where('user_id', auth()->id())
+		->latest()
+		->get();
 
 
 
@@ -429,11 +480,14 @@ class DocsController extends Controller
 		
 		$acesso_inicioLeitura = Acesso::where('doc_id', $id)
 		->where('tipo_id', 1)
-		->where('user_id', auth()->id())->latest()->first();
+		->where('user_id', auth()->id())
+		->latest()
+		->first();
 
 		$acesso_fimLeitura = Acesso::where('doc_id', $id)
 		->where('tipo_id', 2)
-		->where('user_id', auth()->id())->first();
+		->where('user_id', auth()->id())
+		->first();
 
 
 
@@ -462,16 +516,17 @@ class DocsController extends Controller
 		// })->get();
 
 
+		$posicionamentos = Posicionamento::where('user_id', auth()->id())
+							->with(["resposta.user",'resposta.pergunta'])
+							// ->with("resposta.pergunta")
+							->whereHas('resposta', function ($query) use ($id) {
 
-		$posicionamentos = Posicionamento::where('user_id', auth()->id() )
-		->whereHas('resposta', function ($query) use ($id) {
+								$query->whereHas('pergunta', function ($query) use ($id) {
 
-			$query->whereHas('pergunta', function ($query) use ($id) {
+									$query->where('doc_id', $id);
+								});
 
-				$query->where('doc_id', $id);
-			});
-
-		})->get();
+							})->get();
 
 
 	    // colecao					
@@ -480,7 +535,7 @@ class DocsController extends Controller
 		$pos_naosei = $posicionamentos->whereIn('naosei', 1);
 
 		// dd($posicionamentos->whereIn('concorda', 1) );
-		// dd($posicionamentos);
+		 // dd($posicionamentos);
 
 
 		$horarioInicioLeitura = $horarioInicioLeitura;

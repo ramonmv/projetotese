@@ -105,6 +105,101 @@ class Posicionamento extends Model
 
 	// }	
 
+	//
+	public function recuperarPosicionamentosAgrupados($doc_id, $user_id = null)
+
+	{
+
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;
+
+		$posicionamentos = $this->recuperarPosicionamentos($doc_id, $user_id);
+
+	    // colecao					
+		$pos["concorda"] = $posicionamentos->whereIn('concorda', 1);
+		$pos["discorda"] = $posicionamentos->whereIn('discorda', 1);
+		$pos["naosei"] = $posicionamentos->whereIn('naosei', 1);
+
+		return $pos;
+	}	
+
+
+
+	public function recuperarPosicionamentos($doc_id, $user_id = null)
+
+	{
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+		$posicionamentos = Posicionamento::where('user_id', auth()->id())
+							->with(["resposta.user",'resposta.pergunta'])
+							->whereHas('resposta', function ($query) use ($doc_id) {
+
+								$query->whereHas('pergunta', function ($query) use ($doc_id) {
+
+									$query->where('doc_id', $doc_id);
+								});
+
+							})->get();
+
+		return $posicionamentos;
+
+	}	
+
+	
+	public function porcentagem($x, $total)
+
+	{
+		return round(( $x * 100 ) / $total);
+
+	}
+
+	public function calcularPorcentagem($doc_id = null, $user_id = null, $colecaoPosicionamentos = null)
+
+	{
+
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;
+
+		$colecaoPosicionamentos = (is_null($colecaoPosicionamentos)) ? $this->recuperarPosicionamentos($doc_id, $user_id) : $colecaoPosicionamentos;	
+
+
+		
+		foreach ($colecaoPosicionamentos as $key => $pos) 
+
+		{
+			
+			$num_concorda = Posicionamento::where('resposta_id', $pos->resposta_id )
+								->where('concorda', 1 )
+								->count();
+
+			$num_discorda = Posicionamento::where('resposta_id', $pos->resposta_id )
+								->where('discorda', 1 )
+								->count();
+
+			$num_naosei = Posicionamento::where('resposta_id', $pos->resposta_id )
+								->where('naosei', 1 )
+								->count();
+
+			$total =  $num_naosei+$num_discorda+$num_concorda;					
+
+
+			$colecaoPosicionamentos[$key]->totalConcordancia = $num_concorda; 
+			$colecaoPosicionamentos[$key]->totalDiscordancia = $num_discorda; 
+			$colecaoPosicionamentos[$key]->totalNaosei = $num_naosei; 
+			$colecaoPosicionamentos[$key]->total = $total;
+
+			$colecaoPosicionamentos[$key]->porcentagemConcordancia = $this->porcentagem($num_concorda, $total);
+			$colecaoPosicionamentos[$key]->porcentagemDiscordancia = $this->porcentagem($num_discorda, $total);
+			$colecaoPosicionamentos[$key]->porcentagemNaosei =$this->porcentagem($num_naosei, $total); 
+
+		}
+
+		// dd( $colecaoPosicionamentos );
+
+		return $colecaoPosicionamentos;
+
+	}
+
+
+
 
 	public function edit($concorda, $discorda, $naosei)
 
@@ -120,7 +215,8 @@ class Posicionamento extends Model
 
 	}	
 
-	
+
+
 	// * verifica se o campo NAOSEI foi acionado (true), se caso true, campo CONCORDA recebe null 
 	// *
 	

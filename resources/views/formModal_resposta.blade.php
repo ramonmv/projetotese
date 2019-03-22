@@ -9,7 +9,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button> --}}
 			</div>
-			<form method="POST" action="/respostas/save" role="form" id="formResposta"> 
+			<form method="POST" action="/respostas/save" role="form" id="formResposta" onsubmit="return checkForm(this);"> 
 
 				{{ csrf_field() }}
 				<input type="hidden" id="conceito_id" value="" 				name="conceito_id" 	  form="formResposta" />
@@ -32,7 +32,7 @@
 					<div class="modal-footer">
 						
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary" form="formResposta" >Confirmar Resposta</button>
+						<button type="submit" class="btn btn-primary" form="formResposta" name="confirmarRespostaModal" >Confirmar Resposta</button>
 					</div>
 				</div>
 
@@ -44,6 +44,22 @@
 	</div>
 </div>
 
+<script type="text/javascript">
+
+  function checkForm(form)
+  {
+    //
+    // validate form fields
+    //
+
+    form.confirmarRespostaModal.disabled = true;
+    console.log(" + >>>>>>>>>>>>>>>>>>>>>>>>>>> ELIS "+resposta_id);
+
+    // alert("aaaa");
+    return true;
+  }
+
+</script>
 
 
 <div class="modal fade" id="formModal_AddDuvida" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -703,12 +703,26 @@ function addDuvida(dados) {
 
  var duvida_id = dados.getAttribute("data-duvida_id");
 
+ apropriarDuvida(duvida_texto , doc_id , duvida_id);
+
  //todo somente se o salvarDuvida for realizada com sucesso
  document.getElementById("opc3id"+duvida_id).innerHTML = "Dúvida adicionada!";
- 
- // console.log("**** DUVIDA ID:"+duvida_id+" ##>>>> DOC_ID: "+doc_id);
+ // document.getElementById("bt_opc3id"+duvida_id).prop('disabled',true);
+ // document.getElementById("bt_opc3id"+duvida_id).attr('disabled', true);
+ document.getElementById("bt_opc3id"+duvida_id).setAttribute("disabled", "disabled");  
+ // document.getElementById("opc3id"+duvida_id).off("click").attr('href', "javascript: void(0);");
 
- apropriarDuvida(duvida_texto , doc_id , duvida_id);
+ // document.getElementById("opc3id"+duvida_id).disabled=true;
+ // document.getElementById("opc3id"+duvida_id).parent().disabled=true;
+ //  document.getElementById("opc3id"+duvida_id).parent().attr('disabled', true);
+ //add .off() if you don't want to trigger any event associated with this link
+  
+
+ console.log("THIS:  "+   document.getElementById("bt_opc3id"+duvida_id) );
+
+  // console.log("**** DUVIDA ID:"+duvida_id+" ##>>>> DOC_ID: "+doc_id);
+
+
 
   
 
@@ -1276,6 +1290,8 @@ function isVazio(str){
               iniciarCarrosselDuvidas();
         
       });
+
+
 
 
 

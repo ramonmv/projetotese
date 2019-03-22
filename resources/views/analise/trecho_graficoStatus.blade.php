@@ -36,7 +36,7 @@
 		<sparkline title="Esclarecimentos" class="bg-purple" value="{{ $statusLeitura["numDuvidasOutrosEsclarecidas"] }}"></sparkline>
 	</div>
 	<div class="w-50 w-25-l mb4 mb0-l relative flex flex-column ph3">
-		<sparkline title="Tempo Leitura" class="bg-blue" value="15 min"></sparkline>
+		<sparkline title="Tempo Leitura" class="bg-blue" value="{{ $statusLeitura["tempoTotalLeitura_compacto_formatado"] }}"></sparkline>
 	</div>
 </div>
 <br>
