@@ -50,6 +50,19 @@ class Certeza extends Model
 
 	}
 
+
+
+	public function recuperarCertezas($doc_id, $user_id = null)
+
+	{ 
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+		return $this->where('doc_id', $doc_id)->where('user_id', $user_id)->get();	
+	}
+
+
+
+
     public function user()
 
     {

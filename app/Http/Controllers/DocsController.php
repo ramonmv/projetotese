@@ -78,32 +78,32 @@ class DocsController extends Controller
 
 
 
-	private function colecaoCertezas($doc_id, $user_id = null)
+	// private function colecaoCertezas($doc_id, $user_id = null)
 
-	{
+	// {
 
-		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
-
-
-		return Certeza::where('doc_id', $doc_id)->where('user_id', $user_id)->get();	
+	// 	$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
 
-	}
+	// 	return Certeza::where('doc_id', $doc_id)->where('user_id', $user_id)->get();	
 
 
+	// }
 
 
 
 
-	private function colecaoDuvidas($doc_id, $user_id = null)
 
-	{
 
-		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+	// private function colecaoDuvidas($doc_id, $user_id = null)
 
-		return Duvida::where('doc_id', $doc_id)->where('user_id', $user_id)->get();		
+	// {
 
-	}
+	// 	$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+	// 	return Duvida::where('doc_id', $doc_id)->where('user_id', $user_id)->get();		
+
+	// }
 
 
 
@@ -231,7 +231,7 @@ class DocsController extends Controller
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
 		$duvidas_outros  =    Duvida::where('doc_id', $doc_id)
-		->where('user_id', "<>" , auth()->id() )
+		->where('user_id', "<>" , $user_id )
 		->with('respostas')
 		->whereDoesntHave('respostas', function($q) use ($user_id)
 		{
@@ -252,25 +252,42 @@ class DocsController extends Controller
 
 
 
-
+	// RECUPERA as duvidas que foram esclarecida pelo user (para), e todas as respostas dessas duvidas  
 	public function recuperarDuvidasOutrosEsclarecidas($doc_id, $user_id = null)
 
 	{
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
-		$duvidas_outros  =    Duvida::where('doc_id', $doc_id)
-		->where('user_id', "<>" , auth()->id() )
-		->with('respostas')
-		->whereHas('respostas', function($q) use ($user_id)
-		{
-																									// dd($q);
-			$q->where('user_id',$user_id);
+		$duvidas_outros  = Duvida::where('doc_id', $doc_id)
+							->where('user_id', "<>" , $user_id )
+							->with('respostas')
+							->whereHas('respostas', function($q) use ($user_id)
+							{
+																													
+								$q->where('user_id',$user_id);
 
-		})
-																					// // ->whereHas('respostas')
-																					//->latest()
-		->get();
+							})
+								// // ->whereHas('respostas')
+								//->latest()
+							->get();
 
+
+		// dd($duvidas_outros);
+
+		return $duvidas_outros;
+
+	}
+
+
+	// RECUPERA as DUVIDAS DE TERCEIROS/OUTROS que foram esclarecida pelo user, e recupera DENTRO DA COLECAO APENAS a resposta (duvida.resposta) do user
+	public function recuperarDuvidasEsclarecidasPeloUser($doc_id, $user_id = null)
+
+	{
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+		$Duvida = new Duvida();
+
+		$duvidas_outros  = $Duvida->recuperarDuvidasEsclarecidasPeloUser($doc_id, $user_id);
 
 		// dd($duvidas_outros);
 
@@ -346,8 +363,16 @@ class DocsController extends Controller
 		
 		// $this->verificaSeLeituraFinalizada($doc->id);
 
-		$duvidas  =  $this->colecaoDuvidas($id);
-		$certezas  =  $this->colecaoCertezas($id);
+		// DUVIDAS
+		$Duvida = new Duvida(); 
+		$duvidas  =  $Duvida->recuperarDuvidas($id);
+		$duvidasEsclarecidas  =  $Duvida->recuperarDuvidasEsclarecidas($id);
+		$duvidasNaoEsclarecidas  =  $Duvida->recuperarDuvidasNaoEsclarecidas($id);
+
+		// $duvidas  =  $Duvida->recuperarDuvidas($id);
+
+		$Certeza = new Certeza(); 
+		$certezas  =  $Certeza->recuperarCertezas($id);
 
 		// dd($certezas);
 
@@ -376,7 +401,8 @@ class DocsController extends Controller
 		$statusLeitura["seAcervoVazio"] = $this->verificaSeAcervoVazio($duvidas,$certezas) ; // boolean
 
 		$statusLeitura["seHaPedencias"] = $this->verificaSeHaPendencias($statusLeitura);
-		 // dd($statusLeitura);
+		
+
 
 
  		// Recuperar a lista de acessos para a subpagina timeline/sobre suas ações
@@ -403,11 +429,17 @@ class DocsController extends Controller
 		$pos = new Posicionamento();
 		$listaPosicionamentos = $pos->recuperarPosicionamentos($doc->id);
 		$posicionamentosEmGrupo = $pos->recuperarPosicionamentosAgrupados($doc->id);
-		$pos->calcularPorcentagem(null, null, $listaPosicionamentos);
-		// dd($listaPosicionamentos);
+		$listaPosicionamentos = $pos->calcularPorcentagem(null, null, $listaPosicionamentos);
+		 // dd($listaPosicionamentos);
 
 
-		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo"));
+		// PAGINA ESCLARECIMENTOS
+		$esclarecimentos = $this->recuperarDuvidasEsclarecidasPeloUser( $doc->id	);
+		$duvidasPuladas = $Acesso->recuperarDuvidasPuladas( $doc->id	);
+		$duvidasApropriadas = $Acesso->recuperarDuvidasApropriadas( $doc->id	);
+
+
+		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas"));
 	}
 
 

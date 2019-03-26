@@ -142,31 +142,39 @@ class Acesso extends Model
 	}
 
 
-	// public function recuperarTodosAcessosLeitura($doc_id, $user_id = null)
-
-	// {    	 
-	// 	$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
-
-	// 	$Acessos = $this->where('doc_id', $doc_id)
-	// 							->where('user_id', $user_id)
-	// 							->whereIn('tipo_id', [1, 2])
-	// 							->orderBy('created_at', 'asc')
-	// 							// ->pluck('created_at', 'tipo_id')	;
-	// 							->get();
 
 
-	// 	// foreach ($Acessos as $acesso) {
-	// 	// 	# code...
-	// 	// 	$leituras[]
-	// 	// }
+	public function recuperarDuvidasPuladas($doc_id, $user_id = null)
+
+	{ 
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+		$duvidasPuladas = $this->where('doc_id', $doc_id)
+								->where('tipo_id', 25)
+								->where('user_id', $user_id)
+								->get();
+								
+
+		return $duvidasPuladas;
+	}
 
 
-	// 	// dd($Acessos);	
 
 
-	// 	return null;
+	public function recuperarDuvidasApropriadas($doc_id, $user_id = null)
 
-	// }
+	{ 
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+		$duvidas = $this->where('doc_id', $doc_id)
+								->where('tipo_id', 19)
+								->where('user_id', $user_id)
+								->get();
+								
+
+		return $duvidas;
+	}
+
 
 
 
@@ -193,6 +201,11 @@ class Acesso extends Model
 
 		return $leiturafinalizada;
 	}
+
+
+
+
+
 
 
 

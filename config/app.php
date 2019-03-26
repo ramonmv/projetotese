@@ -165,6 +165,7 @@ return [
         Stevebauman\Location\LocationServiceProvider::class,
         \hisorange\BrowserDetect\ServiceProvider::class,
 
+
         /*
          * Package Service Providers...
          */
@@ -202,6 +203,7 @@ return [
         'Browser' => \hisorange\BrowserDetect\Facade::class,
         'Bus' => Illuminate\Support\Facades\Bus::class,
         'Cache' => Illuminate\Support\Facades\Cache::class,
+        'Carbon' => 'Carbon\Carbon',
         'Config' => Illuminate\Support\Facades\Config::class,
         'Cookie' => Illuminate\Support\Facades\Cookie::class,
         'Crypt' => Illuminate\Support\Facades\Crypt::class,

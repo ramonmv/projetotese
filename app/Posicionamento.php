@@ -130,15 +130,15 @@ class Posicionamento extends Model
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
 		$posicionamentos = Posicionamento::where('user_id', auth()->id())
-							->with(["resposta.user",'resposta.pergunta'])
-							->whereHas('resposta', function ($query) use ($doc_id) {
+								->with(["resposta.user",'resposta.pergunta'])
+								->whereHas('resposta', function ($query) use ($doc_id) {
 
-								$query->whereHas('pergunta', function ($query) use ($doc_id) {
+									$query->whereHas('pergunta', function ($query) use ($doc_id) {
 
-									$query->where('doc_id', $doc_id);
-								});
+										$query->where('doc_id', $doc_id);
+									});
 
-							})->get();
+								})->get();
 
 		return $posicionamentos;
 
