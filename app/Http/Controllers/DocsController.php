@@ -1048,7 +1048,7 @@ class DocsController extends Controller
 			$respostas  =  Resposta::where('conceito_id', $conceitoid_Scroll )
 			->where('user_id', '<>', auth()->id() )
 															// ->with('posicionamento')
-			->whereDoesntHave('posicionamento', function ($query) {
+			->whereDoesntHave('posicionamentos', function ($query) {
 				$query->where('user_id',  auth()->id());
 			})
 			->latest()

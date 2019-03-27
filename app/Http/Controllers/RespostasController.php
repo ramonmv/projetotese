@@ -35,7 +35,8 @@ class RespostasController extends Controller
 		
 		// $resposta = Resposta::find(request('resposta_id'));		
 
-		
+	
+
 		if (   $this->respostaJaRespondida( request('conceito_id'), auth()->id()  )   ) 
 
 		{
@@ -47,6 +48,8 @@ class RespostasController extends Controller
 
 			
 			$resposta = Resposta::find(request('resposta_id'));
+
+
 			
 			return $resposta->edit(request('resposta_id'),request('texto') );
 
@@ -168,6 +171,7 @@ class RespostasController extends Controller
 
 			$this->save($request);
 
+
 		}
 
 		else
@@ -187,7 +191,8 @@ class RespostasController extends Controller
 		{
 
 			$conceito_id = request('conceito_id');
-
+			
+			
 			return back()->with('conceitoid_Scroll', $conceito_id   );
 
 		}
@@ -195,6 +200,7 @@ class RespostasController extends Controller
 		else
 
 		{
+
 
 			return back();
 
