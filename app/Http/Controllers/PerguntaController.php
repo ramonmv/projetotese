@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Doc;
 use App\Pergunta;
 use App\Conceito;
+use App\Acesso;
 
 //('tipo'); // 1  conceitual 2 argumentativa 3 posicionamento 4 exemplo 5 outro 
 
@@ -124,9 +125,12 @@ class PerguntaController extends Controller
 
 		// $per = Pergunta::find(5);
 
-		// dd($per);
+		$acesso = new Acesso();
+		// $acesso->salvarAcessoAcervo($id);		
+		
+		$statusLeitura["seLeituraFinalizada"] = true ;
 
-		return view('pergunta',compact('doc', 'perguntas','textoConceito'));
+		return view('pergunta',compact('doc', 'perguntas','textoConceito','statusLeitura'));
 		//return view('acervo',compact('doc'));
 	}
 

@@ -225,7 +225,7 @@
 
 				<div class="col-md-12" {{-- style="background-color: red" --}}>
 
-					@include('form_acervo',['btduvida' => TRUE,'btcerteza' => FALSE, 'tituloLabel' => "Escreva sua dúvida sobre o assunto:"])
+					@include('form_acervo',['float' => FALSE , 'btduvida' => TRUE,'btcerteza' => FALSE, 'tituloLabel' => "Escreva sua dúvida sobre o assunto:"])
 
 				</div>
 

@@ -93,7 +93,8 @@ De La Taille, Y. (2008). Ética em pesquisa com seres humanos: dignidade e liber
 	
 	<h4 class="fw3 dark-gray mt0 mb0">
 
-		{{ $doc->resumo[0]->texto }}  	
+		{!! $doc->resumo[0]->texto !!}
+
 
 	</h4>
 

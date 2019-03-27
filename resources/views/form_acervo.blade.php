@@ -1,9 +1,14 @@
 
+@if($float)
+
+<p class="blog-post-meta formAcervoFloat" id="paragrafoAcervo">
+  <div class="col-sm-6 blog-main formAcervoFloat" id="divFormAcervo"  style='display: none;'>
+@else
 <p class="blog-post-meta" id="paragrafoAcervo">
-
-
   <div class="col-sm-12 blog-main" id="divFormAcervo"  style='display: none;'>
 
+
+@endif
 
     <form method="POST" action="/acervo/certezas/add" id="formAcervo">
 
@@ -15,7 +20,7 @@
 
       <div class="form-group">
 
-        <label for="exampleInputPassword1"> {{ $tituloLabel }} </label>
+        <label for="exampleInputPassword1" style="color: {{ ($float != true)?"#464a4c" : "white" }}"> {{ $tituloLabel }} </label>
 
 
         <textarea class="form-control" id="conteudoAcervo" name="conteudoAcervo" placeholder="conteudo"> </textarea>
@@ -66,7 +71,7 @@
 
         jquery("#formAcervo").submit();
 
-        
+
 
 
     });
@@ -127,7 +132,7 @@ function abrirFecharEditor()
 
      console.log(" if");
         // jquery("#ultimasNoticias").hide(1000);
-        jquery("#divFormAcervo").hide(1000);
+        jquery("#divFormAcervo").hide(500);
          
 
     }

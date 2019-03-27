@@ -10,7 +10,6 @@
 
 
 
-
 <div class="blog-header">
     <div class="container">
         <h1 class="blog-title">{{ $doc->titulo}}</h1>
@@ -31,10 +30,10 @@
       <div class="blog-post">
 
 
-        @include('abrir.menu_suspenso')
+        {{-- @include('abrir.menu_suspenso') --}}
 
 
-        @include('form_acervo',['btduvida' => TRUE,'btcerteza' => TRUE, 'tituloLabel' => "Escreva sua certeza ou dúvida sobre o assunto:"])
+        @include('form_acervo',['float' => TRUE, 'btduvida' => TRUE,'btcerteza' => TRUE, 'tituloLabel' => "Escreva sua certeza ou dúvida sobre o assunto:"])
 
 {{-- 
         <p class="blog-post-meta" style="float: right;margin-top: -20px;" >
@@ -277,6 +276,7 @@
 <div class="BlackScreen" id="BlackScreen_Duvidas" style="display: none;"></div> 
 <div class="BlackScreen" id="BlackScreen_Respostas" style="display: none;"></div> 
 <div class="BlackScreen" id="BlackScreen_AvisoTermos" style="display: none;"></div> 
+<div class="BlackScreen" id="BlackScreen_formAcervoSupenso" style="display: none;"></div> 
 {{-- <div class="WhiteScreen" id="WhiteScreen" style="display: none;"></div>  --}}
 
 
@@ -1086,6 +1086,13 @@ jquery(document).ready(function(){
 
     @endif
 
+    jquery("#BlackScreen_formAcervoSupenso").click(function(){
+
+      abrirFecharEditor();
+      jquery("#BlackScreen_formAcervoSupenso").hide(600);
+
+    });
+
 
     jquery("#BlackScreen_Respostas").click(function(){
 
@@ -1165,7 +1172,7 @@ jquery("#bthide").click(function()
 
 {
       console.log(" >>>>>>>>>>>>>>>>>> Abrir Blade");
-
+      jquery("#BlackScreen_formAcervoSupenso").show(600);
       event.preventDefault();
 
       if(form_acervo_visivel)

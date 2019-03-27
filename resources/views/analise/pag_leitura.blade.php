@@ -77,6 +77,7 @@
 				<span class="horario-cinza">
 				{{ " - ". $leitura->leitura_inicial->format('H:i:s').  " às ".$leitura->created_at->format('H:i:s') }} 
 				</span>
+				
 			</h4>
 			
 		</header>
@@ -90,8 +91,8 @@
 				
 				<h3 class="mt0 mb1 f6 fw5 font-roxo">{{ $cont++ }}&ordm; Leitura iniciada</h3>
 				<h4 class="fw3 dark-gray mt0 mb0">{{ $agora->diff($leitura->created_at)->format('%Hh %Im %Ss') }} 
-					{{ "- 11:10:00 às (ainda não finalizada) "}}</h4>
-				
+					{{ "- ". $leitura->created_at->format('H:i:s') ." às (ainda não finalizada) "}}</h4>
+					{{-- {{dd($leitura)}} --}}
 			</header>
 
 		{{-- <h3 class="mt0 mb1 f6 fw5 blue"> {{ $cont++ }}&ordm; {{ $leitura->tipo_id }} Leitura realizada</h3> --}}

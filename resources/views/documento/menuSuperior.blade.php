@@ -2,7 +2,7 @@
     <div class="container">
       <nav class="nav blog-nav">
         <a class="nav-link {{-- active --}}" href="/">Principal</a>
-        <a class="nav-link" href="/docs/{{ $doc->id }}">Texto</a>
+        <a class="nav-link" href="/abrir/{{ $doc->id }}">Texto</a>
         <a class="nav-link" href="/docs/{{ $doc->id }}/acervo/">Acervo</a>
         @if ( session()->get('autor', false) )
             <a class="nav-link" href="/docs/{{ $doc->id }}/pergunta/">Perguntas</a>

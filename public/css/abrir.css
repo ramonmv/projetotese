@@ -379,6 +379,12 @@ $icons: 7;
   position: fixed;
 }
 
+
+.formAcervoFloat{
+  position: fixed;
+  z-index: 1001;
+}
+
   .menu_suspenso {
     
     position: fixed;
@@ -772,7 +778,7 @@ button {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .9);
+    background-color: rgba(0, 0, 0, .8);
     z-index: 999;
 }
 

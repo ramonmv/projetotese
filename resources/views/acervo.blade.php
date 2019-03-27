@@ -23,11 +23,11 @@
 
       <div class="blog-post">
 
-        @include('form_acervo',['btduvida' => TRUE,'btcerteza' => TRUE, 'tituloLabel' => "Escreva sua certeza ou dúvida sobre o assunto:"])
+        @include('form_acervo',['float' => FALSE, 'btduvida' => TRUE,'btcerteza' => TRUE, 'tituloLabel' => "Escreva sua certeza ou dúvida sobre o assunto:"])
 
-        <br> 
-        <hr>
-
+               
+        {{-- <hr> --}}
+        
         <p class="blog-post-meta">
 
            Lista das minhas <a href="#">Dúvidas</a>
@@ -248,12 +248,12 @@
 
 
     </div><!-- /.blog-main -->
-
+{{-- 
     <div class="col-sm-3 offset-sm-1 blog-sidebar">
 
      @include('abrir.menuLateral_meuAcervo')
 
-   </div><!-- /.blog-sidebar -->
+   </div><!-- /.blog-sidebar --> --}}
 
 
 
