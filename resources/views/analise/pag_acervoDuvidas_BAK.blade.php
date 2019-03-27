@@ -158,6 +158,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 {{-- @include('analise.trecho_certezasDuvidas', ['$statusLeitura' => '$statusLeitura', '$perguntasSemRespostas' => '$perguntasSemRespostas','$perguntas' => '$perguntas']) --}}
 
 

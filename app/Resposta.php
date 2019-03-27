@@ -97,7 +97,7 @@ class Resposta extends Model
     }
 
 
-    public function posicionamento()
+    public function posicionamentos()
 
     {
 

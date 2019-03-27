@@ -34,7 +34,17 @@
 			<a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
 		</li>
 		<li class="pull-right">
-			<a href="#" class="link-black text-sm horarioComentario"><i class="fa fa-thumbs-o-up margin-r-5"></i>  XX% Concordam (X votos) </a>
+			<a href="#" class="link-black text-sm horarioComentario">
+
+					<i class="fa fa-thumbs-o-up margin-r-2"></i> 
+					 {{$pergunta->respostas[0]->pos_info['pct_concorda']}}%   &nbsp;
+					<i class="fa fa-thumbs-o-down"></i> 
+					 {{$pergunta->respostas[0]->pos_info['pct_discorda']}}% &nbsp; 
+					<i class="fa fa-question-circle-o"></i> 
+					 {{$pergunta->respostas[0]->pos_info['pct_naosei']}}% &nbsp;&nbsp;&nbsp;
+					<span class="textoCinza"> {{$pergunta->respostas[0]->pos_info['total']}} <i class="fa fa-user-o" aria-hidden="true"></i> </span>
+
+			</a>
 		</li>
 	</ul>
 
@@ -80,7 +90,7 @@
 			Sem resposta.
 		</p>
 
-		<ul class="list-inline iconesRespostinha">
+{{-- 		<ul class="list-inline iconesRespostinha">
 			<li>
 				<a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a>
 			</li>
@@ -90,7 +100,7 @@
 			<li class="pull-right">
 				<a href="#" class="link-black text-sm horarioComentario"><i class="fa fa-thumbs-o-up margin-r-5"></i>  XX% Concordam (X votos) </a>
 			</li>
-		</ul>
+		</ul> --}}
 
 	</div> {{-- post --}}	
 

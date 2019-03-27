@@ -354,6 +354,8 @@ class DocsController extends Controller
 
 	{
 
+		
+
 		// /setlocale (LC_TIME, 'pt_BR');
 		// Carbon::setLocale('pt_BR');
 
@@ -621,7 +623,6 @@ class DocsController extends Controller
 
 		$doc = Doc::find($id);
 		$titulo = $doc->titulo;
-
 
 		return view('editorResumo',compact('id','titulo')); 
 	}
@@ -1079,8 +1080,9 @@ class DocsController extends Controller
 		$acesso = new Acesso();
 		$acesso->salvarAcessoDocumento($id);
 
+		$statusLeitura["seLeituraFinalizada"] = $this->verificaSeLeituraFinalizada($doc->id) ;
 
-		return view('abrir', compact('doc', 'certezas', 'duvidas','duvidas_outros','autor', 'conceitoid_Scroll', 'ativarCarrosselAvaliacao', 'respostas', 'habilitarAviso') );
+		return view('abrir', compact('doc', 'certezas', 'duvidas','duvidas_outros','autor', 'conceitoid_Scroll', 'ativarCarrosselAvaliacao', 'respostas', 'habilitarAviso', 'statusLeitura') );
 
 	}
 

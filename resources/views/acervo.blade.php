@@ -72,11 +72,20 @@
                         {{-- <div class="example_cont"> --}}
                         <li >  <i class="fa fa-question-circle" style="color:#E7A394" aria-hidden="true">  &nbsp; </i> 
                         Dúvida esclarecida: 
-                            <a href="#">
+     
+                          @if($duvida->esclarecida == 1)
+                            <a href="/duvida/reconsiderar/{{$duvida->id}}">
+                                <i class="fa fa-square-o fa-hover-show"> </i> 
+                                <i class="fa fa-check-square-o fa-hover-hidden"> </i> 
+                                 Sim
+                            </a>
+                          @else
+                            <a href="/duvida/esclarecer/{{$duvida->id}}">
                                 <i class="fa fa-square-o fa-hover-hidden"> </i> 
                                 <i class="fa fa-check-square-o fa-hover-show"> </i> 
                                  Sim
-                            </a>
+                            </a>                          
+                          @endif  
                         </li>
                         <li >  &nbsp; </li>
                         <li style="color:#923925"> Desejo excluir esta dúvida definitivamente:  &nbsp;

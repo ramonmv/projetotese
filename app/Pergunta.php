@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Posicionamento; 
 
 class Pergunta extends Model
 {
@@ -59,24 +60,39 @@ class Pergunta extends Model
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
 		
-		// return $this->where('doc_id', $doc_id)
-		// 			     ->with('respostas')
-		// 				 ->whereHas('respostas', function ($query) use ($user_id) {
-		// 					$query->where('user_id', $user_id );
-		// 				  })
-		// 				 ->get();
-
-
-		return $this->where('doc_id', $doc_id)
-						  ->with('user') 	
-					     ->with(['respostas' => function ($query) use ($user_id){
-						    $query->where('user_id', $user_id );
-						  }])
-						 ->whereHas('respostas', function ($query) use ($user_id) {
-							$query->where('user_id', $user_id );
-						  })
-						 ->get();						 
+		$perguntas =  $this->where('doc_id', $doc_id)
+					->with('user') 	
+					->with(['respostas' => function ($query) use ($user_id){
+						$query->where('user_id', $user_id );
+					}])
+					->whereHas('respostas', function ($query) use ($user_id) {
+						$query->where('user_id', $user_id );
+					})
+					->get();						 
 		 
+
+
+		$pos = new Posicionamento();
+
+
+
+		foreach ($perguntas as $key => $pergunta) 
+
+		{
+			
+			// dd($pergunta->respostas[0]->posicionamentos);
+
+			// vetor de informacoes sobre posicionamentos
+			$perguntas[$key]->respostas[0]->pos_info  = $pos->recuperarPosicionamentosPorResposta($pergunta->respostas[0]->id);		
+
+			
+
+		}
+
+		return $perguntas;
+
+
+
 	}
 
 

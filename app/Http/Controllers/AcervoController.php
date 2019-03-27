@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Certeza;
 use App\Duvida;
 use App\Acesso;
@@ -17,6 +18,12 @@ class AcervoController extends Controller
 	public function __construct()
 
 	{
+
+		//tradução
+		Carbon::setLocale('pt_BR');
+		//essas linhas abaixo parece nao fazer efeito
+		Carbon::setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+		// setlocale (LC_TIME, 'pt_BR');
 
 		$this->middleware('auth')->except(['index','show']);
         // dd(auth()->user()->id );
@@ -45,6 +52,40 @@ class AcervoController extends Controller
 		return Redirect::to(URL::previous() . "?s=1");
 
 	}
+
+
+	public function esclarecerDuvida($id)
+
+	{
+
+		$Duvida = Duvida::find($id);
+
+		$Duvida->esclarecida = 1;
+
+		$Duvida->save();
+
+		return back();
+
+	}
+
+
+	// atualizar como não esclarecida
+	public function reconsiderarDuvida($id)
+
+	{
+
+		$Duvida = Duvida::find($id);
+
+		$Duvida->esclarecida = 0;
+
+		$Duvida->save();
+
+		return back();
+
+	}
+
+
+
 
 	public function addDuvida(Request $request)
 
@@ -178,7 +219,9 @@ class AcervoController extends Controller
 		$acesso->salvarAcessoAcervo($id);		
 		
 
-		return view('acervo',compact('doc', 'certezas', 'duvidas'));
+		$statusLeitura["seLeituraFinalizada"] = $acesso->verificaSeLeituraFinalizada($doc->id) ; // boolean 
+
+		return view('acervo',compact('doc', 'certezas', 'duvidas','statusLeitura'));
 		//return view('acervo',compact('doc'));
 	}
 

@@ -15,20 +15,6 @@
 				{{ count($posicionamentosEmGrupo["discorda"])}}x em discordância,
 				{{count($posicionamentosEmGrupo["naosei"])}}x em dúvida.		
 
-				{{-- 
-				@if($leituraIniciada_semFim)
-
-					Sua leitura ainda não foi assinalada como finalizada.
-				
-				@elseif ($statusLeitura["numLeiturasFinalizadas"] == 1)
-
-					Sua leitura foi finalizada.
-
-				@else
-
-					Você possui {{ $statusLeitura["numLeiturasFinalizadas"] }} leituras finalizadas	
-					
-				@endif	 --}}
 			</span>
 
 		</div>
@@ -108,17 +94,3 @@
 @endforeach
 
 
-{{-- 
-				@if($acesso->posicionamento->concorda)
-					<i class="fa fa-thumbs-up bg-yellow" aria-hidden="true"></i>
-					@php  $label = ", eu concordo."; 	@endphp
-				@elseif ($acesso->posicionamento->discorda)
-					<i class="fa fa-thumbs-down bg-yellow" aria-hidden="true"></i>
-					@php 	$label = ", eu discordo."; 	@endphp				
-				@else
-					
-					<i class="fa fa-question-circle bg-maroon"></i>
-					@php 	$label = ".";	@endphp				
-				@endif
- --}}
-				{{-- <i class="fa fa-exclamation-circle bg-yellow" aria-hidden="true"></i> --}}

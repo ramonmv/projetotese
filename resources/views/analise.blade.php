@@ -49,7 +49,7 @@
 					@includeWhen($subPagina == 3 ,'analise.pag_posicionamentos')
 					@includeWhen($subPagina == 4 ,'analise.pag_esclarecimentos')
 					@includeWhen($subPagina == 5 ,'analise.pag_timeline')
-					@includeWhen($subPagina == 6 ,'analise.index')
+					@includeWhen($subPagina == 6 ,'analise.pag_texto')
 					@includeWhen($subPagina == 7 ,'analise.index')
 					@includeWhen($subPagina == 8 ,'analise.index')
 					@includeWhen($subPagina == 10 ,'analise.pag_leitura')

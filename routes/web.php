@@ -113,6 +113,9 @@ Route::get('/docs/{id}/acervo', 'AcervoController@abrir');
 // Route::get('/docs/{id}/acervo/duvidas/delete/{idduvida}', 'AcervoController@deleteDuvida');
 Route::get('/duvida/apagar/{id}', 'AcervoController@apagarDuvida');
 Route::get('/certeza/apagar/{id}','AcervoController@apagarCerteza');
+Route::get('/duvida/esclarecer/{id}', 'AcervoController@esclarecerDuvida');
+Route::get('/duvida/reconsiderar/{id}', 'AcervoController@reconsiderarDuvida');
+
 // ---------JSON ajaX--------||||| DuvidaCarrossel - Respostas Pendentes > Menu Suspenso
 Route::get('/duvida/save', 'AcervoController@salvarDuvida');
 Route::get('/duvida/pular', 'AcervoController@salvarPularDuvida');

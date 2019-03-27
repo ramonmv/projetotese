@@ -374,7 +374,10 @@ $icons: 7;
     $i: $i + 1;
   }*/
 
+.menuAcervo{
 
+  position: fixed;
+}
 
   .menu_suspenso {
     

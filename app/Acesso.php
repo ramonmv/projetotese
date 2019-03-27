@@ -204,15 +204,27 @@ class Acesso extends Model
 
 
 
+	public function verificaSeLeituraFinalizada($doc_id, $user_id = null)
+
+	{
+
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+		$resultado = $this->where('doc_id', $doc_id)->where('user_id', $user_id)->where('tipo_id', 2)->get();	
+
+		$finalizouLeitura = ( count($resultado) == 0 ) ? false : true; // true se finalizou (encontrou registro)	
+
+		return $finalizouLeitura;		
+
+	}
 
 
 
 
 
 
-
-
-	// Return true se já houve a primeira leitura
+	// INICIO 
+	// Return true se já houve a primeira leitura 
 	// Return false se NÃO houve a primeira leitura (nao há registros na BD : Acessos)
 	public function verificarPrimeiraLeitura($doc_id, $user_id = null)
 

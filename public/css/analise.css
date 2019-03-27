@@ -922,6 +922,10 @@ ul {
     .bg-respostas, .bg-duvidas, .bg-aqua {
       color: #fff !important;
     }
+    .bg-texto{
+      color: #fff !important;
+      background-color: #b182b5 !important;
+    }    
     .bg-leitura{
       color: #fff !important;
       background-color: #a59bff !important;

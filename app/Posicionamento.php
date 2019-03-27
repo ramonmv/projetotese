@@ -118,9 +118,16 @@ class Posicionamento extends Model
 		$pos["concorda"] = $posicionamentos->whereIn('concorda', 1);
 		$pos["discorda"] = $posicionamentos->whereIn('discorda', 1);
 		$pos["naosei"] = $posicionamentos->whereIn('naosei', 1);
+		$pos["total"] = count($pos["concorda"]) + count($pos["discorda"]) + count($pos["naosei"]);
+
 
 		return $pos;
 	}	
+
+
+
+
+
 
 
 
@@ -145,12 +152,74 @@ class Posicionamento extends Model
 	}	
 
 	
+
+
+
 	public function porcentagem($x, $total)
 
 	{
 		return round(( $x * 100 ) / $total);
 
 	}
+
+
+
+
+
+
+
+	public function recuperarPosicionamentosPorResposta($resposta_id)
+	{
+
+
+		$posicionamentos_concorda = Posicionamento::where('resposta_id', $resposta_id )
+									->where('concorda', 1 )
+									->get();
+
+		$posicionamentos_discorda = Posicionamento::where('resposta_id', $resposta_id )
+									->where('discorda', 1 )
+									->get();
+
+		$posicionamentos_naosei = Posicionamento::where('resposta_id', $resposta_id )
+								->where('naosei', 1 )
+								->get();
+
+
+		$pos["posicionamentos_concorda"] = $posicionamentos_concorda; 
+		$pos["posicionamentos_discorda"] = $posicionamentos_discorda; 
+		$pos["posicionamentos_naosei"] =   $posicionamentos_naosei; 
+
+
+		$pos["num_concorda"] = count($posicionamentos_concorda); 
+		$pos["num_discorda"] = count($posicionamentos_discorda); 
+		$pos["num_naosei"] = count($posicionamentos_naosei); 
+		$pos["total"] = $pos["num_concorda"] + $pos["num_discorda"] + $pos["num_naosei"];
+
+
+		$pos["pct_concorda"] = $this->porcentagem( $pos["num_concorda"] , $pos["total"]); 
+		$pos["pct_discorda"] = $this->porcentagem( $pos["num_discorda"], $pos["total"]); 
+		$pos["pct_naosei"] =   $this->porcentagem( $pos["num_naosei"], $pos["total"]); 
+
+
+		// dd( $colecaoPosicionamentos );
+
+		return $pos;
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public function calcularPorcentagem($doc_id = null, $user_id = null, $colecaoPosicionamentos = null)
 
@@ -197,6 +266,10 @@ class Posicionamento extends Model
 		return $colecaoPosicionamentos;
 
 	}
+
+
+
+
 
 
 

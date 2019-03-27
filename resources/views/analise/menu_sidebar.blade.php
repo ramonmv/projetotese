@@ -6,12 +6,25 @@
 		<input type="text" placeholder="Search" class="input-reset ba b--black-20 pa1 br2 f5 w-100" />
 	</form>
 
-<h2 class="ttu mt0 mb2 f6 fw5 silver">Painel informativo</h2>
+
+	<h2 class="ttu mt0 mb2 f6 fw5 silver">Retornar ao Texto</h2>
+	<ul class="list pl0 mt0 mb4">
+		<li class="mb2">
+			<a href="/abrir/{{ $doc->id }}" class="block link dim blue">Acesse</a>
+			{{-- <a href="{{ url()->current() }}?p=1" class="block link dim blue">Acervo</a> --}}
+		</li>
+	</ul>
+
+	<h2 class="ttu mt0 mb2 f6 fw5 silver">Painel informativo</h2>
 	<ul class="list pl0 mt0 mb4">
 		<li class="mb2">
 			<a href="{{ url()->current()  }}" class="block link dim blue">Inicial</a>
 			{{-- <a href="{{ url()->current() }}?p=1" class="block link dim blue">Acervo</a> --}}
 		</li>
+		<li class="mb2">
+			<a href="{{ url()->current()  }}?s=6" class="block link dim blue">Sobre o texto</a>
+			{{-- <a href="{{ url()->current() }}?p=1" class="block link dim blue">Acervo</a> --}}
+		</li>		
 		<li class="mb2">
 			<a href="{{ url()->current() }}?s=10" class="block link dim blue">Sobre a leitura</a>
 		</li>
@@ -48,16 +61,16 @@
 	<h2 class="ttu mt0 mb2 f6 fw5 silver">Colabore +</h2>
 	<ul class="list pl0 mt0 mb2">
 		<li class="mb2">
-			<a href="{{ url()->current() }}?s=6" class="block link dim blue">Respostas</a>
+			<a href="#" class="block link dim blue">Respostas</a>
 		</li>
 		<li class="mb2">
-			<a href="{{ url()->current() }}?s=6" class="block link dim blue">Certezas</a>
+			<a href="#" class="block link dim blue">Certezas</a>
 		</li>
 		<li class="mb2">
-			<a href="{{ url()->current() }}?s=7" class="block link dim blue">Dúvidas</a>
+			<a href="#" class="block link dim blue">Dúvidas</a>
 		</li>
 		<li>
-			<a href="{{ url()->current() }}?s=8" class="block link dim blue">Pendências</a>
+			<a href="#" class="block link dim blue">Pendências</a>
 		</li>
 	</ul>
 </nav>

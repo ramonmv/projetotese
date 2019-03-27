@@ -93,7 +93,7 @@
 				<li> 
 
 					<i class="fa fa-calendar-o" aria-hidden="true" style="color:#ced6d6"> &nbsp; </i> 
-					Data <a href="#" title="{{$duvida->created_at}}">{{$duvida->created_at->formatLocalized('%d de %B de %Y')}}</a>
+					Criado <a href="#" title="{{$duvida->created_at}}">{{$duvida->created_at->formatLocalized('%d de %B de %Y')}}</a>
 
 				</li>
 
@@ -122,7 +122,7 @@
 				<li>  
 					<i class="fa fa-question-circle" style="color:#ced6d6" aria-hidden="true">  &nbsp; </i> 
 					Eu gostaria de assinalar essa dúvida como esclarecida: 
-					<a href="#">
+					<a href="/duvida/esclarecer/{{$duvida->id}}">
 						<i class="fa fa-square-o fa-hover-hidden"> </i> 
 						<i class="fa fa-check-square-o fa-hover-show"> </i> 
 						Sim
@@ -252,7 +252,7 @@
 
 			<span class="itemDuvida"> 
 				<i class="fa fa-clock-o" aria-hidden="true"></i> 
-				Dúvida registrada {{$duvida->created_at->diffForHumans()}} 
+				Dúvida atualizada {{$duvida->updated_at->diffForHumans()}} 
 			</span>
 
 			<a href="#" class="respostinha pergunta_pos duvidass">
@@ -284,7 +284,7 @@
 					<li> 
 
 						<i class="fa fa-calendar-o" aria-hidden="true" style="color:#ced6d6"> &nbsp; </i> 
-						Data <a href="#" title="{{$duvida->created_at}}">{{$duvida->created_at->diffForHumans()}}</a>
+						Criado <a href="#" title="{{$duvida->created_at}}">{{$duvida->created_at->diffForHumans()}}</a>
 
 					</li>
 
@@ -312,8 +312,8 @@
 				<ul class="xdetalhes">
 					<li>  
 						<i class="fa fa-question-circle" style="color:#ced6d6" aria-hidden="true">  &nbsp; </i> 
-						Eu gostaria de assinalar essa dúvida como esclarecida: 
-						<a href="#">
+						Eu gostaria de assinalar essa dúvida como NÃO esclarecida: 
+						<a href="/duvida/reconsiderar/{{$duvida->id}}">
 							<i class="fa fa-square-o fa-hover-hidden"> </i> 
 							<i class="fa fa-check-square-o fa-hover-show"> </i> 
 							Sim

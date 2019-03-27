@@ -1,4 +1,4 @@
-<div class="sidebar-module sidebar-module-inset">
+<div class="sidebar-module sidebar-module-inset menuAcervo">
 
     <h3>Meu Acervo</h3>
 
@@ -22,3 +22,34 @@
     </ol>
     
 </div>
+
+<script type="text/javascript">
+  
+  jquery('.menuAcervo').hide();
+
+  jquery(function() {
+
+      jquery(window).scroll(function() {
+      
+          var scroll = jquery(window).scrollTop();
+
+          if (scroll >= 100) 
+
+          {
+
+            jquery('.menuAcervo').fadeIn();
+           
+          } 
+
+          else 
+
+          {
+           
+            jquery('.menuAcervo').fadeOut();
+            
+          }
+      });
+  });
+
+
+</script>
