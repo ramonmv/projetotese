@@ -742,7 +742,7 @@ class DocsController extends Controller
 				//dd(request()->all());
 
 				//$docs = Docs::all();
-		$docs = Doc::latest()->get();
+		$docs = Doc::where('publico',1)->latest()->get();
 
 //        dd($docs);
 		return view('docs',compact('docs'));
