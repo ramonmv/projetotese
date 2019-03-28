@@ -685,8 +685,9 @@ function exibirCarrosselDuvidas()
 function fecharCarrossel() 
 
 {
+  jquery("#BlackScreen_Respostas").hide(600);
 
-  jquery("BlackScreen_Duvidas").hide(600);
+  jquery("BlackScreen_Duvidas").hide(600); 
 
   jquery(".LightBox").hide(600);
 
@@ -986,7 +987,7 @@ jquery(document).ready(function(){
 
       //carrossel_duvidasInRespostas = true , quando verificado que há >0 no vetor duvidas_outros 
       // if(carrossel_duvidasInRespostas){  
-      if(adminLimiteQtdPosicionamentos < contador_itemCarrossel ){
+      if(adminLimiteQtdPosicionamentos <= contador_itemCarrossel ){
 
           //Acesso - Registro ao clicar fora e fechar o carrossel  
           salvarDesistencia(doc_id);

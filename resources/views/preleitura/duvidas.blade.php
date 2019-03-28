@@ -14,7 +14,7 @@
 
 			<p >
 
-				Após a leitura do título e do resumo do documento, você conseguiria elaborar suas dúvidas a respeito? Entendemos que as dúvidas são temporárias e elas podem ser manifestadas por de incertezas, inquietações sob forma de afirmativas, negações ou questões sobre o assunto. As dúvidas podem estar associadas ao assunto central do documento ou aos aspectos relacionados, destacados pelo resumo.     
+				Após a leitura do título e do resumo do documento, você conseguiria elaborar suas dúvidas a respeito? Entendemos que as dúvidas são temporárias e podem ser manifestadas por meio de incertezas e inquietações - momentâneas ou persistentes. As dúvidas podem ser formalizadas sob formas de afirmações, negações ou questões sobre o assunto. As dúvidas podem estar associadas ao assunto central ou aos aspectos relacionados, conforme destacados no resumo.     
 
 			</p>     
 

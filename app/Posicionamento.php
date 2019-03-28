@@ -158,7 +158,8 @@ class Posicionamento extends Model
 	public function porcentagem($x, $total)
 
 	{
-		return round(( $x * 100 ) / $total);
+		
+		return ($total == 0)? 0 : round(( $x * 100 ) / $total);
 
 	}
 
