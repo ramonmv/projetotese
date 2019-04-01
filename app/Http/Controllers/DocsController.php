@@ -349,22 +349,21 @@ class DocsController extends Controller
 		// $numMinimoEsclarecimenos = 3; //@todo admin deve setar
 
 
-
 		// DUVIDAS
 		$Duvida = new Duvida(); 
-		$duvidas  =  $Duvida->recuperarDuvidas($id);
-		$duvidasEsclarecidas  =  $Duvida->recuperarDuvidasEsclarecidas($id);
-		$duvidasNaoEsclarecidas  =  $Duvida->recuperarDuvidasNaoEsclarecidas($id);
+		$duvidas  =  $Duvida->recuperarDuvidas($id,$user_id);
+		$duvidasEsclarecidas  =  $Duvida->recuperarDuvidasEsclarecidas($id,$user_id);
+		$duvidasNaoEsclarecidas  =  $Duvida->recuperarDuvidasNaoEsclarecidas($id,$user_id);
 
-
+		//CERTEZAS
 		$Certeza = new Certeza(); 
-		$certezas  =  $Certeza->recuperarCertezas($id);
+		$certezas  =  $Certeza->recuperarCertezas($id,$user_id);
 
-
+		// RESPOSTAS
 		$Pergunta = new Pergunta();	
-		$perguntas 			   = $Pergunta->colecaoPerguntas($doc->id);	
-		$perguntasComRespostas = $Pergunta->colecaoPerguntasComRespostas($doc->id);
-		$perguntasSemRespostas = $Pergunta->colecaoPerguntasSemRespostas($doc->id );
+		$perguntas 			   = $Pergunta->colecaoPerguntas($doc->id,$user_id);	
+		$perguntasComRespostas = $Pergunta->colecaoPerguntasComRespostas($doc->id,$user_id);
+		$perguntasSemRespostas = $Pergunta->colecaoPerguntasSemRespostas($doc->id,$user_id);
 
 
 
@@ -381,6 +380,7 @@ class DocsController extends Controller
 
 
  		// Recuperar a lista de acessos para a subpagina timeline/sobre suas ações
+ 		// 	TIMELINE 
 		$Acesso = new Acesso();
 		$acessos = $Acesso->recuperarListaAcessos($doc->id, $user_id);
 
@@ -401,15 +401,15 @@ class DocsController extends Controller
 
 		// PAGINA POSICIONAMENTO
 		$pos = new Posicionamento();
-		$listaPosicionamentos = $pos->recuperarPosicionamentos($doc->id);
-		$posicionamentosEmGrupo = $pos->recuperarPosicionamentosAgrupados($doc->id);
-		$listaPosicionamentos = $pos->calcularPorcentagem(null, null, $listaPosicionamentos);
+		$listaPosicionamentos = $pos->recuperarPosicionamentos($doc->id,$user_id);
+		$posicionamentosEmGrupo = $pos->recuperarPosicionamentosAgrupados($doc->id,$user_id);
+		$listaPosicionamentos = $pos->calcularPorcentagem(null, null, $listaPosicionamentos,$user_id);
 
 
 		// PAGINA ESCLARECIMENTOS
-		$esclarecimentos = $this->recuperarDuvidasEsclarecidasPeloUser( $doc->id	);
-		$duvidasPuladas = $Acesso->recuperarDuvidasPuladas( $doc->id	);
-		$duvidasApropriadas = $Acesso->recuperarDuvidasApropriadas( $doc->id	);
+		$esclarecimentos = $this->recuperarDuvidasEsclarecidasPeloUser( $doc->id,$user_id	);
+		$duvidasPuladas = $Acesso->recuperarDuvidasPuladas( $doc->id,$user_id	);
+		$duvidasApropriadas = $Acesso->recuperarDuvidasApropriadas( $doc->id,$user_id	);
 
 
 

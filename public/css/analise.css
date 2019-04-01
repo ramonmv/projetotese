@@ -11,6 +11,19 @@ body {
 
 }
 
+.link_participantes_analise{
+  color:#747474;
+  text-decoration: none; 
+  
+
+}
+
+.link_participantes_analise a:hover {
+
+    color:red;
+    border-bottom: 1px solid red;
+}
+
 .textoanalise a{
   text-decoration: none;
   /*display: none;*/

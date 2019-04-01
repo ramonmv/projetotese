@@ -272,6 +272,37 @@
 			@endif  
 
 
+
+
+			@if( ($acesso->tipo->id == 20 ) )
+
+				<li class="time-label"> 
+					<span class="bg-gray"> Apresentou uma dúvida </span> 
+				</li>
+
+			@endif
+
+
+			@if( ($acesso->tipo->id == 21 ) )
+
+				<li class="time-label"> 
+					<span class="bg-gray"> Desistiu de responder </span> 
+				</li>
+
+			@endif
+
+
+			@if( ($acesso->tipo->id == 25 ) )
+
+				<li class="time-label"> 
+					<span class="bg-gray"> Pulou uma dúvida </span> 
+				</li>
+
+			@endif
+
+
+
+
 			@endforeach
 
 			<li> <i class="fa fa-clock-o bg-gray"></i> </li>

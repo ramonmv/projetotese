@@ -60,26 +60,38 @@
 			<span class="description" style="padding-top: 5px">
 				<i style="color:#ced6d6;" class="fa fa-pencil" aria-hidden="true"></i>
 				<span style="color:#747474;padding-right: 9px;" class="font-roxo">
-					Respostas ({{ count($user->recuperarPerguntasComRespostas($doc->id)) }}) 
+					<a class="link_participantes_analise" href="{{ url()->current()  }}?s=2&u={{ $user->id}}"> 
+						Respostas ({{ count($user->recuperarPerguntasComRespostas($doc->id)) }}) 
+					</a>
 				</span>  
 				
 				<i style="color:#ced6d6;" class="fa fa-question-circle" aria-hidden="true"></i>
 				<span style="color:#747474;padding-right: 9px;">
+					<a class="link_participantes_analise" href="{{ url()->current()  }}?s=1&u={{ $user->id}}"> 
 					Dúvidas ({{ count($user->recuperarDuvidasNaoEsclarecidas($doc->id)) }} - {{ count($user->recuperarDuvidasEsclarecidas($doc->id)) }}) 
+					</a>
 				</span>  
 
 				<i style="color:#ced6d6;" class="fa fa-check-circle-o" aria-hidden="true"></i>
 				<span style="color:#747474;padding-right: 9px;">
+					<a class="link_participantes_analise" href="{{ url()->current()  }}?s=9&u={{ $user->id}}"> 
 					Certezas ({{ count($user->recuperarCertezas($doc->id)) }}) 
+					</a>
 				</span>  
 				
 				<i style="color:#ced6d6;" class="fa fa-commenting" aria-hidden="true"></i>
 				<span style="color:#747474;padding-right: 9px;">
-					Posicionamentos ({{ count($user->recuperarPosicionamentos($doc->id)) }}) 
+					<a class="link_participantes_analise" href="{{ url()->current()  }}?s=3&u={{ $user->id}}"> 
+						Posicionamentos ({{ count($user->recuperarPosicionamentos($doc->id)) }}) 
+					</a>
 				</span>  
 				
 				<i style="color:#ced6d6;" class="fa fa-comments" aria-hidden="true"></i>
-				<span style="color:#747474;padding-right: 9px;">Esclarecimentos ({{  count($user->recuperarDuvidasEsclarecidasPeloUser($doc->id)) }}) </span>  
+				<span style="color:#747474;padding-right: 9px;">
+					<a class="link_participantes_analise" href="{{ url()->current()  }}?s=4&u={{ $user->id}}"> 
+						Esclarecimentos ({{  count($user->recuperarDuvidasEsclarecidasPeloUser($doc->id)) }}) 
+					</a>
+				</span>  
 				
 				<i style="color:#ced6d6;" class="fa fa-book" aria-hidden="true"></i>
 				<span style="color:#747474;padding-right: 9px;">Tempo de Leitura ({{ $user->recuperarTempoLeituraFormatadoCompactado($doc->id) }}) </span>  				
