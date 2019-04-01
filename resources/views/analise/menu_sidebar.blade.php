@@ -15,6 +15,36 @@
 		</li>
 	</ul>
 
+
+
+	@if($autor)
+
+	<h2 class="ttu mt0 mb2 f6 fw5 silver">Mediador</h2>
+	<ul class="list pl0 mt0 mb4">
+		<li class="mb2">
+			<a href="{{ url()->current()  }}?s=11" class="block link dim blue">Configurações</a>
+			{{-- <a href="{{ url()->current() }}?p=1" class="block link dim blue">Acervo</a> --}}
+		</li>
+		<li class="mb2">
+			<a href="{{ url()->current()  }}?s=12" class="block link dim blue">Participantes</a>
+			{{-- <a href="{{ url()->current() }}?p=1" class="block link dim blue">Acervo</a> --}}
+		</li>		
+		<li class="mb2">
+			<a href="{{ url()->current() }}?s=13" class="block link dim blue">Acervo geral</a>
+		</li>
+		<li class="mb2">
+			<a href="{{ url()->current() }}?s=14" class="block link dim blue">Todas as respostas</a>
+		</li>
+
+	</ul>
+
+	@endif
+
+
+
+
+
+
 	<h2 class="ttu mt0 mb2 f6 fw5 silver">Painel informativo</h2>
 	<ul class="list pl0 mt0 mb4">
 		<li class="mb2">

@@ -57,7 +57,10 @@ class Certeza extends Model
 	{ 
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
-		return $this->where('doc_id', $doc_id)->where('user_id', $user_id)->get();	
+		return $this->where('doc_id', $doc_id)
+					->where('user_id', $user_id)
+					->where('deletado', 0)
+					->get();	
 	}
 
 

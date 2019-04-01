@@ -30,10 +30,8 @@ class Duvida extends Model
 	public function edit($id, $texto)
 
 	{
-		//$this->find($id);
 
 		$this->texto = trim($texto);
-
 		$this->save();
 
 	}
@@ -60,9 +58,7 @@ class Duvida extends Model
 	{ 
 
 		if(count($colecaoDuvidas) > 0 )
-		{
-
-			
+		{			
 
 			foreach ($colecaoDuvidas as $chave => $duvida) 
 			{
@@ -97,6 +93,7 @@ class Duvida extends Model
 
 		$colecaoDuvidas = $this->where('doc_id', $doc_id)
 								->where('user_id', $user_id)
+								->where('deletado', 0)
 								->get();	
 
 		$colecaoDuvidas = $this->inserirDuvidasApropriadasNaColecao($colecaoDuvidas);
@@ -114,9 +111,10 @@ class Duvida extends Model
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
 		$duvidas = $this->where('doc_id', $doc_id)
-		->where('esclarecida', 0)
-		->where('user_id', $user_id)
-		->get();
+						->where('esclarecida', 0)
+						->where('deletado', 0)
+						->where('user_id', $user_id)
+						->get();
 
 		$duvidas = $this->inserirDuvidasApropriadasNaColecao($duvidas);
 
@@ -131,6 +129,7 @@ class Duvida extends Model
 
 		$duvidas = $this->where('doc_id', $doc_id)
 						->where('esclarecida', 1)
+						->where('deletado', 0)
 						->where('user_id', $user_id)
 						->get();
 
@@ -145,9 +144,10 @@ class Duvida extends Model
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
 		$duvidas = $this->where('doc_id', $doc_id)
-		->where('apropriado', 1)
-		->where('user_id', $user_id)
-		->get();
+						->where('apropriado', 1)
+						->where('deletado', 0)
+						->where('user_id', $user_id)
+						->get();
 
 
 		return $duvidas;
@@ -163,6 +163,7 @@ class Duvida extends Model
 		//Duvida::
 		$duvidas_outros  = $this->where('doc_id', $doc_id)
 							->where('user_id', "<>" , $user_id )
+							->where('deletado', 0)
 							->with(['respostas' => function ($query) use ($user_id){
 							    $query->where('user_id',$user_id);
 							}])

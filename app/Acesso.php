@@ -179,6 +179,9 @@ class Acesso extends Model
 
 
 
+
+
+
 	// verificar se a ultima leitura iniciada foi finalizada
 	// Return true se já houve a primeira leitura
 	// Return false se NÃO houve a primeira leitura (nao há registros na BD : Acessos)
@@ -262,6 +265,11 @@ class Acesso extends Model
 
 			$horarioInicioLeitura = $Acesso_inicioLeitura->created_at;
 			
+		}
+
+		else{
+
+			$horarioInicioLeitura =  Carbon::now(); // ESPERO QUE SEJA APENAS PARA USER LEGADOS QUE NAO TIVERAM INICIO LEITURA
 		}
 
 		return $horarioInicioLeitura;
@@ -679,6 +687,54 @@ class Acesso extends Model
 
 
 
+	// Formatar o tempo total de leitura para ser apresentado formatado
+	// os minutos e segundos não estao multiplos de 60 apenas por uma questao estética
+	public function recuperarTempoLeituraFormatadoCompactado($doc_id, $user_id = null)
+	{
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;
+
+		// SOBRE O TEMPO DE LEITURA
+		$tempo = $this->recuperarTempoTotalLeitura($doc_id,$user_id); 
+		$tempo_detalhado = $this->recuperarTempoLeitura($doc_id, $user_id); // este oferece a quantidade de tempo total em horas. 		
+
+
+		//     1 (dias) 10h 56m 38s 
+		// 1 (dias) 11h 06m 02s
+		$dias = $tempo->d;
+		// $horas = $tempo->h;
+		$horas = $tempo_detalhado["horas"]; 
+		$min = $tempo_detalhado["minutos"]; 
+		$segundos = $tempo_detalhado["segundos"];;
+
+
+		if($horas > 71 )
+		{
+			$tempo_formatado = $dias." dias"; 
+		}
+		elseif ($min > 119) //98 
+		{
+			$tempo_formatado = $horas."h"; 	
+		}
+		elseif ($segundos > 119) // 98
+		{
+			$tempo_formatado = $min."min"; 		
+		}
+		else
+		{
+
+			$tempo_formatado = $segundos."s"; 
+		}
+
+		 // dd($tempo);
+		 // dd($tempo_detalhado);
+		 return $tempo_formatado;
+		
+		
+		 // return $tempo["completo"];
+	}
+
+
+
 
 
 
@@ -949,7 +1005,32 @@ class Acesso extends Model
 
 		}	
 
+		public function salvarDuvidaEsclarecida($doc_id, $duvida_id, $autoria = null)
 
+		{    	 
+
+			$this->salvar($doc_id, 30, $autoria, null, null, null, $duvida_id);
+		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
+
+		}
+
+		public function salvarExcluirDuvida($doc_id, $duvida_id, $autoria = null)
+
+		{    	 
+
+			$this->salvar($doc_id, 28, $autoria, null, null, null, $duvida_id);
+		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
+
+		}
+		
+		public function salvarReverterDuvidaEsclarecida($doc_id, $duvida_id, $autoria = null)
+
+		{    	 
+
+			$this->salvar($doc_id, 25, $autoria, null, null, null, $duvida_id);
+		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
+
+		}				
 
 
 //session()->getId() is the correct session ID.

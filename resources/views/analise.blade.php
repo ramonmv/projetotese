@@ -11,7 +11,11 @@
 	<link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
 	<link rel='stylesheet' href='https://unpkg.com/tachyons@4.7.1/css/tachyons.css'>
 	<link rel="stylesheet" href="/css/font/css/font-awesome.min.css">
+
+
+
 	{{-- <script type="text/javascript" src="code.jquery.com/jquery-2.0.2.js"></script> --}}
+	
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="{{ asset('css/analise.css') }}">
 	{{-- <link rel="stylesheet" href="{{ asset('css/timeline.css') }}"> --}}
@@ -53,6 +57,10 @@
 					@includeWhen($subPagina == 7 ,'analise.index')
 					@includeWhen($subPagina == 8 ,'analise.index')
 					@includeWhen($subPagina == 10 ,'analise.pag_leitura')
+					@includeWhen($subPagina == 11 ,'analise.admin.config')
+					@includeWhen($subPagina == 12 ,'analise.admin.participantes')
+					@includeWhen($subPagina == 13 ,'analise.admin.acervo')
+					@includeWhen($subPagina == 14 ,'analise.admin.respostas')
 					
 
 
@@ -71,6 +79,10 @@
 	<script  src="{{ asset('js/analise.js') }}"></script>
 
 
+<script type="text/javascript">
+
+
+</script>
 </body>
 
 </html>

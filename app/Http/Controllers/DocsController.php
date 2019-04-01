@@ -76,40 +76,6 @@ class DocsController extends Controller
 
 
 
-
-
-	// private function colecaoCertezas($doc_id, $user_id = null)
-
-	// {
-
-	// 	$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
-
-
-	// 	return Certeza::where('doc_id', $doc_id)->where('user_id', $user_id)->get();	
-
-
-	// }
-
-
-
-
-
-
-	// private function colecaoDuvidas($doc_id, $user_id = null)
-
-	// {
-
-	// 	$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
-
-	// 	return Duvida::where('doc_id', $doc_id)->where('user_id', $user_id)->get();		
-
-	// }
-
-
-
-
-
-
 	// verifica se as duas colecoes/vetores estão vazias 
 	// se não encontrar registros em ambas (soma das duas) 
 	private function verificaSeAcervoVazio($colecaoDuvidas, $colecaoCertezas)
@@ -348,22 +314,41 @@ class DocsController extends Controller
 
 
 
+	public function prepararStatusLeitura()
+
+	{
+
+
+
+
+
+
+	}
+
+
+
+
+
 
 
 	public function abrirAnalise(Request $request, $id)
 
 	{
 
-		
-
-		// /setlocale (LC_TIME, 'pt_BR');
-		// Carbon::setLocale('pt_BR');
-
 		$doc = Doc::find($id);
 
+		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
+		$autor = $this->verificarAutoria( $doc , auth()->id() );
+
+		$user_id = (is_null($request->u)) ? auth()->id() :  $request->u;	
+
+		// dd($request->session());
+
 		$subPagina = $request->s ; // Menu lateral (sidebar) GET URL?s=
-		
-		// $this->verificaSeLeituraFinalizada($doc->id);
+		$numMinimoPosicionamentos = 3; //@todo admin deve setar
+		// $numMinimoEsclarecimenos = 3; //@todo admin deve setar
+
+
 
 		// DUVIDAS
 		$Duvida = new Duvida(); 
@@ -371,27 +356,17 @@ class DocsController extends Controller
 		$duvidasEsclarecidas  =  $Duvida->recuperarDuvidasEsclarecidas($id);
 		$duvidasNaoEsclarecidas  =  $Duvida->recuperarDuvidasNaoEsclarecidas($id);
 
-		// $duvidas  =  $Duvida->recuperarDuvidas($id);
 
 		$Certeza = new Certeza(); 
 		$certezas  =  $Certeza->recuperarCertezas($id);
 
-		// dd($certezas);
 
-		$Pergunta = new Pergunta();
-		
+		$Pergunta = new Pergunta();	
 		$perguntas 			   = $Pergunta->colecaoPerguntas($doc->id);	
 		$perguntasComRespostas = $Pergunta->colecaoPerguntasComRespostas($doc->id);
 		$perguntasSemRespostas = $Pergunta->colecaoPerguntasSemRespostas($doc->id );
 
 
-		 // dd($perguntasSemRespostas);
-
-		$numPerguntasProgramadas = count($perguntas);
-		// $numMinimoEsclarecimenos = 3; //@todo admin deve setar
-		$numMinimoPosicionamentos = 3; //@todo admin deve setar
-
-		// $this->recuperarDuvidasOutrosRespondidas($doc->id);
 
 		$statusLeitura["numTotalPerguntas"] = count($perguntas);
 		$statusLeitura["numTotalRespostas"] = count($perguntasComRespostas);
@@ -401,23 +376,21 @@ class DocsController extends Controller
 		$statusLeitura["seLeituraFinalizada"] = $this->verificaSeLeituraFinalizada($doc->id) ; // boolean 
 		
 		$statusLeitura["seAcervoVazio"] = $this->verificaSeAcervoVazio($duvidas,$certezas) ; // boolean
-
 		$statusLeitura["seHaPedencias"] = $this->verificaSeHaPendencias($statusLeitura);
 		
 
 
-
  		// Recuperar a lista de acessos para a subpagina timeline/sobre suas ações
 		$Acesso = new Acesso();
-		$acessos = $Acesso->recuperarListaAcessos($doc->id);
+		$acessos = $Acesso->recuperarListaAcessos($doc->id, $user_id);
 
 		//SOBRE OS REGISTROS (INICIO E FIM) DE LEITURAS
 		$listaLeituras = $Acesso->formatarCiclosLeitura($doc->id); 
 
+
 		// SOBRE O TEMPO DE LEITURA
 		$tempoTotalLeitura = $Acesso->recuperarTempoTotalLeitura($doc->id); 
-		$tempo_detalhado = $this->recuperarTempoLeitura($doc->id); // este oferece a quantidade de tempo total em horas. 
-		
+		$tempo_detalhado = $this->recuperarTempoLeitura($doc->id); // este oferece a quantidade de tempo total em horas. 		
 		$statusLeitura["tempoTotalLeitura_compacto_formatado"] = $this->formatarTempoLeitura($tempoTotalLeitura, $tempo_detalhado); 
 		$statusLeitura["numLeiturasFinalizadas"] = $Acesso->calcularLeiturasFinalizadas($doc->id) ;
 		$statusLeitura["numLeiturasIniciadas"] = $Acesso->calcularLeiturasIniciadas($doc->id) ;
@@ -427,12 +400,10 @@ class DocsController extends Controller
 
 
 		// PAGINA POSICIONAMENTO
-
 		$pos = new Posicionamento();
 		$listaPosicionamentos = $pos->recuperarPosicionamentos($doc->id);
 		$posicionamentosEmGrupo = $pos->recuperarPosicionamentosAgrupados($doc->id);
 		$listaPosicionamentos = $pos->calcularPorcentagem(null, null, $listaPosicionamentos);
-		 // dd($listaPosicionamentos);
 
 
 		// PAGINA ESCLARECIMENTOS
@@ -441,7 +412,15 @@ class DocsController extends Controller
 		$duvidasApropriadas = $Acesso->recuperarDuvidasApropriadas( $doc->id	);
 
 
-		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas"));
+
+
+		// ADMIN - Participantes
+		$participantes = $doc->recuperarParticipantes($doc->id);
+
+
+
+
+		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas", "autor", "participantes"));
 	}
 
 

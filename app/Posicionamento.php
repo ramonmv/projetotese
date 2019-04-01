@@ -136,7 +136,7 @@ class Posicionamento extends Model
 	{
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
-		$posicionamentos = Posicionamento::where('user_id', auth()->id())
+		$posicionamentos = Posicionamento::where('user_id', $user_id)
 								->with(["resposta.user",'resposta.pergunta'])
 								->whereHas('resposta', function ($query) use ($doc_id) {
 
@@ -147,6 +147,7 @@ class Posicionamento extends Model
 
 								})->get();
 
+								
 		return $posicionamentos;
 
 	}	
@@ -185,6 +186,8 @@ class Posicionamento extends Model
 								->where('naosei', 1 )
 								->get();
 
+
+		
 
 		$pos["posicionamentos_concorda"] = $posicionamentos_concorda; 
 		$pos["posicionamentos_discorda"] = $posicionamentos_discorda; 
