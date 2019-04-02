@@ -36,11 +36,14 @@ class Doc extends Model
     {
 
         $user = new User();
-        $leitores =    $user->with('acessos')
-                            ->with(['acessos' => function ($query) use ($doc_id){
+        $leitores =    $user->with(['acessos' => function ($query) use ($doc_id){
+                                $query->where('doc_id',$doc_id)
+                                      ->where('tipo_id',1)->get();
+                            }])
+                            ->whereHas('acessos', function ($query) use ($doc_id){
                                 $query->where('doc_id',$doc_id)
                                       ->where('tipo_id',1);
-                            }])
+                            })
                             ->get();   
         
         // dd($leitores);
