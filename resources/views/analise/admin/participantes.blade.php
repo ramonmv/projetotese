@@ -11,7 +11,7 @@
 			</div>
 			<span class="progress-description">
 				
-				O material possui X leitores registrados
+				O material possui {{  count($participantes) }} leitores registrados
 				
 			</span>
 
@@ -94,7 +94,10 @@
 				</span>  
 				
 				<i style="color:#ced6d6;" class="fa fa-book" aria-hidden="true"></i>
-				<span style="color:#747474;padding-right: 9px;">Tempo de Leitura ({{ $user->recuperarTempoLeituraFormatadoCompactado($doc->id) }}) </span>  				
+				<span style="color:#747474;padding-right: 9px;">
+					<a class="link_participantes_analise" href="{{ url()->current()  }}?s=10&u={{ $user->id}}"> 
+						Tempo de Leitura ({{ $user->recuperarTempoLeituraFormatadoCompactado($doc->id) }}) </span>  	
+					</a>			
 			</span>
 
 		</div>

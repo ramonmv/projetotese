@@ -357,7 +357,7 @@ class Acesso extends Model
 	{ 
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;
 
-		$colecaoLeitura = $this->recuperarCiclosLeitura_invertido($doc_id);
+		$colecaoLeitura = $this->recuperarCiclosLeitura_invertido($doc_id,$user_id);
 
 		return $colecaoLeitura->first(); // primeiro pois a ordem foi invertida
 
@@ -371,7 +371,7 @@ class Acesso extends Model
 	{ 
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;
 
-		$acesso = $this->recuperarUltimoAcessoLeitura($doc_id);
+		$acesso = $this->recuperarUltimoAcessoLeitura($doc_id, $user_id);
 
 		return (  $acesso->tipo_id == 1    ) ? true :  false ; // primeiro pois a ordem foi invertida
 
@@ -441,7 +441,7 @@ class Acesso extends Model
 		$acessoFim = $this->recuperarUltimoFimLeitura($doc_id,$user_id);
 
 		// type Acesso
-		$ultimo_acessoLeitura = $this->recuperarUltimoAcessoLeitura($doc_id); 
+		$ultimo_acessoLeitura = $this->recuperarUltimoAcessoLeitura($doc_id,$user_id); 
 
 		// dd($colecaoLeitura );
 

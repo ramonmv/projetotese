@@ -340,6 +340,8 @@ class DocsController extends Controller
 		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
 		$autor = $this->verificarAutoria( $doc , auth()->id() );
 
+		// UTILIZADO PARA SUBSTITUIR AS INFORMAÇÕES DO USUÁRIO AUTENTICADO PELO USUARIO NA URL/GET PELA VARIAVEL U
+		// UTILIZADO NO SUBMENU LATERAL ANÁLISE>MEDIADOR>PARTICIPANTES PARA ACESSAR OS DADOS DE CADA PARTICIPANTE EM SUAS REFERIDAS PÁG
 		$user_id = (is_null($request->u)) ? auth()->id() :  $request->u;	
 
 		// dd($request->session());
@@ -370,9 +372,9 @@ class DocsController extends Controller
 		$statusLeitura["numTotalPerguntas"] = count($perguntas);
 		$statusLeitura["numTotalRespostas"] = count($perguntasComRespostas);
 		$statusLeitura["numPerguntasPendentes"] = count($perguntasSemRespostas);
-		$statusLeitura["numDuvidasOutrosEsclarecidas"] = count($this->recuperarDuvidasOutrosEsclarecidas($doc->id));
-		$statusLeitura["numDuvidasOutrosPendentes"] = $this->calcularNumDuvidasOutrosPendentes($doc->id);
-		$statusLeitura["seLeituraFinalizada"] = $this->verificaSeLeituraFinalizada($doc->id) ; // boolean 
+		$statusLeitura["numDuvidasOutrosEsclarecidas"] = count($this->recuperarDuvidasOutrosEsclarecidas($doc->id,$user_id));
+		$statusLeitura["numDuvidasOutrosPendentes"] = $this->calcularNumDuvidasOutrosPendentes($doc->id ,$user_id);
+		$statusLeitura["seLeituraFinalizada"] = $this->verificaSeLeituraFinalizada($doc->id ,$user_id) ; // boolean 
 		
 		$statusLeitura["seAcervoVazio"] = $this->verificaSeAcervoVazio($duvidas,$certezas) ; // boolean
 		$statusLeitura["seHaPedencias"] = $this->verificaSeHaPendencias($statusLeitura);
@@ -385,17 +387,17 @@ class DocsController extends Controller
 		$acessos = $Acesso->recuperarListaAcessos($doc->id, $user_id);
 
 		//SOBRE OS REGISTROS (INICIO E FIM) DE LEITURAS
-		$listaLeituras = $Acesso->formatarCiclosLeitura($doc->id); 
+		$listaLeituras = $Acesso->formatarCiclosLeitura($doc->id, $user_id); 
 
 
 		// SOBRE O TEMPO DE LEITURA
-		$tempoTotalLeitura = $Acesso->recuperarTempoTotalLeitura($doc->id); 
-		$tempo_detalhado = $this->recuperarTempoLeitura($doc->id); // este oferece a quantidade de tempo total em horas. 		
+		$tempoTotalLeitura = $Acesso->recuperarTempoTotalLeitura($doc->id,$user_id); 
+		$tempo_detalhado = $this->recuperarTempoLeitura($doc->id,$user_id); // este oferece a quantidade de tempo total em horas. 		
 		$statusLeitura["tempoTotalLeitura_compacto_formatado"] = $this->formatarTempoLeitura($tempoTotalLeitura, $tempo_detalhado); 
-		$statusLeitura["numLeiturasFinalizadas"] = $Acesso->calcularLeiturasFinalizadas($doc->id) ;
-		$statusLeitura["numLeiturasIniciadas"] = $Acesso->calcularLeiturasIniciadas($doc->id) ;
+		$statusLeitura["numLeiturasFinalizadas"] = $Acesso->calcularLeiturasFinalizadas($doc->id,$user_id) ;
+		$statusLeitura["numLeiturasIniciadas"] = $Acesso->calcularLeiturasIniciadas($doc->id,$user_id) ;
 
-		$leituraIniciada_semFim = $Acesso->seLeituraPendente($doc->id);
+		$leituraIniciada_semFim = $Acesso->seLeituraPendente($doc->id,$user_id);
 
 
 
@@ -416,11 +418,11 @@ class DocsController extends Controller
 
 		// ADMIN - Participantes
 		$participantes = $doc->recuperarParticipantes($doc->id);
+		$acervoGeral = ($request->s == 13)?  $Duvida->recuperarDuvidasTodos($doc->id)   : null;
 
-
-
-
-		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas", "autor", "participantes"));
+		// dd($acervoGeral);
+		
+		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas", "autor", "participantes", "acervoGeral"));
 	}
 
 

@@ -83,6 +83,14 @@ class Duvida extends Model
 			}
 		}
 
+
+		$colecaoDuvidas = $colecaoDuvidas->sortByDesc(function ($colecao, $key) {
+		    return count($colecao['duvidas_apropriadas']);
+		});
+
+
+
+
 		return $colecaoDuvidas;
 	}
 
@@ -101,6 +109,23 @@ class Duvida extends Model
 		// dd($colecaoDuvidas);
 		return $colecaoDuvidas;
 
+	}
+
+
+	public function recuperarDuvidasTodos($doc_id)
+
+	{ 
+		
+
+		$duvidas = $this->where('doc_id', $doc_id)
+						->where('esclarecida', 0)
+						->where('apropriado', 0)
+						->where('deletado', 0)
+						->get();
+
+		$duvidas = $this->inserirDuvidasApropriadasNaColecao($duvidas);
+
+		return $duvidas;
 	}
 
 

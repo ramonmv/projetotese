@@ -59,7 +59,7 @@
 					@includeWhen($subPagina == 10 ,'analise.pag_leitura')
 					@includeWhen($subPagina == 11 ,'analise.admin.config')
 					@includeWhen($subPagina == 12 ,'analise.admin.participantes')
-					@includeWhen($subPagina == 13 ,'analise.admin.acervo')
+					@includeWhen($subPagina == 13 ,'analise.admin.acervoGeral')
 					@includeWhen($subPagina == 14 ,'analise.admin.respostas')
 					
 
