@@ -277,6 +277,16 @@ body {
         /*border-bottom: 1px solid #ddd;  ramon xxx */
         /*display:none;*/
       }
+      .itemResposta{
+        font-size: 10px;
+          color: #9da5a5 !important;;
+        /*position:relative;*/
+        /*width: 100%;*/
+        /*height: auto;*/
+        /*background-color: #fff;*/
+        /*border-bottom: 1px solid #ddd;  ramon xxx */
+        /*display:none;*/
+      }      
        .itemCerteza{
         font-size: 10px;
         color: #1098c2 !important;;

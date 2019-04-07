@@ -28,11 +28,9 @@
 
 	<ul class="list-inline iconesRespostinha">
 		<li>
-			<a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a>
+			<a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Os posicionamentos realizados por outros leitores:</a>
 		</li>
-		<li>
-			<a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-		</li>
+
 		<li class="pull-right">
 			<a href="#" class="link-black text-sm horarioComentario">
 

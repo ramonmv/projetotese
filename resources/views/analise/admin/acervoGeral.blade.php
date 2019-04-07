@@ -3,8 +3,8 @@
 		<span class="info-box-icon"><i class="fa fa-book"></i></span>
 
 		<div class="info-box-content">
-			<span class="info-box-text">Acervo Geral</span>
-			<span class="info-box-number">Lista de dúvidas e certezas de todos os participantes</span>
+			<span class="info-box-text">Todas as dúvidas</span>
+			<span class="info-box-number">Lista das dúvidas de todos os participantes</span>
 
 			<div class="progress">
 				<div class="progress-bar" style="width: 100%"></div>

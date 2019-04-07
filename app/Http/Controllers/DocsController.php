@@ -314,12 +314,12 @@ class DocsController extends Controller
 
 
 
-	public function prepararStatusLeitura()
+	public function autorizacao($autor, $user, $user_id)
 
 	{
 
 
-
+		// if( $autor )
 
 
 
@@ -336,13 +336,17 @@ class DocsController extends Controller
 	{
 
 		$doc = Doc::find($id);
+		
 
 		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
 		$autor = $this->verificarAutoria( $doc , auth()->id() );
 
 		// UTILIZADO PARA SUBSTITUIR AS INFORMAÇÕES DO USUÁRIO AUTENTICADO PELO USUARIO NA URL/GET PELA VARIAVEL U
 		// UTILIZADO NO SUBMENU LATERAL ANÁLISE>MEDIADOR>PARTICIPANTES PARA ACESSAR OS DADOS DE CADA PARTICIPANTE EM SUAS REFERIDAS PÁG
-		$user_id = (is_null($request->u)) ? auth()->id() :  $request->u;	
+		$user_id = (is_null($request->u)) ? auth()->id() 			 :  $request->u;	
+
+		
+
 
 		// dd($request->session());
 
@@ -366,6 +370,7 @@ class DocsController extends Controller
 		$perguntas 			   = $Pergunta->colecaoPerguntas($doc->id,$user_id);	
 		$perguntasComRespostas = $Pergunta->colecaoPerguntasComRespostas($doc->id,$user_id);
 		$perguntasSemRespostas = $Pergunta->colecaoPerguntasSemRespostas($doc->id,$user_id);
+		$todasPerguntasRespostas = $Pergunta->recuperarTodasPerguntasRespostas($doc->id); //subpag 14 (mediador-respostas)
 
 
 
@@ -414,15 +419,19 @@ class DocsController extends Controller
 		$duvidasApropriadas = $Acesso->recuperarDuvidasApropriadas( $doc->id,$user_id	);
 
 
-
+		// dd( count($esclarecimentos )) ;
 
 		// ADMIN - Participantes
 		$participantes = $doc->recuperarParticipantes($doc->id);
 		$acervoGeral = ($request->s == 13)?  $Duvida->recuperarDuvidasTodos($doc->id)   : null;
+		$user 	 = (is_null($request->u)) ? User::find(auth()->id()) :  User::find($user_id);	 // recuperar dados do usuer - do usuario da subpagina ou do logado, caso nao tenha o GET->u
+
+
+
 
 		// dd($acervoGeral);
 		
-		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas", "autor", "participantes", "acervoGeral"));
+		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas", "autor", "participantes", "acervoGeral", "todasPerguntasRespostas", "user"));
 	}
 
 

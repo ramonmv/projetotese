@@ -49,7 +49,17 @@ class User extends Authenticatable
 
     {
 
-        dd($this->acessos);
+        // dd($this->acessos);
+
+    }
+
+
+
+    public function recuperar($user_id)
+
+    {
+
+        return $this->find($user_id);
 
     }
 

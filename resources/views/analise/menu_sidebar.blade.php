@@ -19,20 +19,33 @@
 
 	@if($autor)
 
-	<h2 class="ttu mt0 mb2 f6 fw5 silver">Mediador</h2>
+	<h2 class="ttu mt0 mb2 f6 fw5 silver"> <i class="fa fa-cog silver" aria-hidden="true"></i> Mediador</h2>
 	<ul class="list pl0 mt0 mb4">
-{{-- 		<li class="mb2">
-			<a href="{{ url()->current()  }}?s=11" class="block link dim blue">Configurações</a>
-		</li> --}}
 		<li class="mb2">
-			<a href="{{ url()->current()  }}?s=12" class="block link dim blue">Participantes</a>
+			<a href="{{ url()->current()  }}?s=11" class="block link dim blue">
+			<i class="fa fa-caret-right" aria-hidden="true"></i>
+			Configurações</a>
+		</li>
+		<li class="mb2">
+			<a href="{{ url()->current()  }}?s=12" class="block link dim blue">
+			<i class="fa fa-caret-right" aria-hidden="true"></i>
+			Participantes</a>
 			{{-- <a href="{{ url()->current() }}?p=1" class="block link dim blue">Acervo</a> --}}
 		</li>		
 		<li class="mb2">
-			<a href="{{ url()->current() }}?s=13" class="block link dim blue">Acervo geral</a>
+			<a href="{{ url()->current() }}?s=13" class="block link dim blue">
+			<i class="fa fa-caret-right" aria-hidden="true"></i>
+			Todas as certezas</a>
 		</li>
 		<li class="mb2">
-			<a href="{{ url()->current() }}?s=14" class="block link dim blue">Todas as respostas</a>
+			<a href="{{ url()->current() }}?s=13" class="block link dim blue">
+			<i class="fa fa-caret-right" aria-hidden="true"></i>
+			Todas as dúvidas</a>
+		</li>
+		<li class="mb2">
+			<a href="{{ url()->current() }}?s=14" class="block link dim blue">
+			<i class="fa fa-caret-right" aria-hidden="true"></i>
+			Todas as respostas</a>
 		</li>
 
 	</ul>

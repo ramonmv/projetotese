@@ -8,20 +8,21 @@
 	</div>
 	<div class="w-100 w-50-m w-33-l ph3 tc mb4 mb0-l">
 		<div class="w-50 w-50-m w-75-l center">
-			<doughnut :labels="[' Concordância', 'Discordância','Não sabe']" :data="[4,2,5]"></doughnut>
+			<doughnut :labels="[' Concordância', 'Discordância','Não sabe']" :data="[{{ count($posicionamentosEmGrupo['concorda']) }}  ,  {{ count($posicionamentosEmGrupo['discorda']) }}   ,  {{ count($posicionamentosEmGrupo['naosei']) }}]"></doughnut>
 		</div>
 		<h3 class="mt3 mb1 f6 fw5 silver">Após cada Resposta</h3>
 		<h4 class="dark-gray f3 fw3 mv0">Posicionamentos</h4>
 	</div>
 	<div class="w-100 w-50-m w-33-l ph3 tc mb4 mb0-l">
 		<div class="w-50 w-50-m w-75-l center">
-			<doughnut :labels="[' Respondidos', ' Desistência/pulou','Apropriadas']" :data="[4,10,5]"></doughnut>
+			<doughnut :labels="[' Respondidos', ' Desistência/pulou','Apropriadas']" :data="[ {{ count($esclarecimentos)}}  ,  {{ count($duvidasPuladas)}}  ,  {{ count($duvidasApropriadas)}}]"></doughnut>
 		</div>
 		<h3 class="mt3 mb1 f6 fw5 silver">Dúvidas dos outros</h3>
 		<h4 class="dark-gray f3 fw3 mv0">Esclarecimentos</h4>
+
 	</div>
 </div>
-
+{{-- {{ dd($posicionamentosEmGrupo)  }} --}}
 <div class="divide tc relative">
 	<h5 class="fw4 ttu mv0 dib bg-white ph3">Informações Quantitativas sobre suas ações</h5>
 </div>

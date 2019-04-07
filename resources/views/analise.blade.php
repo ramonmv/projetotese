@@ -12,8 +12,6 @@
 	<link rel='stylesheet' href='https://unpkg.com/tachyons@4.7.1/css/tachyons.css'>
 	<link rel="stylesheet" href="/css/font/css/font-awesome.min.css">
 
-
-
 	{{-- <script type="text/javascript" src="code.jquery.com/jquery-2.0.2.js"></script> --}}
 	
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -37,7 +35,16 @@
 
 				<article class="w-100 w-75-m w-75-l ph3-m ph3-l">
 					<header class="mb3">
-						<h2 class="ttu mt0 mb1 f6 fw5 blue">Painel de Informações sobre sua leitura</h2>
+						
+						{{-- {{ dd(  $user->id     ) }} --}}
+						@if( ($autor) && (isset($user->id)) && ( Auth::user()->id != $user->id )  )
+						
+							<h2 class="ttu mt0 mb1 f6 fw5 blue">Painel de Informações de <span style="color:red"> {{ $user->name}} </span> </h2>
+						@else
+							<h2 class="ttu mt0 mb1 f6 fw5 blue">Painel de Informações sobre sua leitura</h2>
+
+						@endif
+
 						<h4 class="fw3 dark-gray mt0 mb0">{{$doc->titulo}}</h4>
 					</header>
 					<hr class="o-90" />
@@ -60,7 +67,7 @@
 					@includeWhen($subPagina == 11 ,'analise.admin.config')
 					@includeWhen($subPagina == 12 ,'analise.admin.participantes')
 					@includeWhen($subPagina == 13 ,'analise.admin.acervoGeral')
-					@includeWhen($subPagina == 14 ,'analise.admin.respostas')
+					@includeWhen($subPagina == 14 ,'analise.admin.todasRespostas')
 					
 
 

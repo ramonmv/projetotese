@@ -8,13 +8,13 @@ use App\Posicionamento;
 class Pergunta extends Model
 {
 
-    protected $fillable = [
-        'texto', 'tipo', 'personalizado','conceito_id','doc_id','user_id'
-        ];
-    
+	protected $fillable = [
+		'texto', 'tipo', 'personalizado','conceito_id','doc_id','user_id'
+	];
 
 
-   public function add($texto, $tipo, $personalizado, $conceito_id, $doc_id, $user_id)
+
+	public function add($texto, $tipo, $personalizado, $conceito_id, $doc_id, $user_id)
 
 	{
 			// dd($texto);
@@ -33,7 +33,7 @@ class Pergunta extends Model
 			'doc_id' => $doc_id,
 			'user_id' => $user_id
 
-			]);
+		]);
 
 	}
 
@@ -51,6 +51,48 @@ class Pergunta extends Model
 
 
 
+	public function recuperarTodasPerguntasRespostas($doc_id)
+
+	{
+
+		
+		$perguntas =  $this->where('doc_id', $doc_id)
+							->with('user') 	
+							->with('respostas')
+							->get();						 
+
+
+
+		$pos = new Posicionamento();
+
+
+
+		foreach ($perguntas as $key => $pergunta) 
+
+		{
+			
+			// dd($pergunta->respostas[0]->posicionamentos);
+
+			// vetor de informacoes sobre posicionamentos
+			foreach ($perguntas[$key]->respostas as $index => $resposta) 
+
+			{
+				$perguntas[$key]->respostas[$index]->pos_info  = $pos->recuperarPosicionamentosPorResposta($resposta->id);		
+
+			}	
+
+		}
+
+
+		// dd($perguntas);
+		return $perguntas;
+
+
+
+	}
+
+
+
 
 	public function colecaoPerguntasComRespostas($doc_id, $user_id = null)
 
@@ -61,15 +103,15 @@ class Pergunta extends Model
 
 		
 		$perguntas =  $this->where('doc_id', $doc_id)
-					->with('user') 	
-					->with(['respostas' => function ($query) use ($user_id){
-						$query->where('user_id', $user_id );
-					}])
-					->whereHas('respostas', function ($query) use ($user_id) {
-						$query->where('user_id', $user_id );
-					})
-					->get();						 
-		 
+							->with('user') 	
+							->with(['respostas' => function ($query) use ($user_id){
+								$query->where('user_id', $user_id );
+							}])
+							->whereHas('respostas', function ($query) use ($user_id) {
+								$query->where('user_id', $user_id );
+							})
+							->get();						 
+
 
 
 		$pos = new Posicionamento();
@@ -108,13 +150,13 @@ class Pergunta extends Model
 
 		
 		return Pergunta::where('doc_id', $doc_id)
-						 ->with('user') 
-					     ->with('respostas')
-						 ->whereDoesntHave('respostas', function ($query) use ($user_id) {
-							$query->where('user_id', $user_id );
-						  })
-						 ->get();
-		 
+		->with('user') 
+		->with('respostas')
+		->whereDoesntHave('respostas', function ($query) use ($user_id) {
+			$query->where('user_id', $user_id );
+		})
+		->get();
+
 	}
 
 
@@ -126,21 +168,21 @@ class Pergunta extends Model
 
 	}
 
-    public function conceito()
-   
-    {
-       
-        return $this->hasOne(Conceito::class);
+	public function conceito()
 
-    }
+	{
 
-    public function user()
-   
-    {
-       
-        return $this->belongsTo(User::class);
+		return $this->hasOne(Conceito::class);
 
-    }
+	}
+
+	public function user()
+
+	{
+
+		return $this->belongsTo(User::class);
+
+	}
 
 
 
