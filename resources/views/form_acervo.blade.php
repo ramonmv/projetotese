@@ -23,7 +23,7 @@
         <label for="exampleInputPassword1" style="color: {{ ($float != true)?"#464a4c" : "white" }}"> {{ $tituloLabel }} </label>
 
 
-        <textarea class="form-control" id="conteudoAcervo" name="conteudoAcervo" placeholder="conteudo"> </textarea>
+        <textarea class="form-control" style="color:{{$colorFont}}" id="conteudoAcervo" name="conteudoAcervo" placeholder="Digite aqui e após finalizar clique no botão abaixo para registrar."></textarea>
         <input type="hidden" id="docs_id"   value="{{ $doc->id}}" name="doc_id"   form="formAcervo" />
 
     </div>
@@ -40,7 +40,7 @@
         @endif
        
         @if ($btduvida)
-            <button name="confirmar" type="submit" class="btn btn-primary" id="btduvida" style='float: right;' >+ 1 Dúvida</button>
+            <button name="confirmar" type="submit" class="btn btn-primary" id="btduvida" style='float: right;background: DarkRed; border: 1px solid DarkRed;' >+ 1 Dúvida</button>
         @endif    
 
     </div>
@@ -67,10 +67,13 @@
 
         event.preventDefault();
 
-        jquery("#formAcervo").attr("action", "/acervo/certezas/add");
+        if(jquery("#conteudoAcervo").val().trim().length != 0  )         
+        {
 
-        jquery("#formAcervo").submit();
+          jquery("#formAcervo").attr("action", "/acervo/certezas/add");
+          jquery("#formAcervo").submit();
 
+        }
 
 
 
@@ -78,11 +81,16 @@
 
     jquery("#btduvida").click(function(){ 
 
+
         event.preventDefault();
 
-        jquery("#formAcervo").attr("action", "/acervo/duvidas/add");
+        if(jquery("#conteudoAcervo").val().trim().length > 2  )         
+        {
 
-        jquery("#formAcervo").submit();
+          jquery("#formAcervo").attr("action", "/acervo/duvidas/add");
+          jquery("#formAcervo").submit();
+
+        }
 
 
     });

@@ -33,7 +33,7 @@
         {{-- @include('abrir.menu_suspenso') --}}
 
 
-        @include('form_acervo',['float' => TRUE, 'btduvida' => TRUE,'btcerteza' => TRUE, 'tituloLabel' => "Escreva sua certeza ou dúvida sobre o assunto:"])
+        @include('form_acervo',['float' => TRUE, 'colorFont' => 'gray', 'btduvida' => TRUE,'btcerteza' => TRUE, 'tituloLabel' => "Escreva sua certeza ou dúvida sobre o assunto:"])
 
 {{-- 
         <p class="blog-post-meta" style="float: right;margin-top: -20px;" >

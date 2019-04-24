@@ -48,7 +48,10 @@ class AcervoController extends Controller
 		$acesso = new Acesso();
 		$acesso->salvarCerteza(request('doc_id'),request('conteudoAcervo'),$certeza_id);
 
+		
 
+
+		// return Redirect::to(URL::previous() . "?s=1");
 		return Redirect::to(URL::previous() . "?s=1");
 
 	}
@@ -199,17 +202,21 @@ class AcervoController extends Controller
 
 	{
 
+		$habilitarMenuVoltarAoTexto = true;
 
 		// Carbon::setLocale('pt')
 		//dd($id );
 
 		$doc = Doc::find($id);
+
+		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
+		$autor = $doc->verificarAutoria( auth()->id() );
 		
 		// $certezas = Certeza::where('doc_id', $id)->get();
-		$certezas = Certeza::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
+		// $certezas = Certeza::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
 		
 		// $duvidas = Duvida::where('doc_id', $id)->get();
-		$duvidas  =  Duvida::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
+		// $duvidas  =  Duvida::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
 
 		// dd(compact('doc', 'certezas', 'duvidas') );
 		// dd(session('autor') ); 
@@ -218,10 +225,18 @@ class AcervoController extends Controller
 		$acesso = new Acesso();
 		$acesso->salvarAcessoAcervo($id);		
 		
+				// preleitura Duvidas
+		$Duvida = new Duvida(); 
+		$duvidasNaoEsclarecidas  =  $Duvida->recuperarDuvidasNaoEsclarecidas($doc->id);
+		//CERTEZAS
+		$Certeza = new Certeza(); 
+		$certezas  =  $Certeza->recuperarCertezas($id);
 
+		//verifica se primeira leitura foi realizada
 		$statusLeitura["seLeituraFinalizada"] = $acesso->verificaSeLeituraFinalizada($doc->id) ; // boolean 
 
-		return view('acervo',compact('doc', 'certezas', 'duvidas','statusLeitura'));
+
+		return view('acervo',compact('doc', 'certezas', 'duvidas', "duvidasNaoEsclarecidas", 'statusLeitura', 'autor', 'habilitarMenuVoltarAoTexto'));
 		//return view('acervo',compact('doc'));
 	}
 

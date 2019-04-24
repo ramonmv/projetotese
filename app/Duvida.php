@@ -102,6 +102,7 @@ class Duvida extends Model
 		$colecaoDuvidas = $this->where('doc_id', $doc_id)
 								->where('user_id', $user_id)
 								->where('deletado', 0)
+								->orderBy('created_at', 'desc')
 								->get();	
 
 		$colecaoDuvidas = $this->inserirDuvidasApropriadasNaColecao($colecaoDuvidas);
@@ -121,6 +122,7 @@ class Duvida extends Model
 						->where('esclarecida', 0)
 						->where('apropriado', 0)
 						->where('deletado', 0)
+						->orderBy('created_at', 'desc')
 						->get();
 
 		$duvidas = $this->inserirDuvidasApropriadasNaColecao($duvidas);
@@ -139,6 +141,7 @@ class Duvida extends Model
 						->where('esclarecida', 0)
 						->where('deletado', 0)
 						->where('user_id', $user_id)
+						->orderBy('created_at', 'desc')
 						->get();
 
 		$duvidas = $this->inserirDuvidasApropriadasNaColecao($duvidas);
@@ -156,6 +159,7 @@ class Duvida extends Model
 						->where('esclarecida', 1)
 						->where('deletado', 0)
 						->where('user_id', $user_id)
+						->orderBy('updated_at', 'desc')
 						->get();
 
 		$duvidas = $this->inserirDuvidasApropriadasNaColecao($duvidas);
@@ -172,6 +176,7 @@ class Duvida extends Model
 						->where('apropriado', 1)
 						->where('deletado', 0)
 						->where('user_id', $user_id)
+						->orderBy('created_at', 'desc')
 						->get();
 
 
@@ -198,6 +203,7 @@ class Duvida extends Model
 								$q->where('user_id',$user_id);
 
 							})
+							->orderBy('created_at', 'desc')
 								// // ->whereHas('respostas')
 								//->latest()
 							->get();

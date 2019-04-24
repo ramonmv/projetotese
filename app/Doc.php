@@ -55,6 +55,33 @@ class Doc extends Model
 
 
 
+//@todo verificar co-autoria
+// implementar atribuição de co-autor, mediante convite do autor
+// estabelecer politicas de permissão para coautor
+    public function verificarAutoria($user_id, $doc = null) 
+
+    {
+
+        
+
+        if($this->user->id == $user_id)
+
+        {
+            session(['autor' => true]);
+            return true;
+
+        }
+        else
+
+        {
+            return false;
+
+        }
+
+    }
+
+
+
 
 
     public function conceitos()

@@ -229,7 +229,7 @@ class Acesso extends Model
 	// INICIO 
 	// Return true se já houve a primeira leitura 
 	// Return false se NÃO houve a primeira leitura (nao há registros na BD : Acessos)
-	public function verificarPrimeiraLeitura($doc_id, $user_id = null)
+	public function verificaSePrimeiraLeitura($doc_id, $user_id = null)
 
 	{ 
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	

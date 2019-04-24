@@ -2,14 +2,29 @@
     <div class="container">
       <nav class="nav blog-nav">
         <a class="nav-link {{-- active --}}" href="/">Principal</a>
-        <a class="nav-link" href="/abrir/{{ $doc->id }}">Texto</a>
-        <a class="nav-link" href="/docs/{{ $doc->id }}/acervo/">Acervo</a>
-        @if ( session()->get('autor', false) )
-            <a class="nav-link" href="/docs/{{ $doc->id }}/pergunta/">Perguntas</a>
-        @endif
-        @if($statusLeitura["seLeituraFinalizada"])
-            <a class="nav-link" href="/abrir/{{ $doc->id }}/analise">Revisão </a>
-        @endif
+
+        @isset($doc)
+
+            <a class="nav-link" href="/abrir/{{ $doc->id }}">Texto</a>
+            
+            
+            @isset($statusLeitura["seLeituraIniciada"])
+                @if($statusLeitura["seLeituraIniciada"])
+                    <a class="nav-link" href="/docs/{{ $doc->id }}/acervo/">Acervo</a>
+                @endif
+            @endisset            
+
+            @if ( $autor )
+                <a class="nav-link" href="/docs/{{ $doc->id }}/pergunta/">Perguntas</a>
+            @endif
+
+            @isset($statusLeitura)
+                @if($statusLeitura["seLeituraFinalizada"])
+                    <a class="nav-link" href="/abrir/{{ $doc->id }}/analise">Revisão </a>
+                @endif
+            @endisset
+
+        @endisset
         
         {{-- <a class="nav-link" href="/docs/status/{{ $doc->id }}">Status</a> --}}
         @if( Auth::check() )
@@ -37,4 +52,4 @@
 </nav>
 </div>
 </div>
-<script src="{{ asset('js/app.js') }}"></script>
+{{-- <script src="{{ asset('js/app.js') }}"></script> --}}

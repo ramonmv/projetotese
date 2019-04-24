@@ -28,17 +28,23 @@
 
 Route::get('/', 'DocsController@index');
 
-Route::get('/docs', 'DocsController@listarDocs');
-Route::get('/docs/editor', 'DocsController@editor');
+// Route::get('/docs', 'DocsController@listarDocs');
+Route::get('/docs', 'DocsController@listarMateriais');
+Route::get('/materiais', 'DocsController@listarMateriais');
+Route::get('/meus', 'DocsController@listarMeusMateriais')->name('meusMateriais');;
+Route::get('/documento', 'DocsController@listarMateriais');
+Route::get('/documentos', 'DocsController@listarMateriais');
+Route::get('/editor', 'DocsController@editor');
 Route::post('/docs/add', 'DocsController@add');
 
 // ABRIR DOCUMENTO =============================================================
 // ABRIR DOCUMENTO =============================================================
 // ABRIR DOCUMENTO =============================================================
-Route::get('/abrir/{id}/', 'DocsController@abrir');
+Route::get('/abrir/{id}/', 'DocsController@abrir')->name('abrirMaterial');
+Route::get('/{id}', 'DocsController@abrirResumo')->name('resumo');
 Route::get('/abrir/{id}/admin', 'DocsController@admin');
 Route::get('/abrir/{id}/revisao', 'DocsController@abrirRevisao');
-Route::get('/abrir/{id}/analise', 'DocsController@abrirAnalise')->name('pagina-analise');
+Route::get('/abrir/{id}/analise', 'DocsController@abrirAnalise')->name('analise');
 Route::get('/abrir/{id}/participantes', 'DocsController@listarParticipantes');
 Route::get('/abrir/{id}/acesso/{user_id}', 'AcessoController@listarAcessos');
 
@@ -109,7 +115,7 @@ Route::get('/posicionamento/save', 'PosicionamentoController@save');
 //acervo ========================================================================== 
 Route::post('/acervo/certezas/add', 'AcervoController@addCerteza');
 Route::post('/acervo/duvidas/add', 'AcervoController@addDuvida');
-Route::get('/docs/{id}/acervo', 'AcervoController@abrir');
+Route::get('/docs/{id}/acervo', 'AcervoController@abrir')->name('acervo');;
 // Route::get('/docs/{id}/acervo/duvidas/delete/{idduvida}', 'AcervoController@deleteDuvida');
 Route::get('/duvida/apagar/{id}', 'AcervoController@apagarDuvida');
 Route::get('/certeza/apagar/{id}','AcervoController@apagarCerteza');

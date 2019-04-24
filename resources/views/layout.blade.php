@@ -10,7 +10,9 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
         <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-        <script src="/js/ckeditor/ckeditor.js"></script>
+        {{-- <script src="/js/ckeditor/ckeditor.js"></script> --}}
+        {{-- <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script> --}}
+        <script src="https://cdn.ckeditor.com/ckeditor5/12.1.0/decoupled-document/ckeditor.js"></script>
 
         <!-- Styles -->
         <style>

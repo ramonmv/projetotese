@@ -146,7 +146,7 @@ class DocsController extends Controller
 
 		 // dd($tempo);
 		 // dd($tempo_detalhado);
-		 return $tempo_formatado;
+		return $tempo_formatado;
 		
 		
 		 // return $tempo["completo"];
@@ -225,17 +225,17 @@ class DocsController extends Controller
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 
 		$duvidas_outros  = Duvida::where('doc_id', $doc_id)
-							->where('user_id', "<>" , $user_id )
-							->with('respostas')
-							->whereHas('respostas', function($q) use ($user_id)
-							{
-																													
-								$q->where('user_id',$user_id);
+		->where('user_id', "<>" , $user_id )
+		->with('respostas')
+		->whereHas('respostas', function($q) use ($user_id)
+		{
 
-							})
+			$q->where('user_id',$user_id);
+
+		})
 								// // ->whereHas('respostas')
 								//->latest()
-							->get();
+		->get();
 
 
 		// dd($duvidas_outros);
@@ -329,6 +329,68 @@ class DocsController extends Controller
 
 
 
+	public function abrirResumo(Request $request, $id)
+
+	{
+
+		//constantes
+		$subpaginaDuvidas = 1;
+		$subpaginaCertezas = 2;
+		$habilitarMenu = true;
+
+
+		// Request $request;
+		// $request->session()->put('primeiraLeitura', true);
+		// $value = $request->session()->pull('key', 'default');
+
+		// $resumo = Resumo::find($id);
+		$doc = Doc::find($id);
+		$subPagina = $request->p ; // Menu lateral (sidebar) GET URL?s=
+
+		$avancar = (is_null($subPagina)? $subpaginaDuvidas: $subpaginaCertezas );
+
+
+		 // dd($request->s);
+
+		//@todo verificar a forma de como recuperar o resumo
+		// ??? necessario para o form_acervo utilizado na view por include ????
+		//TODO preciso verificar se é a funcao FIRST ou LASTEST a ser usada 
+		$resumo = $doc->resumo->first();     // where('active', 1)->first();
+		
+		$autor = $doc->verificarAutoria( auth()->id() );
+		
+		
+		
+		// $duvidas  =  Duvida::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
+
+
+		//Registro dos Acessos a página do Resumo
+		$acesso = new Acesso();
+		$acesso->salvarAcessoPagResumo($id);
+
+		// preleitura Duvidas
+		$Duvida = new Duvida(); 
+		$duvidasNaoEsclarecidas  =  $Duvida->recuperarDuvidasNaoEsclarecidas($doc->id);
+		//CERTEZAS
+		$Certeza = new Certeza(); 
+		$certezas  =  $Certeza->recuperarCertezas($id);
+
+		//verifica se primeira leitura foi realizada
+		$statusLeitura["seLeituraFinalizada"] = $acesso->verificaSeLeituraFinalizada($doc->id) ; // boolean 
+		$statusLeitura["seLeituraIniciada"] = $acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean 
+
+
+
+		return view('resumo', compact('resumo','doc', 'certezas', "autor", 'statusLeitura', "subPagina", "duvidasNaoEsclarecidas", "avancar", 'habilitarMenu'));
+
+	}
+
+
+
+
+
+
+
 
 
 	public function abrirAnalise(Request $request, $id)
@@ -339,11 +401,11 @@ class DocsController extends Controller
 		
 
 		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
-		$autor = $this->verificarAutoria( $doc , auth()->id() );
+		$autor = $doc->verificarAutoria(  auth()->id() );
 
 		// UTILIZADO PARA SUBSTITUIR AS INFORMAÇÕES DO USUÁRIO AUTENTICADO PELO USUARIO NA URL/GET PELA VARIAVEL U
 		// UTILIZADO NO SUBMENU LATERAL ANÁLISE>MEDIADOR>PARTICIPANTES PARA ACESSAR OS DADOS DE CADA PARTICIPANTE EM SUAS REFERIDAS PÁG
-		$user_id = (is_null($request->u)) ? auth()->id() 			 :  $request->u;	
+		$user_id = (is_null($request->u)) ? auth()->id()  :  $request->u;	
 
 		
 
@@ -372,6 +434,10 @@ class DocsController extends Controller
 		$perguntasSemRespostas = $Pergunta->colecaoPerguntasSemRespostas($doc->id,$user_id);
 		$todasPerguntasRespostas = $Pergunta->recuperarTodasPerguntasRespostas($doc->id); //subpag 14 (mediador-respostas)
 
+ 		// Recuperar a lista de acessos para a subpagina timeline/sobre suas ações
+ 		// 	TIMELINE 
+		$Acesso = new Acesso();
+		$acessos = $Acesso->recuperarListaAcessos($doc->id, $user_id);
 
 
 		$statusLeitura["numTotalPerguntas"] = count($perguntas);
@@ -379,17 +445,15 @@ class DocsController extends Controller
 		$statusLeitura["numPerguntasPendentes"] = count($perguntasSemRespostas);
 		$statusLeitura["numDuvidasOutrosEsclarecidas"] = count($this->recuperarDuvidasOutrosEsclarecidas($doc->id,$user_id));
 		$statusLeitura["numDuvidasOutrosPendentes"] = $this->calcularNumDuvidasOutrosPendentes($doc->id ,$user_id);
-		$statusLeitura["seLeituraFinalizada"] = $this->verificaSeLeituraFinalizada($doc->id ,$user_id) ; // boolean 
+		$statusLeitura["seLeituraFinalizada"] = $Acesso->verificaSeLeituraFinalizada($doc->id ,$user_id) ; // boolean
+		$statusLeitura["seLeituraIniciada"] = $Acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean  
 		
 		$statusLeitura["seAcervoVazio"] = $this->verificaSeAcervoVazio($duvidas,$certezas) ; // boolean
 		$statusLeitura["seHaPedencias"] = $this->verificaSeHaPendencias($statusLeitura);
 		
 
 
- 		// Recuperar a lista de acessos para a subpagina timeline/sobre suas ações
- 		// 	TIMELINE 
-		$Acesso = new Acesso();
-		$acessos = $Acesso->recuperarListaAcessos($doc->id, $user_id);
+
 
 		//SOBRE OS REGISTROS (INICIO E FIM) DE LEITURAS
 		$listaLeituras = $Acesso->formatarCiclosLeitura($doc->id, $user_id); 
@@ -541,16 +605,16 @@ class DocsController extends Controller
 
 
 		$posicionamentos = Posicionamento::where('user_id', auth()->id())
-							->with(["resposta.user",'resposta.pergunta'])
+		->with(["resposta.user",'resposta.pergunta'])
 							// ->with("resposta.pergunta")
-							->whereHas('resposta', function ($query) use ($id) {
+		->whereHas('resposta', function ($query) use ($id) {
 
-								$query->whereHas('pergunta', function ($query) use ($id) {
+			$query->whereHas('pergunta', function ($query) use ($id) {
 
-									$query->where('doc_id', $id);
-								});
+				$query->where('doc_id', $id);
+			});
 
-							})->get();
+		})->get();
 
 
 	    // colecao					
@@ -722,8 +786,6 @@ class DocsController extends Controller
 
 
 
-
-
 	public function listarDocs()
 
 	{
@@ -739,6 +801,40 @@ class DocsController extends Controller
 
 	}
 
+
+
+
+
+	public function listarMateriais()
+
+	{
+		
+		
+
+		$docs = Doc::where('publico',1)->latest()->get();
+
+		return view('materiais',compact('docs'));
+
+	}
+
+
+	public function listarMeusMateriais($user_id = null)
+
+	{
+
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+		
+		$docs = Doc::where('user_id',$user_id)
+					->latest()
+					->get();
+
+
+		// dd($docs);
+
+
+		return view('meusMateriais',compact('docs'));
+
+	}
 
 
 
@@ -868,7 +964,7 @@ class DocsController extends Controller
 		$Acesso = new Acesso();
 
 		// verificar se há houve uma primeira leitura , então false == primeira leitura
-		if( $Acesso->verificarPrimeiraLeitura($doc_id) == false  )
+		if( $Acesso->verificaSePrimeiraLeitura($doc_id) == false  )
 
 		{
 			// PRIMEIRA LEITURA
@@ -1018,7 +1114,7 @@ class DocsController extends Controller
 	// dd($duvidas_outros);
 	// $duvidas_outros = $this->filtrarRespostasJaRespondidas($duvidas_outros);
 
-		$autor = $this->verificarAutoria( $doc , auth()->id() );
+		$autor = $doc->verificarAutoria(  auth()->id() );
 
 	//Verifica que foi respondido algum conceito
 		if ($request->session()->has('conceitoid_Scroll')) 
@@ -1070,7 +1166,9 @@ class DocsController extends Controller
 		$acesso = new Acesso();
 		$acesso->salvarAcessoDocumento($id);
 
-		$statusLeitura["seLeituraFinalizada"] = $this->verificaSeLeituraFinalizada($doc->id) ;
+		//verifica se primeira leitura foi realizada
+		$statusLeitura["seLeituraFinalizada"] = $acesso->verificaSeLeituraFinalizada($doc->id) ; // boolean 
+		$statusLeitura["seLeituraIniciada"] = $acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean 
 
 		return view('abrir', compact('doc', 'certezas', 'duvidas','duvidas_outros','autor', 'conceitoid_Scroll', 'ativarCarrosselAvaliacao', 'respostas', 'habilitarAviso', 'statusLeitura') );
 
@@ -1133,27 +1231,7 @@ class DocsController extends Controller
 
 
 
-//@todo verificar co-autoria
-// implementar atribuição de co-autor, mediante convite do autor
-// estabelecer politicas de permissão para coautor
-	public function verificarAutoria($doc, $user_id) 
 
-	{
-		if($doc->user->id == $user_id)
-
-		{
-			session(['autor' => true]);
-			return true;
-
-		}
-		else
-
-		{
-			return false;
-
-		}
-
-	}
 
 	public function replace($find, $replace, $subject) 
 
@@ -1183,7 +1261,7 @@ class DocsController extends Controller
 
 	{
 
-		return view('editor');
+		return view('editor.novo');
 
 	}
 

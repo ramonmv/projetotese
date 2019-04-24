@@ -60,6 +60,7 @@ class Certeza extends Model
 		return $this->where('doc_id', $doc_id)
 					->where('user_id', $user_id)
 					->where('deletado', 0)
+					->orderBy('created_at', 'desc')
 					->get();	
 	}
 

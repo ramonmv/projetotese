@@ -1,17 +1,17 @@
 <div >
 	<div class="info-box bg-texto">
-		<span class="info-box-icon"><i class="fa fa-file"></i></span>
+		<span class="info-box-icon"><i class="fa fa-file-text"></i></span>
 
 		<div class="info-box-content">
-			<span class="info-box-text">Sobre o texto</span>
-			<span class="info-box-number">O tempo total de acesso é calculado a partir do primeiro acesso ao texto até a última finalização</span>
+			<span class="info-box-text">Sobre o material</span>
+			<span class="info-box-number"> O material foi elaborado sob um formato de hiperdocumento  </span>
 
 			<div class="progress">
 				<div class="progress-bar" style="width: 100%"></div>
 			</div>
 			<span class="progress-description">
 				
-				Sua leitura ainda não foi assinalada como finalizada.
+				Abaixo estão algumas informações sobre o material didático e uma apresentação do conteúdo
 
 			</span>
 
@@ -89,7 +89,7 @@ De La Taille, Y. (2008). Ética em pesquisa com seres humanos: dignidade e liber
 </header>
 
 <header class="mb3">
-	<h3 class="mt0 mb1 f6 fw5 font-roxo">Resumo</h3>
+	<h3 class="mt0 mb1 f6 fw5 font-roxo">Apresentação do Conteúdo</h3>
 	
 	<h4 class="fw3 dark-gray mt0 mb0">
 

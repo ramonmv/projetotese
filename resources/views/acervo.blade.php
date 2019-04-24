@@ -1,279 +1,415 @@
-@extends('layout_documento')
+<!DOCTYPE html>
+<html lang="pt_br" >
 
+<head>
+  <meta charset="UTF-8">
+  <title>Hiperdidático - Acervo de Dúvidas e Certezas</title>
+  <link rel="stylesheet" href="/css/font/css/font-awesome.min.css"> 
 
-@section('conteudo')
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+  <link rel='stylesheet' href='https://unpkg.com/tachyons@4.7.1/css/tachyons.css'>
 
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.0.2.js"></script>
 
-<div class="blog-header">
-  <div class="container">
-    <h1 class="blog-title">Meu Acervo</h1>
-    <p class="lead blog-description">Meu repositório de certezas provisórias e Dúvidas temporárias sobre <a href="/abrir/{{$doc->id}}"> {{$doc->titulo}}</a></p>
-  </div>
-</div>
+  <script>  jquery = jQuery.noConflict( true );  </script>
 
+  <link rel="stylesheet" href="{{ asset('css/analise.css') }}">
+  <script  src="{{ asset('js/app.js') }}"></script>
+</head>
 
+<body>
 
+  @include('documento.menuSuperior')
 
-<div class="container">
+  <main>
+    <div class="mw8 center pv4 ph3" id="dashboard">
+      <section class="flex-m flex-l nl3-m nr3-m nl3-l nr3-l">
 
-  <div class="row">
+        {{-- SIDEBAR --}}
+        @include('analise.menu_sidebar')
 
-    <div class="col-sm-8 blog-main"> <!-- /.blog-main -->
+        <article class="w-100 w-75-m w-75-l ph3-m ph3-l">
+          <header class="mb3">
 
-      <div class="blog-post">
+            <h2 class="ttu mt0 mb1 f6 fw5 blue">Acervo de dúvidas e certezas</h2>
+            <h4 class="fw3 dark-gray mt0 mb0">{{$doc->titulo}}</h4>
 
-        @include('form_acervo',['float' => FALSE, 'btduvida' => TRUE,'btcerteza' => TRUE, 'tituloLabel' => "Escreva sua certeza ou dúvida sobre o assunto:"])
-
-               
-        {{-- <hr> --}}
-        
-        <p class="blog-post-meta">
-
-           Lista das minhas <a href="#">Dúvidas</a>
-
-        </p>
-
-
-
-         <div class="accordion-container">
+          </header>
           
+          <hr class="o-90" />   <br>
 
-          @foreach ($duvidas as $duvida)
-           
-           @if (!$duvida->deletado)   
 
-              <div class="set">
+          <p class="orientacaoCerteza" >
 
-      
-                <a href="#" class="duvidass">
-                  <i class="fa fa-question-circle" style="color:#E7A394" aria-hidden="true"> 
-                  &nbsp;&nbsp;&nbsp;
-                  </i> 
+            Esta página é responsável por apresentar os itens do seu acervo de certezas e dúvidas. Aqui, também é possível atualizar o seu acervo: registrando, excluindo ou assinalando uma dúvida como esclarecida.  Ao clicar sobre a dúvida ou sobre a certeza será apresentado mais informações sobre ela, bem como as ações possíveis sobre ela.
 
-                  {{ $duvida->texto  }} 
-                  &nbsp;&nbsp;&nbsp;
-                  <i class="fa fa-chevron-down" style="color:#E7A394" aria-hidden="true">   </i>
+          </p>    
 
-                </a>
+          <p class="ttu mt4 mb4"></p>
 
-                <div class="content">
-                           
-                    <ul class="xdetalhes">
-                        <li> <i class="fa fa-pencil-square-o" aria-hidden="true" style="color:#BECCD5">  &nbsp; </i>
-                        Origem do Registro <a href="#">Acervo de Dúvidas e Certezas</a> </li>
-                
-                        <li> <i class="fa fa-calendar-o" aria-hidden="true" style="color:#BECCD5"> &nbsp; </i> 
-                        Data <a href="#" title="{{$duvida->created_at}}">{{$duvida->created_at->diffForHumans()}}</a></li>
-                
-                        <li> <i class="fa fa-file-text-o" aria-hidden="true" style="color:#BECCD5">  &nbsp; </i>
-                        Documento <a href="/abrir/{{$doc->id}}">{{$doc->titulo}}</a> </li> 
-                        
-                        {{-- <div class="example_cont"> --}}
-                        <li >  <i class="fa fa-question-circle" style="color:#E7A394" aria-hidden="true">  &nbsp; </i> 
-                        Dúvida esclarecida: 
-     
-                          @if($duvida->esclarecida == 1)
-                            <a href="/duvida/reconsiderar/{{$duvida->id}}">
-                                <i class="fa fa-square-o fa-hover-show"> </i> 
-                                <i class="fa fa-check-square-o fa-hover-hidden"> </i> 
-                                 Sim
-                            </a>
-                          @else
-                            <a href="/duvida/esclarecer/{{$duvida->id}}">
-                                <i class="fa fa-square-o fa-hover-hidden"> </i> 
-                                <i class="fa fa-check-square-o fa-hover-show"> </i> 
-                                 Sim
-                            </a>                          
-                          @endif  
-                        </li>
-                        <li >  &nbsp; </li>
-                        <li style="color:#923925"> Desejo excluir esta dúvida definitivamente:  &nbsp;
-                            <a href="/duvida/apagar/{{$duvida->id}}" style="color:#923925">
-                                <i class="fa fa-square-o fa-hover-hidden"> </i> 
-                                <i class="fa fa-check-square-o fa-hover-show"> </i> 
-                                 Sim
-                            </a>
-                        </li>   
-                        <li >  &nbsp; </li>                     
-                      {{-- </div> --}}
-                    </ul>
-                 
-                  
-                </div>
-      
-
-              </div>
-
-              @endif
-          @endforeach
-          
+          @include('form_acervo',['float' => FALSE, 'btduvida' => TRUE,'btcerteza' => TRUE ,'colorFont' => 'gray', 'tituloLabel' => "Escreva sua dúvida ou certeza (uma por vez) sobre o assunto:"])
 
 
 
 
-        </div> {{-- accordio --}}
+          {{-- DUVIDAS --}}
 
 
-
-        <br> 
-        <hr>
-
-        <p class="blog-post-meta">
-
-          Lista das minhas <a href="#">Certezas</a>
-
-        </p>
+          <br>
+          <hr class="o-90" />   <br>
+          <br>
 
 
-{{--         @foreach ($certezas as $certeza)
-
-      
-         <i class="fa fa-check-circle" style="color:#B0BAE7" aria-hidden="true"> 
-
-            &nbsp;&nbsp;&nbsp; 
-         
-         </i>  
-
-            {{ $certeza->texto  }}
-
-            &nbsp;&nbsp;&nbsp;  
-
-        <a href="#" data-idd="171"><i class="fa fa-chevron-down" style="color:#B0BAE7" aria-hidden="true">   </i> </a>
-        <div name="detalhes" class="detalhes" style='display: none;' id="171">
-          Lista de itens
-        </div>
+          <div class="subtitulo_acervo_duvidas">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Relação das suas dúvidas ainda não esclarecidas:
+          </div>
 
 
-        <br>
+          @if(count($duvidasNaoEsclarecidas) > 0  )
 
-        @endforeach --}}
+          <div class="accordion-container">
 
 
+            @foreach ($duvidasNaoEsclarecidas as $duvida)
 
-        <div class="accordion-container">
-
-          
-
-          @foreach ($certezas as $certeza)
-            
-           @if (!$certeza->deletado)   
+            @if (!$duvida->deletado)   
 
             <div class="set">
 
-            
-            <a href="#" >
-              <i class="fa fa-check-circle" style="color:#B0BAE7" aria-hidden="true"> 
-                &nbsp;&nbsp;&nbsp;
-              </i> 
+              <span class="itemDuvida"> 
+                <i class="fa fa-clock-o" aria-hidden="true"></i> 
+                Dúvida registrada {{$duvida->created_at->diffForHumans()}} 
+              </span>
 
-              {{ $certeza->texto  }}   
-              &nbsp;&nbsp;&nbsp;
-              <i class="fa fa-chevron-down" style="color:#B0BAE7" aria-hidden="true">   </i>
+              <a href="#" class="respostinha pergunta_pos duvidass">
+                {{ $duvida->texto  }}  &nbsp;&nbsp;&nbsp;
+                <i class="fa fa-chevron-down" style="color:#C54D32" aria-hidden="true">   </i>
+              </a>
 
-            </a>
 
-            <div class="content">
-             
-              <ul class="xdetalhes">
-                
-                <li> <i class="fa fa-pencil-square-o" aria-hidden="true" style="color:#BECCD5">  &nbsp; </i>
-                Origem do Registro <a href="#">Acervo de Dúvidas e Certezas</a> </li>
-                
-                <li> <i class="fa fa-calendar-o" aria-hidden="true" style="color:#BECCD5"> &nbsp; </i> 
-                Data <a href="#" title="{{$certeza->created_at}}">{{$certeza->created_at->diffForHumans()}}</a></li>
-                
+              <div class="content contentDuvidas">
 
-                <li> <i class="fa fa-file-text-o" aria-hidden="true" style="color:#BECCD5">  &nbsp; </i>
-                Documento <a href="/abrir/{{$doc->id}}">{{$doc->titulo}}</a> </li>
-                
-{{--                 <li> <i class="fa fa-commenting" aria-hidden="true" style="color:#BECCD5">  &nbsp; </i>
-                Contribuições: <a href="/abrir/{{$doc->id}}">3 Comentários</a> </li>
+                <div class="label-duvidas-conteudoInterno">
+                  <span> Informações complentares:</span>
+                </div>
 
-                <li> <i class="fa fa-thumbs-up" aria-hidden="true" style="color:#BECCD5">  &nbsp; </i>
-                Posicionamentos: <a href="/abrir/{{$doc->id}}">3 votos</a> </li>
- --}}
+                <ul class="xdetalhes">
+                  <li> 
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="color:#ced6d6">  &nbsp; </i>
 
-{{--                 <li style="color:#923925"> 
-                  <i class="fa fa-question-circle" style="color:#E7A394" aria-hidden="true">  &nbsp; </i> 
-                  Converter essa certeza em dúvida:  &nbsp;
-                  <a href="#" style="color:#923925">
-                    <i class="fa fa-square-o fa-hover-hidden"> </i> 
-                    <i class="fa fa-check-square-o fa-hover-show"> </i> 
-                    Sim
-                  </a>
-                </li> --}}
+                    @if(isset($duvida->duvida->user))
+                    Origem do Registro <a href="#">Acervo de Dúvidas e Certezas de {{$duvida->duvida->user->name}} </a> 
+                    @else
+                    Origem do Registro <a href="#">Meu Acervo de Dúvidas e Certezas</a> 
+                    @endif
+                  </li>
+                  <li> 
+                    <i class="fa fa-file-text-o" aria-hidden="true" style="color:#ced6d6">  &nbsp; </i>
+                    Documento <a href="/abrir/{{$doc->id}}">{{$doc->titulo}}</a> 
+                  </li> 
+                  <li> 
 
-                <li >  &nbsp; </li>
-                <li style="color:#31698A"> Desejo excluir esta certeza definitivamente:  &nbsp;
-                    <a href="/certeza/apagar/{{$certeza->id}}" tyle="color:#31698A">
-                        <i class="fa fa-square-o fa-hover-hidden"> </i> 
-                        <i class="fa fa-check-square-o fa-hover-show"> </i> 
-                         Sim
+                    <i class="fa fa-calendar-o" aria-hidden="true" style="color:#ced6d6"> &nbsp; </i> 
+                    Criado <a href="#" title="{{$duvida->created_at}}">{{$duvida->created_at->formatLocalized('%d de %B de %Y')}}</a>
+
+                  </li>
+
+
+
+                  <li> 
+                    <i class="fa fa-users" aria-hidden="true" style="color:#ced6d6">  &nbsp; </i>
+                    Numero de leitores que adicionaram esta dúvida: <a href="#">{{count($duvida->duvidas_apropriadas)}} leitores</a> 
+                  </li> 
+
+                  <li> 
+                    <i class="fa fa-commenting" aria-hidden="true" style="color:#ced6d6">  &nbsp; </i>
+                    Esta dúvida possui <a href="#">{{count($duvida->respostas)}} esclarecimentos</a> 
+                  </li>         
+
+                  <li >  &nbsp; </li>
+
+                </ul>
+
+                <div class="label-duvidas-conteudoInterno">
+                  <span> Ações sobre minha dúvida:</span>
+                </div>
+
+
+                <ul class="xdetalhes">
+                  <li>  
+                    <i class="fa fa-question-circle" style="color:#ced6d6" aria-hidden="true">  &nbsp; </i> 
+                    Eu gostaria de assinalar essa dúvida como esclarecida: 
+                    <a href="/duvida/esclarecer/{{$duvida->id}}">
+                      <i class="fa fa-square-o fa-hover-hidden"> </i> 
+                      <i class="fa fa-check-square-o fa-hover-show"> </i> 
+                      Sim
                     </a>
-                </li>   
-                <li >  &nbsp; </li>
+                  </li>
+
+                  <li> 
+                    <i class="fa fa-question-circle" style="color:#ced6d6" aria-hidden="true">  &nbsp; </i> 
+                    Desejo excluir esta dúvida definitivamente:  &nbsp;
+                    <a href="/duvida/apagar/{{$duvida->id}}" style="color:#C54D32">
+                      <i class="fa fa-square-o fa-hover-hidden"> </i> 
+                      <i class="fa fa-check-square-o fa-hover-show"> </i> 
+                      Sim
+                    </a>
+                  </li>   
+                  <li >  &nbsp; </li>
+
+                </ul>
 
 
-                {{-- </div> --}}
-              </ul>
-              
-              
-            </div>
-            
 
-          </div>
+                @if (count($duvida->respostas) > 0)
 
+                <div class="label-duvidas-conteudoInterno">
+                  <span> Abaixo a relação de tentativas de esclarecimentos da sua dúvida por outros leitores do documento</span>
+                </div>
+
+
+                @foreach ($duvida->respostas as $resposta)
+
+                <div class="postDuvidas">
+
+
+                  <div class="user-block">
+
+                    <img class="img-circle img-bordered-sm" src="https://success.salesforce.com/resource/1500940800000/sharedlayout/img/new-user-image-default.png" alt="user image">
+
+                    <span class="username">
+                      <a style="font-size:11px" href="#">{{ $resposta->user->name}}</a> 
+                      <span class="descricaoDuvidas">
+                        Tentou esclarecer sua dúvida - 
+                        <span class="horarioComentario"> {{$resposta->created_at->diffForHumans()}} </span> 
+                      </span> 
+                      <a href="#" class="pull-right"><i class="fa fa-comments-o"></i></a>
+                    </span>
+
+                    <span class="description">
+                      <i class="fa fa-quote-left coloracaoIcon"></i> 
+                      <span style="color:#747474">{{ $resposta->texto }} </span>  
+                    </span>
+
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                    {{-- {{ $resposta->texto}} --}}
+                  </p>
+
+                </div> {{-- post --}} 
+
+                @endforeach 
+
+                @else
+
+                <div class="label-duvidas-conteudoInterno">
+                  <span> Ainda não houve tentativas de esclarecimentos da sua dúvida por parte de outros leitores</span>
+                </div>
+
+                @endif
+
+                <br>
+
+              </div> {{-- content --}}
+
+            </div> {{-- set --}}
+
+            @endif
+            @endforeach
+
+
+
+
+          </div> {{-- accordio --}}
+
+
+          @else
+          <br>
+          <span class="itemDuvida">     
+            Não há registros de <strong> dúvidas </strong> no seu acervo.
+          </span>
+          <br><br>
           @endif
 
-          @endforeach
-          
+
+          {{-- FIM DUVIDAS --}}
 
 
 
 
-        </div> {{-- accordio --}}
-
-
-      </div>
-
-
-{{--       <nav class="blog-pagination">
-        <a class="btn btn-outline-primary" href="#">Somente as certezas</a>
-        <a class="btn btn-outline-primary " href="#">Somente as Dúvidas</a>
-      </nav>
- --}}
 
 
 
 
-    </div><!-- /.blog-main -->
-{{-- 
-    <div class="col-sm-3 offset-sm-1 blog-sidebar">
-
-     @include('abrir.menuLateral_meuAcervo')
-
-   </div><!-- /.blog-sidebar --> --}}
+          <br>
 
 
 
- </div><!-- /.row -->
-
-</div><!-- /.container -->
 
 
 
+
+
+          {{-- CERTEZAS --}}
+
+
+
+
+          <div class="subtitulo_acervo_duvidas">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Relação das suas certezas
+          </div>
+
+
+
+          @if(count($certezas) > 0  )
+
+          <div class="accordion-container">
+
+
+            @foreach ($certezas as $certeza)
+
+            @if (!$certeza->deletado)   
+
+            <div class="set">
+
+              <span class="itemCerteza"> 
+                <i class="fa fa-clock-o" aria-hidden="true"></i> 
+                Certeza registrada {{$certeza->created_at->diffForHumans()}} 
+              </span>
+
+              <a href="#" class="respostinha pergunta_pos duvidass">
+                {{ $certeza->texto  }}  &nbsp;&nbsp;&nbsp;
+                <i class="fa fa-chevron-down" style="color:#1098c2" aria-hidden="true">   </i>
+              </a>
+
+
+              <div class="content contentDuvidas">
+
+                <div class="label-duvidas-conteudoInterno">
+                  <span> Informações complentares:</span>
+                </div>
+
+                <ul class="xdetalhes">
+                  <li> 
+                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="color:#ced6d6">  &nbsp; </i>
+
+                    Origem do Registro <a href="#">Meu Acervo de Dúvidas e Certezas</a> 
+
+                  </li>
+                  <li> 
+                    <i class="fa fa-file-text-o" aria-hidden="true" style="color:#ced6d6">  &nbsp; </i>
+                    Documento <a href="/abrir/{{$doc->id}}">{{$doc->titulo}}</a> 
+                  </li> 
+                  <li> 
+
+                    <i class="fa fa-calendar-o" aria-hidden="true" style="color:#ced6d6"> &nbsp; </i> 
+                    Data <a href="#" title="{{$certeza->created_at}}">{{$certeza->created_at->formatLocalized('%d de %B de %Y')}}</a>
+
+                  </li>
+
+
+
+                  <li >  &nbsp; </li>
+
+                </ul>
+
+                <div class="label-duvidas-conteudoInterno">
+                  <span> Ações sobre minha certeza:</span>
+                </div>
+
+
+                <ul class="xdetalhes">
+
+
+                  <li> 
+                    <i class="fa fa-question-circle" style="color:#ced6d6" aria-hidden="true">  &nbsp; </i> 
+                    Desejo excluir esta certeza definitivamente:  &nbsp;
+                    <a href="/certeza/apagar/{{$certeza->id}}" style="color:#C54D32">
+                      <i class="fa fa-square-o fa-hover-hidden"> </i> 
+                      <i class="fa fa-check-square-o fa-hover-show"> </i> 
+                      Sim
+                    </a>
+                  </li>   
+                  <li >  &nbsp; </li>
+
+                </ul>
+
+
+                <br>
+
+              </div> {{-- content --}}
+
+            </div> {{-- set --}}
+
+            @endif
+            @endforeach
+
+
+
+
+          </div> {{-- accordio --}}
+
+
+          @else
+          <br>
+          <span class="itemDuvida">     
+            Não há registros de <strong> certezas </strong> no seu acervo.
+          </span>
+          <br><br>
+          @endif
+
+
+
+          {{-- CERTEZAS --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </article>
+      </section>
+    </div>
+  </main>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
 
 <script type="text/javascript">
 
-jquery("#divFormAcervo").show(1000);
+  $("#divFormAcervo").show(1000);
 
 
-$(document).ready(function(){
-  $(".set > a").on("click", function(){
+  $(document).ready(function(){
+    $(".set > a").on("click", function(){
      event.preventDefault();
-    if($(this).hasClass('active'))
-    {
+     if($(this).hasClass('active'))
+     {
       $(this).removeClass("active");
       $(this).siblings('.content').slideUp(200);
 
@@ -293,14 +429,8 @@ $(document).ready(function(){
     }
     
   });
-});
+  });
 
 </script>
 
-
-
-
-@endsection
-
-@include('formModal_resposta')
-  
+</html>
