@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Resumo extends Model
+class Sintese extends Model
 {
     //
 
@@ -38,15 +38,40 @@ class Resumo extends Model
 
     $this->save();
 
-
-// $flight = App\Flight::find(1);
-
-// $flight->name = 'New Flight Name';
-
-// $flight->save();
-
   }
+
+
+  // public function minhaSintese()
+
+  // {
+  //   //$this->find($id);
+
+  // return true;
+
+
+
+  // }
+
+
+
+
+  public function recuperarSintese($doc_id, $user_id = null)
+
+  {
+
+    
+
+    $user_id = (is_null($user_id)) ? auth()->id() :  $user_id;  
+    
+    $sintese =  $this->where('doc_id', $doc_id)
+                     ->where('user_id', $user_id)  
+                     ->first();        
+                        // ->with('doc')
   
+    return $sintese;                           
+  }
+
+            
 	public function doc()
 
 	{

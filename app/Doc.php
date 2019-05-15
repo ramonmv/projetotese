@@ -5,10 +5,22 @@ namespace App;
 //use Illuminate\Database\Eloquent\Model;
 
 use App\User;
+use App\Sintese;
 
 class Doc extends Model
 {
+
+   protected $fillable = [
+        'titulo', 'conteudo','user_id'
+        ];
+
     //
+
+   // public function __construct() {
+       
+   //      // $this->minhaSintese = new Sintese();
+
+   // }
 
 
 
@@ -16,14 +28,12 @@ class Doc extends Model
 
     {
 
+
     	return $this->create([
-
-  			// 'titulo' => request('titulo'),
-     //        'conteudo' => request('conteudo')
-
-            'user_id' => $user_id,
+  		            
             'titulo' => $titulo,
-            'conteudo' => $conteudo
+            'conteudo' => $conteudo,
+            'user_id' => $user_id
 
         ]);
 
@@ -80,7 +90,14 @@ class Doc extends Model
 
     }
 
+    public function edit($titulo, $conteudo)
 
+    {
+
+        $this->titulo = trim($titulo);
+        $this->conteudo = trim($conteudo);
+        $this->save();
+    }
 
 
 
@@ -97,6 +114,14 @@ class Doc extends Model
     {
 
         return $this->hasMany(Resumo::class);
+
+    }
+
+    public function sintese()
+
+    {
+
+        return $this->hasMany(Sintese::class);
 
     }
 

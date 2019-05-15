@@ -115,6 +115,9 @@ class PerguntaController extends Controller
 		//dd($id );
 
 		$doc = Doc::find($id);
+
+		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
+		$autor = $doc->verificarAutoria(  auth()->id() );
 		
 		// $certezas = Certeza::where('doc_id', $id)->get();
 		$perguntas = Pergunta::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
@@ -130,7 +133,7 @@ class PerguntaController extends Controller
 		
 		$statusLeitura["seLeituraFinalizada"] = true ;
 
-		return view('pergunta',compact('doc', 'perguntas','textoConceito','statusLeitura'));
+		return view('pergunta',compact('doc', 'perguntas','textoConceito','statusLeitura', "autor"));
 		//return view('acervo',compact('doc'));
 	}
 

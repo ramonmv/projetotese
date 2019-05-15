@@ -30,7 +30,7 @@
 
 
 
-
+@isset($todasPerguntasRespostas)
 
 
 @foreach ($todasPerguntasRespostas as $pergunta)
@@ -47,7 +47,12 @@
 		
 		<span class="description">Por {{$pergunta->user->name}} 
 			<span class="horarioComentario">   
-				&nbsp;&nbsp;&nbsp; <i class="fa fa-clock-o" aria-hidden="true"></i>  {{$pergunta->respostas[0]->created_at->diffForHumans()}} 
+				&nbsp;&nbsp;&nbsp; 
+				
+				@isset($pergunta->respostas[0])  
+					<i class="fa fa-clock-o" aria-hidden="true"></i> 
+					{{$pergunta->respostas[0]->created_at->diffForHumans()}} 
+				@endisset
 			</span> 
 		</span>
 	</div>
@@ -92,5 +97,6 @@
 </div> {{-- post --}}	
 
 @endforeach
+@endisset
 
 

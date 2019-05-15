@@ -5,8 +5,12 @@
 @section('conteudo')
 
 
+    @if( ($habilitarAviso) && (!$autor) )
 
-@include('abrir.aviso')
+       @include('abrir.aviso')
+
+    @endif
+
 
 
 
@@ -726,6 +730,7 @@ function iniciarCarrosselDuvidas()
     {
 
         console.log(" Não há itens a ser respondidos no carrossel_duvidas ");
+        window.location.href = "{{ route('analise', ['id'=>$doc->id]) }}";
 
     }
 
@@ -770,6 +775,7 @@ function proximaDuvida()
 
         fecharCarrossel();
         console.log(" ####### ###### Fechou,,,");
+        window.location.href = "{{ route('analise', ['id'=>$doc->id]) }}";
     }
 
   // Função ativa, apenas desabiltada para reduzir textos no console do browser  
@@ -961,7 +967,7 @@ jquery(document).ready(function(){
 
 
 
-    @if($habilitarAviso)
+    @if( ($habilitarAviso) && (!$autor) )
 
         jquery("#BlackScreen_AvisoTermos").show(600);
 

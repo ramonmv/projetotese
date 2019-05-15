@@ -11,15 +11,15 @@
 		{{ csrf_field() }}
 
 		<div class="form-group">
-			<label for="exampleInputEmail1">Titulo</label>
-			<input type="text" name="titulo" class="form-control" id="exampleInputEmail1">
+			<label for="titulo">Titulo</label>
+			<input type="text" name="titulo" class="form-control" id="titulo" required autofocus>
 		</div>
 
 		<div class="form-group">
 
-			<label for="exampleInputPassword1">Conteúdo</label>
+			<label for="conteudo">Conteúdo</label>
 
-			<textarea class="form-control" id="conteudo" name="conteudo" placeholder="conteudo"> </textarea>
+			<textarea class="form-control" id="conteudo" name="conteudo" placeholder="conteudo" > </textarea>
 			<script>
                 // Replace the <textarea id="editor1"> with a CKEditor
                 // instance, using default configuration.

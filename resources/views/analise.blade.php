@@ -41,7 +41,7 @@
 						
 							<h2 class="ttu mt0 mb1 f6 fw5 blue">Painel de Informações de <span style="color:red"> {{ $user->name}} </span> </h2>
 						@else
-							<h2 class="ttu mt0 mb1 f6 fw5 blue">Painel de Informações sobre sua leitura</h2>
+							<h2 class="ttu mt0 mb1 f6 fw5 blue">Painel de Informações sobre sua leitura: Revisão</h2>
 
 						@endif
 
@@ -66,8 +66,9 @@
 					@includeWhen($subPagina == 10 ,'analise.pag_leitura')
 					@includeWhen($subPagina == 11 ,'analise.admin.config')
 					@includeWhen($subPagina == 12 ,'analise.admin.participantes')
-					@includeWhen($subPagina == 13 ,'analise.admin.acervoGeral')
-					@includeWhen($subPagina == 14 ,'analise.admin.todasRespostas')
+					@includeWhen($subPagina == 13 ,'analise.admin.todasDuvidas')
+					@includeWhen($subPagina == 14 ,'analise.admin.todasCertezas')
+					@includeWhen($subPagina == 15 ,'analise.admin.todasRespostas')
 					
 
 

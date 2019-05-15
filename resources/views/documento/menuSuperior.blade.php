@@ -2,25 +2,31 @@
     <div class="container">
       <nav class="nav blog-nav">
         <a class="nav-link {{-- active --}}" href="/">Principal</a>
+        <a class="nav-link" href="{{ route('todosMateriais') }}">Todos Materiais</a>
 
         @isset($doc)
 
-            <a class="nav-link" href="/abrir/{{ $doc->id }}">Texto</a>
+
+            @isset($statusLeitura["seLeituraIniciada"])
+                @if($statusLeitura["seLeituraIniciada"])
+            <a class="nav-link" href="/abrir/{{ $doc->id }}">Leitura</a>
+                @endif
+            @endisset            
             
             
             @isset($statusLeitura["seLeituraIniciada"])
                 @if($statusLeitura["seLeituraIniciada"])
-                    <a class="nav-link" href="/docs/{{ $doc->id }}/acervo/">Acervo</a>
+                    <a class="nav-link" href="{{ route('acervo',['id' => $doc->id]) }}">Acervo</a>
                 @endif
             @endisset            
 
-            @if ( $autor )
+{{--             @if ( $autor )
                 <a class="nav-link" href="/docs/{{ $doc->id }}/pergunta/">Perguntas</a>
             @endif
-
+ --}}
             @isset($statusLeitura)
                 @if($statusLeitura["seLeituraFinalizada"])
-                    <a class="nav-link" href="/abrir/{{ $doc->id }}/analise">Revisão </a>
+                    <a class="nav-link" href="{{ route('analise',['id' => $doc->id]) }}">Revisão </a>
                 @endif
             @endisset
 

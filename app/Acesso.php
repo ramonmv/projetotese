@@ -373,7 +373,7 @@ class Acesso extends Model
 
 		$acesso = $this->recuperarUltimoAcessoLeitura($doc_id, $user_id);
 
-		return (  $acesso->tipo_id == 1    ) ? true :  false ; // primeiro pois a ordem foi invertida
+		return (  (!is_null($acesso)) && ($acesso->tipo_id == 1)    ) ? true :  false ; // primeiro pois a ordem foi invertida
 
 	}
 

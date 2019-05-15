@@ -359,7 +359,7 @@
 
           @else
           <br>
-          <span class="itemDuvida">     
+          <span class="itemCerteza">     
             Não há registros de <strong> certezas </strong> no seu acervo.
           </span>
           <br><br>

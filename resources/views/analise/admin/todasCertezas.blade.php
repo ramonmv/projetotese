@@ -3,14 +3,14 @@
 		<span class="info-box-icon"><i class="fa fa-check-circle"></i></span>
 
 		<div class="info-box-content">
-			<span class="info-box-text">Certezas Registradas</span>
-			<span class="info-box-number">Relação das suas certezas registradas e suas informações associadas</span>
+			<span class="info-box-text">Todas as Certezas</span>
+			<span class="info-box-number">Relação de todas as certezas registradas e suas informações associadas</span>
 
 			<div class="progress">
 				<div class="progress-bar" style="width: 100%"></div>
 			</div>
 			<span class="progress-description">
-				O seu acervo de certezas possui {{ count($certezas)}} registros
+				O seu acervo de certezas possui {{ count($todasCertezas)}} registros
 			</span>
 
 		</div>
@@ -30,12 +30,12 @@
 </div>
 
 
-@if(count($certezas) > 0  )
+@if(count($todasCertezas) > 0  )
 
 <div class="accordion-container">
 
 
-	@foreach ($certezas as $certeza)
+	@foreach ($todasCertezas as $certeza)
 
 	@if (!$certeza->deletado)   
 

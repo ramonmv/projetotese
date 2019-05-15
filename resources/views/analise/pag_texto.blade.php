@@ -32,7 +32,15 @@
 	
 	<h4 class="fw3 dark-gray mt0 mb0">
 
-		{{$doc->titulo}}
+		
+
+
+	  @isset($doc->titulo)        
+      	
+      	{{$doc->titulo}}
+
+      @endisset
+
 
 	</h4>
 
@@ -61,22 +69,11 @@
 
 	<h3 class="mt0 mb1 f6 fw5 font-roxo">Criador do Material</h3>
 	
-	<h4 class="fw3 dark-gray mt0 mb0">{{$doc->user->name}}
-
-	</h4>
+	<h4 class="fw3 dark-gray mt0 mb0">{{$doc->user->name}}	</h4>
 
 </header>
 
-
-{{-- <header class="mb3">
-	<h3 class="mt0 mb1 f6 fw5 font-roxo">Autor(es) do texto</h3>
-	
-		<h4 class="fw3 dark-gray mt0 mb0">{{ $tempoTotalLeitura->format('%d (dias) %Hh %Im %Ss') }}
-
-		</h4>
-
-</header>
---}}
+{{-- 
 
 <header class="mb3">
 	<h3 class="mt0 mb1 f6 fw5 font-roxo">Referência Bibliográfica</h3>
@@ -88,12 +85,38 @@ De La Taille, Y. (2008). Ética em pesquisa com seres humanos: dignidade e liber
 
 </header>
 
+
+ --}}
+
+
 <header class="mb3">
-	<h3 class="mt0 mb1 f6 fw5 font-roxo">Apresentação do Conteúdo</h3>
+
+	<h3 class="mt0 mb1 f6 fw5 font-roxo">Apresentação do Conteúdo (Resumo)</h3>
 	
 	<h4 class="fw3 dark-gray mt0 mb0">
 
+	@if($autor)
+
+{{-- 	  @isset($doc->resumo[0])         --}}
+      	
+      	@include('analise.admin.formEditarResumo')
+
+		
+      {{-- @endisset --}}
+
+	@else
+
+	  @isset($doc->resumo[0])    
+
 		{!! $doc->resumo[0]->texto !!}
+	
+	  @else
+	  
+	  	Resumo ainda não registrado.	
+
+	  @endisset
+
+	@endif
 
 
 	</h4>

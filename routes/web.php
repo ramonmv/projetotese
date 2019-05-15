@@ -30,12 +30,16 @@ Route::get('/', 'DocsController@index');
 
 // Route::get('/docs', 'DocsController@listarDocs');
 Route::get('/docs', 'DocsController@listarMateriais');
-Route::get('/materiais', 'DocsController@listarMateriais');
-Route::get('/meus', 'DocsController@listarMeusMateriais')->name('meusMateriais');;
+Route::get('/materiais', 'DocsController@listarMateriais')->name('todosMateriais');
+Route::get('/meus', 'DocsController@listarMeusMateriais')->name('meusMateriais');
 Route::get('/documento', 'DocsController@listarMateriais');
 Route::get('/documentos', 'DocsController@listarMateriais');
-Route::get('/editor', 'DocsController@editor');
-Route::post('/docs/add', 'DocsController@add');
+Route::post('/docs/add', 'DocsController@add')->name('addDoc');
+
+Route::get('/editor', 'DocsController@editor')->name('editor');
+Route::get('/{doc_id}/editor', 'DocsController@editarDoc')->name('editarDoc');
+Route::get('/{doc_id}/remover', 'DocsController@removerDoc')->name('removerDoc');
+
 
 // ABRIR DOCUMENTO =============================================================
 // ABRIR DOCUMENTO =============================================================
@@ -43,11 +47,19 @@ Route::post('/docs/add', 'DocsController@add');
 Route::get('/abrir/{id}/', 'DocsController@abrir')->name('abrirMaterial');
 Route::get('/{id}', 'DocsController@abrirResumo')->name('resumo');
 Route::get('/abrir/{id}/admin', 'DocsController@admin');
-Route::get('/abrir/{id}/revisao', 'DocsController@abrirRevisao');
-Route::get('/abrir/{id}/analise', 'DocsController@abrirAnalise')->name('analise');
+Route::get('/abrir/{id}/revisao', 'DocsController@abrirAnalise');
+Route::get('/abrir/{id}/analise', 'DocsController@abrirAnalise');
+Route::get('/{id}/analise', 'DocsController@abrirAnalise')->name('revisao');
+Route::get('/{id}/analise', 'DocsController@abrirAnalise')->name('analise');
 Route::get('/abrir/{id}/participantes', 'DocsController@listarParticipantes');
+Route::get('/abrir/{id}/analise?s=12', 'DocsController@listarParticipantes')->name('participantes');
 Route::get('/abrir/{id}/acesso/{user_id}', 'AcessoController@listarAcessos');
 
+Route::get('/abrir/{doc_id}/sintese', 'DocsController@abrirSintese')->name('sintese');
+Route::get('/{doc_id}/sintese', 'DocsController@abrirSintese');
+
+Route::post('/{doc_id}/sintese/add', 'SinteseController@add')->name('addSintese');
+Route::post('/{doc_id}/sintese/{sintese_id}/edit', 'SinteseController@edit')->name('editarSintese');
 
 // ACESSO =============================================================
 Route::get('/acesso/inicioLeitura/', 'AcessoController@salvarInicioLeitura'); // ok
@@ -79,7 +91,8 @@ Route::get('/docs/status/{doc_id}', 'AcessoController@abrir');
 // Resumo========================================================================
 // Resumo========================================================================
 Route::get('/docs/{doc_id}/resumo', 'DocsController@formCadastroResumo');
-Route::post('/docs/{doc_id}/resumo/add', 'DocsController@addResumo');
+Route::post('/{doc_id}/resumo/add', 'ResumoController@add')->name('addResumo');
+Route::post('/{doc_id}/resumo/{resumo_id}/edit', 'ResumoController@edit')->name('editarResumo');
 
 Route::get('/doc/{doc_id}/', 'DocsController@abrirPreleituraResumo');
 Route::get('/resumo/{doc_id}', 'DocsController@abrirPreleituraResumo');
@@ -115,7 +128,8 @@ Route::get('/posicionamento/save', 'PosicionamentoController@save');
 //acervo ========================================================================== 
 Route::post('/acervo/certezas/add', 'AcervoController@addCerteza');
 Route::post('/acervo/duvidas/add', 'AcervoController@addDuvida');
-Route::get('/docs/{id}/acervo', 'AcervoController@abrir')->name('acervo');;
+Route::get('/docs/{id}/acervo', 'AcervoController@abrir');
+Route::get('/{id}/acervo', 'AcervoController@abrir')->name('acervo');
 // Route::get('/docs/{id}/acervo/duvidas/delete/{idduvida}', 'AcervoController@deleteDuvida');
 Route::get('/duvida/apagar/{id}', 'AcervoController@apagarDuvida');
 Route::get('/certeza/apagar/{id}','AcervoController@apagarCerteza');

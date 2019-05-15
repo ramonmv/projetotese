@@ -73,11 +73,6 @@ class Duvida extends Model
 								->where('apropriado', 1)
 								->get();
 
-				// if(count($duvidas) > 0)
-				// {
-
-				// 	dd($duvidas);
-				// }				
 
 				$colecaoDuvidas[$chave]->duvidas_apropriadas = $duvidas;
 			}
@@ -113,7 +108,7 @@ class Duvida extends Model
 	}
 
 
-	public function recuperarDuvidasTodos($doc_id)
+	public function recuperarTodasDuvidas($doc_id)
 
 	{ 
 		
@@ -129,6 +124,7 @@ class Duvida extends Model
 
 		return $duvidas;
 	}
+
 
 
 
@@ -214,6 +210,38 @@ class Duvida extends Model
 		return $duvidas_outros;
 
 	}
+
+
+	// recuperar todas as duvidas dos outros E QUE AINDA NÃO FORAM RESPONDIDAS PELO USER (PARAMETRO OU LOGADO)
+	// Não terá duvidas esclarecidas, duvidas apropriadas, deletadas e duvidas do proprio autor
+	// usando para criar o carrossel de "duvidas outros" (esclarecimentos)
+
+	public function recuperarDuvidasOutros($doc_id,$user_id = null)
+
+	{ 
+		
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+		$duvidas = $this->where('doc_id', $doc_id)
+						->where('esclarecida', 0)
+						->where('apropriado', 0)
+						->where('deletado', 0)
+						->where('user_id',"<>", $user_id)						
+						->with('respostas')
+						->whereDoesntHave('respostas', function($q) use ($user_id)
+						{
+															
+							$q->where('user_id', $user_id);
+
+						})
+						->get();
+
+		
+
+		return $duvidas;
+	}
+
+
 
 
 

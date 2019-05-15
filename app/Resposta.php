@@ -8,14 +8,16 @@ class Resposta extends Model
 {
     //
 
-	public function add($texto, $conceito_id = null, $user_id, $pergunta_id = null)
+	public function add($texto, $conceito_id = null, $user_id, $pergunta_id = null, $grau = 4, $naosei = false)
 
 	{
 
 		return $this->create([
 
 
-			'texto' => $texto,
+            'texto' => $texto,
+            'grauCerteza' => $grau,
+			'naosei' => $naosei,
 			'conceito_id' => $conceito_id,
 			'pergunta_id' => $pergunta_id,
 			'user_id' => $user_id
@@ -24,21 +26,17 @@ class Resposta extends Model
 
 	}
 
-    public function teste($id,$co, $texto)
-
-    {
-
-        return "teste com sucesso";
-
-    }
 
 
-	public function edit($id, $texto)
+
+	public function edit($id, $texto, $grau = 4, $naosei = false)
 
 	{
 		//$this->find($id);
 
-		$this->texto = trim($texto);
+        $this->texto = trim($texto);
+        $this->grauCerteza = $grau;
+		$this->naosei = $naosei;
 
 		$this->save();
 

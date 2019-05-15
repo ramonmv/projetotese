@@ -885,6 +885,19 @@ div {
 
 }
 
+.conteudoPrincipalLeitura img{
+    width: 100%;
+    /*justify-content: center;*/
+    align-content: center;
+    /*max-width:550px;*/
+ object-fit: cover;
+    /*width: auto;*/
+    height: : auto;
+    /*height: 60px;*/
+   /*max-height: 400px;*/
+   /*display: block;*/
+}
+
 .conteudoPrincipalLeitura abbr{
 /*text-decoration: none;*/
     /*text-decoration: underline;*/

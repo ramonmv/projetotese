@@ -19,6 +19,7 @@ use App\Duvida; //redundante com acervo @todo
 use App\Acesso; //redundante com acervo @todo
 use App\Pergunta; //redundante com acervo @todo
 use App\Posicionamento; 
+use App\Sintese; 
 
 class DocsController extends Controller
 {
@@ -307,7 +308,10 @@ class DocsController extends Controller
 		// ACERVO VAZIO?
 		if($status["seAcervoVazio"] 			== true )	 { return true; }
 
-		
+		// ACERVO VAZIO?
+		if($status["seAcervoVazio"] 			== true )	 { return true; }
+
+				
 
 		return false ;
 	}
@@ -326,7 +330,12 @@ class DocsController extends Controller
 	}
 
 
+	public function abrirResumo2(Request $request, $id)
 
+	{
+		$request->p = 6;
+		return $this->abrirAnalise($request,$id);
+	}
 
 
 	public function abrirResumo(Request $request, $id)
@@ -379,12 +388,58 @@ class DocsController extends Controller
 		$statusLeitura["seLeituraFinalizada"] = $acesso->verificaSeLeituraFinalizada($doc->id) ; // boolean 
 		$statusLeitura["seLeituraIniciada"] = $acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean 
 
+		$sintese = new Sintese();
+		$sintese = $sintese->recuperarSintese($doc->id);
 
-
-		return view('resumo', compact('resumo','doc', 'certezas', "autor", 'statusLeitura', "subPagina", "duvidasNaoEsclarecidas", "avancar", 'habilitarMenu'));
+		return view('resumo', compact('resumo','doc', 'certezas', "autor", 'statusLeitura', "subPagina", "duvidasNaoEsclarecidas", "avancar", 'habilitarMenu', "sintese"));
 
 	}
 
+
+
+
+
+
+
+	public function abrirSintese($doc_id)
+
+	{
+
+		$habilitarMenuVoltarAoTexto = true;
+
+
+
+		// Carbon::setLocale('pt')
+		//dd($id );
+
+		$doc = Doc::find($doc_id);
+
+
+
+		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
+		$autor = $doc->verificarAutoria( auth()->id() );
+
+		//Registro dos Acessos a página das Certezas
+		$acesso = new Acesso();
+		$acesso->salvarAcessoAcervo($doc_id);		
+		
+				// preleitura Duvidas
+		$Duvida = new Duvida(); 
+		$duvidasNaoEsclarecidas  =  $Duvida->recuperarDuvidasNaoEsclarecidas($doc->id);
+		//CERTEZAS
+		$Certeza = new Certeza(); 
+		$certezas  =  $Certeza->recuperarCertezas($doc->id);
+
+		//verifica se primeira leitura foi realizada
+		$statusLeitura["seLeituraFinalizada"] = $acesso->verificaSeLeituraFinalizada($doc->id) ; // boolean 
+		$statusLeitura["seLeituraIniciada"] = $acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean 
+
+		$sintese = new Sintese();
+		$sintese = $sintese->recuperarSintese($doc->id);
+
+		return view('sintese',compact('doc','sintese', 'certezas', 'duvidas', "duvidasNaoEsclarecidas", 'statusLeitura', 'autor', 'habilitarMenuVoltarAoTexto'));
+		//return view('acervo',compact('doc'));
+	}
 
 
 
@@ -398,8 +453,9 @@ class DocsController extends Controller
 	{
 
 		$doc = Doc::find($id);
-		
+		if(is_null($doc)){  return redirect('/'); }
 
+		
 		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
 		$autor = $doc->verificarAutoria(  auth()->id() );
 
@@ -408,7 +464,6 @@ class DocsController extends Controller
 		$user_id = (is_null($request->u)) ? auth()->id()  :  $request->u;	
 
 		
-
 
 		// dd($request->session());
 
@@ -434,6 +489,12 @@ class DocsController extends Controller
 		$perguntasSemRespostas = $Pergunta->colecaoPerguntasSemRespostas($doc->id,$user_id);
 		$todasPerguntasRespostas = $Pergunta->recuperarTodasPerguntasRespostas($doc->id); //subpag 14 (mediador-respostas)
 
+		// SINTESE
+		$sintese = new Sintese();
+		$sintese = $sintese->recuperarSintese($doc->id);
+
+
+
  		// Recuperar a lista de acessos para a subpagina timeline/sobre suas ações
  		// 	TIMELINE 
 		$Acesso = new Acesso();
@@ -449,7 +510,10 @@ class DocsController extends Controller
 		$statusLeitura["seLeituraIniciada"] = $Acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean  
 		
 		$statusLeitura["seAcervoVazio"] = $this->verificaSeAcervoVazio($duvidas,$certezas) ; // boolean
+		$statusLeitura["seHaLeituraNaoFinalizada"] = $Acesso->seLeituraPendente($doc->id); // boolean
+		$statusLeitura["seSintesePendente"] = (is_null($sintese) ? true: false); // boolean
 		$statusLeitura["seHaPedencias"] = $this->verificaSeHaPendencias($statusLeitura);
+		
 		
 
 
@@ -487,15 +551,17 @@ class DocsController extends Controller
 
 		// ADMIN - Participantes
 		$participantes = $doc->recuperarParticipantes($doc->id);
-		$acervoGeral = ($request->s == 13)?  $Duvida->recuperarDuvidasTodos($doc->id)   : null;
+		$todasDuvidas = ($request->s == 13)?  $Duvida->recuperarTodasDuvidas($doc->id)   : null;
+		$todasCertezas = ($request->s == 14)?  $Certeza->recuperarTodasCertezas($doc->id)   : null;
 		$user 	 = (is_null($request->u)) ? User::find(auth()->id()) :  User::find($user_id);	 // recuperar dados do usuer - do usuario da subpagina ou do logado, caso nao tenha o GET->u
 
 
 
 
-		// dd($acervoGeral);
+
 		
-		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas", "autor", "participantes", "acervoGeral", "todasPerguntasRespostas", "user"));
+		
+		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas", "autor", "participantes", "todasDuvidas","todasCertezas", "todasPerguntasRespostas", "user", "sintese"));
 	}
 
 
@@ -691,13 +757,7 @@ class DocsController extends Controller
 
 
 
-	public function addResumo($id){
 
-		$Resumo = new Resumo();
-		$Resumo = $Resumo->add(request('conteudo'),$id, auth()->id());
-
-		return redirect('/docs');
-	}
 
 
  // @param id : iddoc 
@@ -825,8 +885,8 @@ class DocsController extends Controller
 		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 		
 		$docs = Doc::where('user_id',$user_id)
-					->latest()
-					->get();
+		->latest()
+		->get();
 
 
 		// dd($docs);
@@ -1089,9 +1149,11 @@ class DocsController extends Controller
 		}
 
 
-	//redundante com acervoController @todo
-	//deveria recuperar de acervo estes arrays que estão associados para o menu lateral
+		//redundante com acervoController @todo
+		//deveria recuperar de acervo estes arrays que estão associados para o menu lateral
 		
+		$Duvida = new Duvida();
+
 		$certezas = Certeza::where('doc_id', $id)->where('user_id', auth()->id() )->latest()->get();
 		
 		$duvidas  =  Duvida::where('doc_id', $id)->where('user_id', auth()->id() )->latest()->get(); 
@@ -1104,10 +1166,16 @@ class DocsController extends Controller
 																		// dd($q);
 			$q->where('user_id', auth()->id());
 
-		})
-														// // ->whereHas('respostas')
-														//->latest()
+		})														
 		->get();
+
+
+
+		$duvidas_outros = $Duvida->recuperarDuvidasOutros($doc->id);
+
+
+
+
 
 
 	// var_dump(auth()->id());
@@ -1168,7 +1236,10 @@ class DocsController extends Controller
 
 		//verifica se primeira leitura foi realizada
 		$statusLeitura["seLeituraFinalizada"] = $acesso->verificaSeLeituraFinalizada($doc->id) ; // boolean 
-		$statusLeitura["seLeituraIniciada"] = $acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean 
+
+		// $statusLeitura["seLeituraIniciada"] = $acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean 
+		// Atribuo true , pois habilitará p menu superior ACERVO - este metodo abrirá a leitura e toda leitura precisa ter acesso ao acervo
+		$statusLeitura["seLeituraIniciada"] = true ; // boolean 
 
 		return view('abrir', compact('doc', 'certezas', 'duvidas','duvidas_outros','autor', 'conceitoid_Scroll', 'ativarCarrosselAvaliacao', 'respostas', 'habilitarAviso', 'statusLeitura') );
 
@@ -1301,27 +1372,70 @@ class DocsController extends Controller
 
 
 
-	public function add()
+	public function editarDoc($doc_id)
 
+	{
+
+		$doc = Doc::find($doc_id);
+
+		$autor = $doc->verificarAutoria(  auth()->id() );
+
+		return view('editor.novo', compact('doc','autor') );
+
+	}
+
+
+	public function removerDoc($doc_id)
+	{
+		$doc = Doc::find($doc_id);
+		$doc->delete();
+
+		return back();
+		// return Redirect::to(URL::previous() . "?s=1");
+	}
+
+
+
+
+
+
+
+
+
+public function add(Request $request)
+
+{
+
+
+		 // dd($request->all() );
+
+	
+	if(is_null(request('doc_id') ) )
 	{
 
 		$Doc = new Doc();
 
-		 // dd(auth()->user()->id );
-		 // dd(auth()->id() );
-
 		$Doc = $Doc->add(request('titulo'),request('conteudo'), auth()->id());
-		 //$id = request('titulo');
-		 //$titulo = request('titulo');
+
+		return response($Doc->id);
+	}	
+
+	else
+	{
 
 
+		$Doc = Doc::find(request('doc_id'));
 
+		$Doc->edit(request('titulo'),request('conteudo') );
 
-		 //return redirect('/editorResumo');
-		 // return view('editorResumo',compact('id','titulo')); 
-		return view('editorResumo',compact('Doc')); 
+		return response($Doc->id);
 
 	}
+
+
+
+
+}
 
 
 

@@ -11,7 +11,7 @@
 
 // Production
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
 // Development
 // error_reporting(E_ALL);
@@ -66,7 +66,7 @@ $config['images'] = array(
 $config['backends'][] = array(
     'name'         => 'default',
     'adapter'      => 'local',
-    'baseUrl'      => '/userfiles/',
+    'baseUrl'      => '/userfiles',
 //  'root'         => '', // Can be used to explicitly set the CKFinder user files directory.
     'chmodFiles'   => 0777,
     'chmodFolders' => 0755,

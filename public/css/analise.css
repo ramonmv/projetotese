@@ -501,6 +501,20 @@ ul {
   padding-right: 5px;
   padding-left: 5px;
 }
+
+.gtech img{
+    width: 65%;
+    /*justify-content: center;*/
+    align-content: center;
+    /*max-width:550px;*/
+ object-fit: cover;
+    /*width: auto;*/
+    height: : auto;
+    /*height: 60px;*/
+   /*max-height: 400px;*/
+   /*display: block;*/
+}
+
   /*.form-control {
     display: block;
     width: 100%;
@@ -1599,6 +1613,8 @@ a:focus {
     margin: 10px;
   }
 
+
+
   .bg-red,
   .bg-gray,
   .bg-yellow,
@@ -1653,7 +1669,9 @@ a:focus {
 
 
 
-
+  .corSintese {
+    color: #0073b7!important;
+  }
 
 
 

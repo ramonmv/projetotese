@@ -11,7 +11,7 @@
 			</div>
 			<span class="progress-description">
 				
-				O seu acervo de dúvidas possui {{ count($acervoGeral)}} dúvidas esclarecidas
+				O seu acervo de dúvidas possui {{ count($todasDuvidas)}} dúvidas esclarecidas
 				
 			</span>
 
@@ -49,12 +49,12 @@
 </div>
 
 
-@if(count($acervoGeral) > 0  )
+@if(count($todasDuvidas) > 0  )
 
 <div class="accordion-container">
 
 
-	@foreach ($acervoGeral as $duvida)
+	@foreach ($todasDuvidas as $duvida)
 
 	@if (!$duvida->deletado)   
 

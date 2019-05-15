@@ -1,10 +1,10 @@
 <header class="mb3">
 	
-	<h2 class="mt0 mb9" style="color:DarkRed;font-size: 16px">Você possui alguma dúvida sobre o assunto?</h2>
+	<h2 class="mt0 mb9" style="color:DarkRed;font-size: 16px">Diante da leitura do resumo você poderia elaborar suas dúvidas sobre o assunto?</h2>
 	
 	<p class="orientacaoDuvida" >
 
-		Após a leitura do título e do resumo que apresenta o conteúdo do documento, você conseguiria elaborar suas dúvidas a respeito? Entendemos que as dúvidas são temporárias e podem ser manifestadas por meio de incertezas e inquietações - momentâneas ou persistentes. As dúvidas podem ser formalizadas sob formas de afirmações, negações ou questões sobre o assunto. As dúvidas podem estar associadas ao assunto central ou aos aspectos relacionados, conforme destacados no resumo.     
+		Após a leitura do título e do resumo você conseguiria elaborar suas dúvidas a respeito? Entendemos que as dúvidas são temporárias e podem ser manifestadas por meio de incertezas e inquietações - momentâneas ou persistentes. As dúvidas podem ser formalizadas sob formas de afirmações, negações ou questões sobre o assunto. As dúvidas podem estar associadas ao assunto central ou aos aspectos relacionados, conforme destacados no resumo.     
 
 	</p>    
 

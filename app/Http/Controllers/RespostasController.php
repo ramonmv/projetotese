@@ -28,14 +28,32 @@ class RespostasController extends Controller
 
 	{
 
-		  // dd($request->all() );
+		  // dd( "ramonnnn" );
+		   
 		 // dd( $request->session()->all() );
 
 		$doc_id = $request->doc_id ;
 		
-		// $resposta = Resposta::find(request('resposta_id'));		
+		
+		// VERIFICA SE NAOSEI_RESPOSTA (CHECKBOX) FOI CRIADO (MARCADO - CHECKED) - CASO NÃO NULL, ENTÃO FOI MARCARDO COMO "NÃO SEI"
+		if( is_null( request('naosei_resposta')  ))
+		{
 
-	
+			$naosei = false; // SE NULO É PQ NAO FOI CRIADO/MARCADO
+			$grau = request('grau');
+			
+		}
+		else
+		{
+			$naosei = true;
+			$grau = 0;
+			
+		}
+
+		// $naosei = isset(request('naosei_resposta')) ? true: false ;
+		// $naosei = is_null( request('naosei_resposta') ) ? false : true;
+
+
 
 		if (   $this->respostaJaRespondida( request('conceito_id'), auth()->id()  )   ) 
 
@@ -51,7 +69,7 @@ class RespostasController extends Controller
 
 
 			
-			return $resposta->edit(request('resposta_id'),request('texto') );
+			return $resposta->edit(request('resposta_id'),request('texto'), $grau, $naosei );
 
 		} 
 
@@ -61,7 +79,7 @@ class RespostasController extends Controller
 		{
 
 			$resposta = new Resposta();        
-			$novaResposta = $resposta->add(request('texto'),request('conceito_id'),auth()->id(), request('pergunta_id'));
+			$novaResposta = $resposta->add(request('texto'),request('conceito_id'),auth()->id(), request('pergunta_id'), $grau, $naosei);
 			
 
 			//Registro dos Acessos do Registro da nova resposta
@@ -163,7 +181,7 @@ class RespostasController extends Controller
 	public function respostaFormModal (Request $request)
 	
 	{
-		
+		// dd($request->all() );
 
 		if( !($this->vazio($request['texto']) ) )
 

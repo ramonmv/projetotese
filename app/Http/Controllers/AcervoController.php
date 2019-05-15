@@ -8,6 +8,7 @@ use App\Certeza;
 use App\Duvida;
 use App\Acesso;
 use App\Doc;
+use App\Sintese;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 
@@ -211,6 +212,16 @@ class AcervoController extends Controller
 
 		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
 		$autor = $doc->verificarAutoria( auth()->id() );
+
+
+				//constantes
+		$subpaginaDuvidas = 1;
+		$subpaginaCertezas = 2;
+		$habilitarMenu = true;
+
+		$subPagina = null ; // Menu lateral (sidebar) GET URL?s=
+
+		$avancar = (is_null($subPagina)? $subpaginaDuvidas: $subpaginaCertezas );
 		
 		// $certezas = Certeza::where('doc_id', $id)->get();
 		// $certezas = Certeza::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
@@ -232,11 +243,16 @@ class AcervoController extends Controller
 		$Certeza = new Certeza(); 
 		$certezas  =  $Certeza->recuperarCertezas($id);
 
+
+		$sintese = new Sintese();
+		$sintese = $sintese->recuperarSintese($doc->id);
+
+
 		//verifica se primeira leitura foi realizada
 		$statusLeitura["seLeituraFinalizada"] = $acesso->verificaSeLeituraFinalizada($doc->id) ; // boolean 
+		$statusLeitura["seLeituraIniciada"] = $acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean  
 
-
-		return view('acervo',compact('doc', 'certezas', 'duvidas', "duvidasNaoEsclarecidas", 'statusLeitura', 'autor', 'habilitarMenuVoltarAoTexto'));
+		return view('acervo',compact('doc', 'certezas', 'duvidas', "duvidasNaoEsclarecidas", 'statusLeitura', 'autor', 'habilitarMenuVoltarAoTexto', 'sintese', "avancar"));
 		//return view('acervo',compact('doc'));
 	}
 

@@ -66,6 +66,19 @@ class Certeza extends Model
 
 
 
+	public function recuperarTodasCertezas($doc_id, $user_id = null)
+
+	{ 
+		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+
+		return $this->where('doc_id', $doc_id)
+					->where('deletado', 0)
+					->orderBy('created_at', 'desc')
+					->get();	
+	}
+
+
+
 
     public function user()
 

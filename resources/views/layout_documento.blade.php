@@ -414,7 +414,7 @@
                return true;
             },
             error: function(data){
-              alert("Erro: REP16 - Registro não realizado ")
+              alert("Erro: REP16 - Registro não realizado ");
               return false;
             },
 
@@ -772,6 +772,22 @@
 
   <script>
 
+  {{-- grauCerteza_vetor = new Array ("Não tenho certeza", "Pouca Certeza", neutro , "Tenho Certeza", "Tenho muita certeza"); --}}
+  
+  {{-- grauCerteza_vetor = new Array ("Nenhuma", "Alguma", neutro , "muita", "absoluta"); --}}
+  
+  grauCerteza_vetor = new Array ("Nenhuma Certeza", " Pouca Certeza", " Não sei definir" , " Bastante", " Tenho Certeza");
+
+  controle_para_confirmar_modalEditarResposta = false;
+  
+  // grauCerteza_vetor = new Array ("Nenhuma certeza", "muitas incertezas", neutro , "Alguma certeza", "Tenho certeza");
+  
+  // grauCerteza_vetor = new Array ("Nenhuma certeza", "muitas duvidas", neutro , "alguma duvida ", "Tenho certeza");
+  
+  // grauCerteza_vetor = new Array ("Nenhuma certeza", "muitas duvidas", neutro , "alguma duvida ", "Tenho certeza");
+
+
+
 // var pergunta_id = 1;
 
 // $(document).ready(function(){
@@ -802,8 +818,86 @@
       modal.find('.modal-body textarea').val(resposta_textu)
 
       salvarApresentarPergunta(doc_id, pergunta_id);
-      //jquery(".BlackScreen").show(600);
+
+      $("#resposta_modal").attr('readonly', false);  
+      $("#body_grauCerteza_modalEditarResposta").hide();
+      jquery("#confirmar_bt_modalEditarResposta").hide();
+      jquery("#avancar_bt_modalEditarResposta").show();
+
+      // jquery('#naoseiCheckbox').checked = true;
+      // $('#naoseiCheckbox').setAttribute('checked','checked');
+      // naoseiCheckbox.setAttribute('checked','checked');
+      naoseiCheckbox.checked = false;
+
+
+
+      $('#slider').on("input", function() {
+
+          atualizarLabelGrauCerteza_e_slider(this.value);
+
+          // resp.innerHTML = "R:"+grauCerteza_vetor[this.value]; 
+
+
+      }).trigger("change");
+
+
+
+
+
+     $('#naoseiCheckbox').on("input", function(e) {
+
+          if (e.target.checked) {
+ 
+
+             
+              texto = resposta_modal.value;
+              resposta_modal.value = "Eu não sei";
+              $("#resposta_modal").attr('readonly', true);
+                          
+              // slider.attr('value', 2);
+              // $("#slider").attr('value', 2);
+              // $("#slider").trigger('change');
+              // $("#slider").attr('readonly', true);
+              
+              $("#body_grauCerteza_modalEditarResposta").hide();
+              jquery("#avancar_bt_modalEditarResposta").hide();
+              jquery("#confirmar_bt_modalEditarResposta").show();
+
+              slider.value = 0;
+
+              
+          }
+          
+          else
+          {
+             $("#resposta_modal").attr('readonly', false);  
+             
+             jquery("#avancar_bt_modalEditarResposta").show();
+             jquery("#confirmar_bt_modalEditarResposta").hide();
+             // jquery("#body_grauCerteza_modalEditarResposta").show();
+              // $("#slider").attributes('value', 1);
+              // $("#slider").trigger('change');
+             // $("#slider").slider('setValue',0,true);
+             resposta_modal.value = texto;
+          }
+
+     }).trigger("change");
+ 
     })
+
+
+
+      // $('input[type="checkbox"]').on('change', function (e) {
+      // // $('#naoseiCheckbox"]').on('change', function (e) {
+      //           if (e.target.checked) {
+      //                bumm();
+      //                 console.log("22222222");
+      //           }
+      //           else{
+      // console.log("888888");
+      //           }
+      //       });
+
 
   jquery('#formModal_AddDuvida').on('show.bs.modal', function (event) {
       var button = jquery(event.relatedTarget) // Button that triggered the modal
@@ -815,17 +909,77 @@
       modal.find('.modal-body textarea').val(recipient)
     })
 
+
+
+
+
+
+// BUTTON EVENT FECHAR ||||||
+$('#fechar_bt_modalEditarResposta').on('click', function(event) {
+
+  return true;
+
+})
+
+
+
+
+
+// BUTTON EVENT AVANÇAR ||||||
+$('#avancar_bt_modalEditarResposta').on('click', function(event) {
+
+    $("#body_grauCerteza_modalEditarResposta").toggle(500);
+    jquery("#avancar_bt_modalEditarResposta").hide();
+    jquery("#confirmar_bt_modalEditarResposta").show();
+
+    if(resposta_modal.value.trim().length < 12){
+      
+      atualizarLabelGrauCerteza_e_slider(0);
+      // $('#naoseiCheckbox').trigger("change");
+                    // jquery("#slider").attributes('value', 1);
+              // $("#slider").trigger('change');
+    }
+   
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    return false; 
+
+})
+
+
+
+
+
+// BUTTON EVENT CONFIRMAR ||||||
+$('#confirmar_bt_modalEditarResposta').on('click', function(event) {
+
+  resposta_modal.value = resposta_modal.value.trim();
+
+  return true;
+
+})
+
+
+
 // // $('#formModal_EditarResposta .modal-footer button').on('click', function(event) {
-// $('#formModal_EditarResposta').on('click', function(event) {
+// $('#formModal22').on('click', function(event) {
+// // $('#formModal_EditarResposta').on('click', function(event) {
 //   // var $button = $(event.target);
-//   bumm();
-// }
+
+//   if ($('#naoseiCheckbox').is(':checked')) {
+
+//     return true;
+//   }
+
+
+// })
 
   
 //No momento o registro ocorre apenas quando a Janela do tipo Modal (Pergunta - Intervencao Manual) é fechada. O evento utilizado é apenas de encerramento do modal - quanto desiste de responder clicando fora ou cancelando.
 jquery("#formModal_EditarResposta").on('hide.bs.modal', function () {
             // alert('The modal is about to be hidden.');
             salvarDesistencia(doc_id);
+
     });
 
 
@@ -837,6 +991,18 @@ jquery("#formModal_EditarResposta").on('hide.bs.modal', function () {
       slug: "b1mLffgh"
     }], "*")
   }
+
+
+
+function atualizarLabelGrauCerteza_e_slider(indice){
+
+  grauCertezaResposta_formModal = document.getElementById("resp");
+  grauCertezaResposta_formModal.innerHTML = ''; //limpa
+  grauCertezaResposta_formModal.innerHTML = "R:"+grauCerteza_vetor[indice]; 
+  slider.value = indice;
+}
+
+
 
 function isVazio(str){
 
