@@ -1,187 +1,56 @@
-<!DOCTYPE html>
-<html lang="pt_br" >
+<div class="sidebar-module sidebar-module-inset menuAcervo">
 
-<head>
-  <meta charset="UTF-8">
-  <title>Hiperdidático - Editor</title>
-  {{-- <link rel="stylesheet" href="/css/font/css/font-awesome.min.css">  --}}
+    <h3>Orientações</h3>
 
-  {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"> --}}
+    <ol class="list-unstyled" id="menuAcervo">
 
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700'>
-  <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-  <link rel='stylesheet' href='https://unpkg.com/tachyons@4.7.1/css/tachyons.css'>
+        <li> Faça a leitura e clique nos  </li>
 
-  {{-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> --}}
-  <link rel="stylesheet" href="{{ asset('css/analise.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/editor.css') }}">
-  {{-- <script  src="{{ asset('js/app.js') }}"></script> --}}
-  {{-- <script src="https://cdn.ckeditor.com/ckeditor5/12.1.0/decoupled-document/ckeditor.js"></script> --}}
+        <li><a href="#" id="bthide" title="Registrar uma nova certeza ou dúvida no meu acervo"> Nova Dúvida ou Certeza <span class="badge badge-danger"> + 1
 
-</head>
+          <li> <hr></li>
 
+          <li><a href="#" title="Quantidade de certezas registradas no meu acervo" > Minhas Certezas <span class="badge badge-default"> {{ count($certezas) }} </span></a></li>
 
+          <li><a href="#" title="Quantidade de dúvidas registradas no meu acervo" > Minhas Dúvidas <span class="badge badge-default"> {{ count($duvidas) }} </span></a></li>
 
-{{-- <form method="POST" action="/docs/add">
+          <li> <hr></li>
 
-        {{ csrf_field() }}
+          <li><a href="/docs/{{ $doc->id }}/acervo/" title="Acessar o acervo das minhas Certezas e Dúvidas"> Total no acervo:  <span class="badge badge-default"> {{ count($certezas)+count($duvidas)}} </span></a>
+          </li>
+          
+    </ol>
+    
+</div>
 
-        <div class="form-group">
-            <label for="exampleInputEmail1">Titulo</label>
-            <input type="text" name="titulo" class="form-control" id="exampleInputEmail1">
-        </div>
+<script type="text/javascript">
+  
+  jquery('.menuAcervo').hide();
 
-        <div class="form-group">
+  jquery(function() {
 
-            <label for="exampleInputPassword1">Conteúdo</label>
+      jquery(window).scroll(function() {
+      
+          var scroll = jquery(window).scrollTop();
 
-            <textarea class="form-control" id="conteudo" name="conteudo" placeholder="conteudo"> </textarea>
-            <script>
-                // Replace the <textarea id="editor1"> with a CKEditor
-                // instance, using default configuration.
-                CKEDITOR.replace( 'conteudo' );
-            </script>
-        </div>
-        
+          if (scroll >= 100) 
 
-        <div class="form-group">
-            <button name="confirmar" type="submit" class="btn btn-primary" style="font-size:20px;font-weight:bold; ">Criar Material</button>
+          {
+
+            jquery('.menuAcervo').fadeIn();
             
-        </div>
-    </form> --}}
+           
+          } 
+
+          else 
+
+          {
+           
+            jquery('.menuAcervo').fadeOut();
+            
+          }
+      });
+  });
 
 
-
-
-
-
-
-
-
-    <body>
-
-      @include('documento.menuSuperior')
-
-      <main>
-
-        <div class="mw8 center pv4 ph3" id="dashboard">
-
-            <section class="flex-m flex-l nl3-m nr3-m nl3-l nr3-l">
-
-                {{-- SIDEBAR --}} 
-                @include('analise.menu_sidebar')
-
-
-                <article class="w-100 w-75-m w-75-l ph3-m ph3-l">
-
-                    <header class="mb3">
-
-                        <h2 class="ttu mt0 mb1 f6 fw5 blue">Lista dos materiais didáticos acessados</h2>
-                        <h4 class="fw3 dark-gray mt0 mb0">Relação dos materiais nos quais sou autor/mediador ou leitor </h4>
-
-                    </header>
-
-                    <hr class="o-90" />
-                    <br>
-
-                    <form method="POST" action="/docs/add">
-
-
-                        <div class="form-group centered">
-                            <label for="exampleInputEmail1">Titulo</label>
-                            <input type="text" name="titulo" class="form-control" id="exampleInputEmail1">
-                        </div> 
-
-
-                        <br>
-
-
-                        {{ csrf_field() }}
-
-
-
-                        <div class="form-group centered">
-                            <div class="document-editor">
-                                <div class="toolbar-container"></div>
-                                <div class="content-container">
-                                    <div id="editor" name="editor">
-                                        raaaaaaaa
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="form-group centered">
-                            <button name="confirmar" type="submit" class="btn btn-primary" style="font-size:20px;font-weight:bold; ">Salvar</button>
-
-                        </div>
-
-                    </form>  
-
-                </article>
-
-            </section>
-
-        </div>
-
-    </main>
-
-    {{-- <script src="ckeditor.js"></script> --}}
-    <script  src="{{ asset('js/ckeditor.js') }}"></script>
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/decoupled-document/ckeditor.js"></script> --}}
-
-    <script>
-
-    // uploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
-
-    DecoupledEditor.create( document.querySelector( '#editor' ), {
-      // toolbar: [ 'heading', '|', 'bold', 'ckfinder', 'imageUpload', 'italic', 'link' ],
-      ckfinder: {
-        uploadUrl: "{{ asset("ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json") }}"
-    }
-} )
-    .then( editor => {
-      const toolbarContainer = document.querySelector( 'main .toolbar-container' );
-
-      toolbarContainer.prepend( editor.ui.view.toolbar.element );
-
-      window.editor = editor;
-  } )
-    .catch( err => {
-      console.error( err.stack );
-  } );
 </script>
-
-
-
-{{-- <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script> --}}
-{{-- <script  src="{{ asset('js/analise.js') }}"></script> --}}
-
-
-
-{{-- 
-$(document).ready(function() {
-    $("#send").on("click", function() {
-        $.ajax({
-            url: "your_url",
-            method: "POST",
-            data: "myname=" + $(".mine").text(),
-            success: function(response) {
-                //handle response
-            }
-        })
-    })
-
-}) --}}
-
-{{-- https://stackoverflow.com/questions/21621568/post-for-text-in-div-elements --}}
-
-{{-- var x = document.getElementById('idname').innerHTML; --}}
-
-
-</body>
-
-</html>

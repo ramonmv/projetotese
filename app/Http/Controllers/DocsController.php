@@ -1241,7 +1241,13 @@ class DocsController extends Controller
 		// Atribuo true , pois habilitará p menu superior ACERVO - este metodo abrirá a leitura e toda leitura precisa ter acesso ao acervo
 		$statusLeitura["seLeituraIniciada"] = true ; // boolean 
 
-		return view('abrir', compact('doc', 'certezas', 'duvidas','duvidas_outros','autor', 'conceitoid_Scroll', 'ativarCarrosselAvaliacao', 'respostas', 'habilitarAviso', 'statusLeitura') );
+
+		$Pergunta = new Pergunta();
+
+		$perguntasSemRespostas = $Pergunta->colecaoPerguntasSemRespostas($doc->id,auth()->id());
+
+
+		return view('abrir', compact('doc', 'certezas', 'duvidas','duvidas_outros','autor', 'conceitoid_Scroll', 'ativarCarrosselAvaliacao', 'respostas', 'habilitarAviso', 'statusLeitura','perguntasSemRespostas') );
 
 	}
 

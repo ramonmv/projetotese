@@ -2,12 +2,24 @@
 
 @php
     // Para colocar o texto da duvida em menor tamanho quando ultrapassar 150 caracteres
-    $estilo = "";
 
-    if( (strlen($pergunta)) > 150 )
+    
+    $estilo = "";
+    $tamanho = strlen($pergunta);
+    if( $tamanho > 160 )
     {
        $estilo = "style=font-size:small";
+
     }
+    if( ($tamanho > 180) && (isset($duvida)) )
+    {
+       // $pergunta_parte1 = strip_tags(str_limit($pergunta,180) ); 
+       $pergunta_parte1 = str_limit($pergunta,180) ; 
+       $pergunta_parte1 = substr($pergunta_parte1, 0,-3) ;
+       $pergunta_parte2 = substr($pergunta, 180) ;
+    }
+
+    $iconeMais = "down"; // icone que acompanha o "LABEL" Leia Mais - Leia Menos
 
 @endphp
 
@@ -73,10 +85,26 @@
 
                         <div class="nova-e-text nova-e-text--size-l nova-e-text--family-sans-serif nova-e-text--spacing-none nova-v-publication-item__title nova-v-publication-item__title--clamp-3" itemprop="headline" {{$estilo}}>
 
+                          @isset($pergunta_parte2)
 
-                          {{$pergunta}} 
+                             {{$pergunta_parte1}}<span class="trechoDuvida{{$duvida->id}}" style="display:none;">{{$pergunta_parte2}}</span>
+                              
+                              <a class="btleiamais{{$duvida->id}}" style="color: green"> ...Mais </a> 
+                              {{-- <i class="fa fa-caret-{{$iconeMais}}" style="color: green"></i> --}}
+                              <i class="fa fa-arrows-v" style="color: green"></i>
+
+                          @else
+                          
+                             {{$pergunta}}     
+
+                          @endisset  
+                          
+
+                           
+                              
 
                         </div>
+                          
                         <br>
                         
                         @if($resposta)
@@ -89,7 +117,7 @@
 
                             </span> 
 
-                            {{$resposta}}
+                            {{$resposta}} 
 
                           </p>
 
@@ -213,3 +241,51 @@
 </div>
 
 
+@isset ($duvida)
+    
+
+<script type="text/javascript">
+  
+
+// jquery('.leiaMais').click(function(e) {
+//     e.stopPropagation();
+//     console.log("LEIA MAIS *****");
+//      jquery(".btleiamais").hide();
+
+//     // $('.nova-v-publication-item__title--clamp-3').css({        
+//     //     'max-height: 0em'
+//     // })
+//     // $('.bundaxx').css({        
+//     //     'color: red;'
+//     // })
+// });
+
+var controleLeiaMais = true;
+
+jquery('.btleiamais{{$duvida->id}}').click(function(e) {
+     e.stopPropagation();     
+    
+
+    if(controleLeiaMais){
+      jquery(".trechoDuvida{{$duvida->id}}").show();  
+      jquery(".btleiamais{{$duvida->id}}").text("...Menos ");
+      @php $iconeMais = "up";  @endphp
+      
+    }else{
+      jquery(".trechoDuvida{{$duvida->id}}").hide();  
+      jquery(".btleiamais{{$duvida->id}}").text("...Mais ");
+      @php $iconeMais = "down";  @endphp
+    }
+    controleLeiaMais = !controleLeiaMais;
+// $(this).text("less..")
+    // jquery('.nova-v-publication-item__title--clamp-3').css({        
+    //     'max-height: 20em'
+    // })
+});
+
+
+
+</script>
+
+
+@endisset

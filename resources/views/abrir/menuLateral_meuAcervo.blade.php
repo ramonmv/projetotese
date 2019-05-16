@@ -1,25 +1,29 @@
 <div class="sidebar-module sidebar-module-inset menuAcervo">
 
-    <h3>Meu Acervo</h3>
+<div class="col-md-3 col-sm-4">
+      <div class="list-group">
+        <a class="list-group-item" href="#"   data-toggle="modal" data-target="#exampleModalCenter">
+          <i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp; Orientações para a leitura</a>
+        <a class="list-group-item"  href="{{ route('acervo',['id' => $doc->id]) }}" >
+          <i class="fa fa-outdent fa-fw" aria-hidden="true"></i>&nbsp; Visualizar minhas dúvidas e certezas</a>
+        <a class="list-group-item" href="#" id="bthide" title="Registrar uma nova certeza ou dúvida no meu acervo">
+          <i class="fa fa-plus fa-fw" aria-hidden="true"></i>&nbsp; Registrar uma nova certeza ou dúvida.</a>
+        @if (count($perguntasSemRespostas) > 0)
+                      
+        <a class="list-group-item" href="#" style="color: #560002">
+          <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true">  </i>&nbsp; Eu possuo {{count($perguntasSemRespostas)}} perguntas não respondidas
+        </a>
 
-    <ol class="list-unstyled" id="menuAcervo">
+        @else
 
-        <li> <hr></li>
+        <a class="list-group-item" href="#" style="color: #00380c">
+          <i class="fa fa-thumbs-up fa-fw" aria-hidden="true">  </i>&nbsp; Todas as perguntas foram respondidas.
+        </a>        
 
-        <li><a href="#" id="bthide" title="Registrar uma nova certeza ou dúvida no meu acervo"> Nova Dúvida ou Certeza <span class="badge badge-danger"> + 1
+        @endif  
 
-          <li> <hr></li>
-
-          <li><a href="#" title="Quantidade de certezas registradas no meu acervo" > Minhas Certezas <span class="badge badge-default"> {{ count($certezas) }} </span></a></li>
-
-          <li><a href="#" title="Quantidade de dúvidas registradas no meu acervo" > Minhas Dúvidas <span class="badge badge-default"> {{ count($duvidas) }} </span></a></li>
-
-          <li> <hr></li>
-
-          <li><a href="/docs/{{ $doc->id }}/acervo/" title="Acessar o acervo das minhas Certezas e Dúvidas"> Total no acervo:  <span class="badge badge-default"> {{ count($certezas)+count($duvidas)}} </span></a>
-          </li>
-          
-    </ol>
+      </div>
+    </div>
     
 </div>
 

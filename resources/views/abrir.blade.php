@@ -225,7 +225,7 @@
               <div class="carousel-item" data-codigo="{{$duvida->id}}">
                   @include('abrir.carrossel',[
                     'usuario' => $duvida->user->primeiroNome(),
-                    'desc' => 'Respondeu abaixo...',
+                    'desc' => 'Possui a seguinte dúvida...',
                     'pergunta' => $duvida->texto ,
                     'resposta' => null,
                     'duvida_id' => $duvida->id ,
@@ -303,6 +303,14 @@
 </div><!-- /.blog-sidebar -->
 
 
+<!-- Button trigger modal -->
+{{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  Launch demo modal
+</button> --}}
+
+<!-- Modal -->
+
+
 
 
 
@@ -310,6 +318,26 @@
 
 </div><!-- /.container -->
 
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Orientações para a leitura</h5>
+
+      </div>
+      <div class="modal-body">
+        Este material digital foi organizado para ampliar a interatividade entre o leitor e o texto. Ao longo da leitura estarão presentes alguns links (hiperlinks) criado pelo autor do material. Orientamos clicar sobre os links ao longo da leitura. Durante a leitura, quando encontrá-lo finalize a leitura e clique sobre o link.
+
+
+
+      </div>
+      <div class="modal-footer">
+        {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 {{-- linha 66 
