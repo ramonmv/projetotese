@@ -104,12 +104,15 @@
 			data-show-export="true"
 			data-click-to-select="true"
 			data-toolbar="#toolbar"
-			class="table-responsive">
+			data-show-footer="true"
+			class="table-responsive"
+			style="font-size: small">
+
 			<thead>
 				<tr>
 					<th data-field="state" data-checkbox="true"></th>
-					<th data-field="prenom" data-filter-control="input" data-sortable="true">First Name</th>
-					<th data-field="examen" data-filter-control="select" data-sortable="true">Ação</th>
+					<th data-field="prenom" data-filter-control="input" data-sortable="true" data-footer-formatter="Rodape_nome">Nome</th>
+					<th data-field="examen" data-filter-control="select" data-sortable="true" data-footer-formatter="Rodape_acao">Ação</th>
 					<th data-field="note" data-filter-control="input" data-sortable="true">Conteúdo</th>
 					<th data-field="date" data-filter-control="select" data-sortable="true">Data</th>
 				</tr>
@@ -204,6 +207,42 @@
 
 
 
+				{{-- Aceitou os termos ===================================  --}}
+
+				@if( ($acesso->tipo->id == 9 ) )
+
+
+				<tr>
+					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a9 Aceitou os termos  </td>
+					<td> Iniciou a primeira leitura </td>
+					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
+				</tr>
+
+
+				@endif
+
+
+
+
+				{{-- Aceitou os termos ===================================  --}}
+
+				@if( ($acesso->tipo->id == 11 ) )
+
+
+				<tr>
+					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a11   </td>
+					<td> Iniciou a leitura </td>
+					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
+				</tr>
+
+
+				@endif
+
+
 
 
 
@@ -229,11 +268,11 @@
 
 						@isset($acesso->pergunta->Resposta->id)	
 
- 							[{{ $acesso->pergunta->Resposta->id }}]
+ 							{{-- [{{ $acesso->pergunta->Resposta->id }}] --}}
 
  						@endisset	
 
-							Posicionamento na resposta de {{ $acesso->pergunta->respondente }}:  
+							Pergunta para posicionamento 
 
 						</td>
 
@@ -247,8 +286,9 @@
 
 						@else
 							{{-- QUESTÃO/PERGUNTA POSICIONAMENTO --}}
+							[{{ $acesso->pergunta->Resposta->id }}] 
 							Pergunta: {{ $acesso->pergunta->Resposta->pergunta->texto }} 
-							||| Resposta:  {{ $acesso->pergunta->resposta }} 
+							█ Resposta de {{ $acesso->pergunta->respondente }}:  {{ $acesso->pergunta->resposta }} 
 
 						@endif
 
@@ -316,8 +356,8 @@
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
 					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
-					<td>#a16 [{{ $acesso->posicionamento->resposta_id}}]Posicionamento </td>
-					<td> {{ $acesso->posicionamento->getLabel()}} </td>
+					<td>#a16 Novo Posicionamento </td>
+					<td> [Ref:{{ $acesso->posicionamento->resposta_id}}] {{ $acesso->posicionamento->getLabel()}} </td>
 					{{-- <td> {{ $acesso->posicionamento->resposta_id}} </td> --}}
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
@@ -418,10 +458,6 @@
 
 
 
-
-
-
-
 				@if( ($acesso->tipo->id == 25 ) )
 
 
@@ -439,29 +475,38 @@
 
 
 
-
-
-
-{{-- 
-
-
-
-
-				@if( ($acesso->tipo->id ==  ) )
+				@if( ($acesso->tipo->id == 28 ) )
 
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
 					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
-					<td>   </td>
-					<td>   </td>
+					<td>#a28 Excluiu uma dúvida </td>
+					<td> Dúvida: {{ $acesso->autoria}}  </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
 
 				@endif
 
 
- --}}
+
+
+				@if( ($acesso->tipo->id == 30 ) )
+
+
+				<tr>
+					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a28 Marcou uma dúvida como esclarecida </td>
+					<td> Dúvida: {{ $acesso->autoria}}  </td>
+					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
+				</tr>
+
+				@endif
+
+
+
+
 
 
 				@endforeach	
@@ -470,10 +515,6 @@
 		</table>
 		<br>
 		<p></p>
-		<p>Total de <span id='contador' name='contador'> {{count($acessos)}} </span> registros. </p>
-		<p> <span id='btt'> Clique aqui para atualizar a quantidade total de registros </span>  </p>
-		<br>
-		<br>
 		<br>
 		<p></p>
 	</div>
@@ -517,49 +558,50 @@ $(function () {
 	});
 })
 
-var trBoldBlue = $("table");
 
-$(trBoldBlue).on("click", "tr", function (){
+function Rodape_nome() {
+    return 'Total'
+  }
+
+  function Rodape_acao(data) {
+    return data.length
+  }
+
+
+
+$(table).on("click", "tr", function (){
 	$(this).toggleClass("bold-blue");
 });
 
 
-// BUTTON EVENT CONFIRMAR ||||||
-$('#btt').on('click', function(event) {
+// // BUTTON EVENT CONFIRMAR ||||||
+// $('#btt').on('click', function(event) {
 
 
-console.log("tresss : "+$('#table').bootstrapTable('getData').length );
+// console.log("tresss : "+$('#table').bootstrapTable('getData').length );
   
-$("#contador").text( $('#table').bootstrapTable('getData').length );
+// $("#contador").text( $('#table').bootstrapTable('getData').length );
 
-  return true;
+//   return true;
 
-})
-
-
- (function ($) {
-
-        $('#filter').keyup(function () {
-
-            var rex = new RegExp($(this).val(), 'i');
-            $('.searchable tr').hide();
-            $('.searchable tr').filter(function () {
-                return rex.test($(this).text());
-            }).show();
-
-        })
-
-    }(jQuery));
+// })
 
 
- $('#slider').on("input", function() {
+ // (function ($) {
 
-          atualizarLabelGrauCerteza_e_slider(this.value);
+ //        $('#filter').keyup(function () {
 
-          // resp.innerHTML = "R:"+grauCerteza_vetor[this.value]; 
+ //            var rex = new RegExp($(this).val(), 'i');
+ //            $('.searchable tr').hide();
+ //            $('.searchable tr').filter(function () {
+ //                return rex.test($(this).text());
+ //            }).show();
+
+ //        })
+
+ //    }(jQuery));
 
 
-      }).trigger("change");
 
 </script>
 
