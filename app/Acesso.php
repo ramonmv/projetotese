@@ -60,7 +60,7 @@ class Acesso extends Model
 		
 
 		if ($todos){
-			$acessos = $this->where('doc_id', $doc_id)->limit(800)->get();	
+			$acessos = $this->where('doc_id', $doc_id)->get();	
 		}
 		else{
 			$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	

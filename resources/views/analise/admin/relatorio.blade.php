@@ -116,6 +116,11 @@
 			</thead>
 			<tbody>
 
+			
+
+
+
+
 				@foreach ($acessos as $acesso)
 
 
@@ -124,8 +129,8 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td>Iniciou a leitura </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a1 Iniciou a leitura </td>
 					<td> - </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
@@ -134,12 +139,15 @@
 
 
 
+
+
+
 				@if( ($acesso->tipo->id == 2 ) )
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td>Finalizou a leitura</td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a2 Finalizou a leitura</td>
 					<td> - </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
@@ -161,8 +169,8 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td>Registrou uma Dúvida</td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a6 Registrou uma Dúvida</td>
 					<td> {{ $acesso->autoria}} </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
@@ -184,14 +192,17 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td>Registrou uma Certeza </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a7 Registrou uma Certeza </td>
 					<td> {{ $acesso->autoria}} </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
 
 
 				@endif
+
+
+
 
 
 
@@ -205,16 +216,16 @@
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
 					
-					<td> {{$acesso->user->name}} </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
 					
 					@if( isset($acesso->pergunta->user->name)  )
 						
 						{{-- LABEL PERGUNTA DO PROGRAMADA --}}
-						<td> Pergunta programada  </td>
+						<td>#a14a  Pergunta programada  </td>
 
 					@else
 						{{-- LABEL PERGUNTA DO POSICIONAMENTO --}}
-						<td>
+						<td>#a14b  
 
 						@isset($acesso->pergunta->Resposta->id)	
 
@@ -253,6 +264,8 @@
 
 
 
+
+
 				{{-- Resposta ===================================  --}}
 
 				@if( ($acesso->tipo->id == 15 ) )
@@ -260,14 +273,17 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td>Resposta </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a15 Resposta </td>
 					<td> {{ $acesso->autoria}} </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
 
 
 				@endif
+
+
+
 
 
 
@@ -278,14 +294,17 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td>Edição da Resposta </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a13 Edição da Resposta </td>
 					<td> {{ $acesso->autoria}} </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
 
 
 				@endif
+
+
+
 
 
 
@@ -296,8 +315,8 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td>[{{ $acesso->posicionamento->resposta_id}}]Posicionamento </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a16 [{{ $acesso->posicionamento->resposta_id}}]Posicionamento </td>
 					<td> {{ $acesso->posicionamento->getLabel()}} </td>
 					{{-- <td> {{ $acesso->posicionamento->resposta_id}} </td> --}}
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
@@ -307,14 +326,19 @@
 				@endif
 
 
+
+
+
+
+
 				{{-- APRESENTA ESCLARECIMENTOS - DUVIDAS DOS OUTROS  ===================================  --}}
 				@if( ($acesso->tipo->id == 18 ) )
 
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td>Esclareceu uma dúvida de {{ $acesso->resposta->duvidas->first()->user->name}} </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a18 Esclareceu uma dúvida de {{ $acesso->resposta->duvidas->first()->user->name}} </td>
 					<td> Dúvida: {{ $acesso->resposta->duvidas->first()->texto }} ||| Esclarecimento: {{ $acesso->autoria  }} </td>
 					{{-- <td> {{ $acesso->posicionamento->resposta_id}} </td> --}}
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
@@ -333,8 +357,8 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td>Adicionou a dúvida de {{  $acesso->duvida->duvida->user->name }}</td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a19 Adicionou a dúvida de {{  $acesso->duvida->duvida->user->name }}</td>
 					<td>Dúvida: {{ $acesso->autoria}}   </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
@@ -357,8 +381,8 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td> Apresentou uma dúvida </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a20  Apresentou uma dúvida </td>
 					<td>  </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
@@ -379,8 +403,8 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td>  Fechou  </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a21 Fechou  </td>
 					<td>  Desistiu de responder uma pergunta </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
@@ -403,8 +427,8 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
-					<td> Pulou uma dúvida </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#a25 Pulou uma dúvida </td>
 					<td>  </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
 				</tr>
@@ -428,7 +452,7 @@
 
 				<tr>
 					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
-					<td> {{$acesso->user->name}} </td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
 					<td>   </td>
 					<td>   </td>
 					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
@@ -447,7 +471,7 @@
 		<br>
 		<p></p>
 		<p>Total de <span id='contador' name='contador'> {{count($acessos)}} </span> registros. </p>
-		<p>Total de <span id='btt'> CLICA  </span> registros. </p>
+		<p> <span id='btt'> Clique aqui para atualizar a quantidade total de registros </span>  </p>
 		<br>
 		<br>
 		<br>
