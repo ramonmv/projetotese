@@ -74,6 +74,29 @@ class Posicionamento extends Model
 
 	}
 
+
+	public function getLabel()
+
+	{
+
+		if( $this->concorda == TRUE ){
+
+			return "Sim, Eu concordo";
+		}
+
+		elseif( $this->discorda == TRUE ){
+
+			return "Não, Eu discordo";
+		}
+
+		else{
+
+			return "Eu não sei";
+		}
+
+
+	}
+
 	// public function edit($naosei, $concorda)
 
 	// {

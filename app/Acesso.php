@@ -53,14 +53,19 @@ class Acesso extends Model
 
 
 
-	public function recuperarListaAcessos($doc_id, $user_id = null)
+	public function recuperarListaAcessos($doc_id, $user_id = null, $todos = false)
 
 	{  
 
-		$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
-
-		$acessos = $this->where('doc_id', $doc_id)->where('user_id', $user_id)->get();
 		
+
+		if ($todos){
+			$acessos = $this->where('doc_id', $doc_id)->limit(800)->get();	
+		}
+		else{
+			$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
+			$acessos = $this->where('doc_id', $doc_id)->where('user_id', $user_id)->get();
+		}
 		$intervencaoAuto = FALSE;
 
 		foreach ($acessos as $chave => $acesso) {
@@ -1027,10 +1032,44 @@ class Acesso extends Model
 
 		{    	 
 
-			$this->salvar($doc_id, 25, $autoria, null, null, null, $duvida_id);
+			// $this->salvar($doc_id, 25, $autoria, null, null, null, $duvida_id);
 		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
 
 		}				
+
+
+		public function salvarSintese($doc_id, $duvida_id, $autoria = null)
+
+		{    	 
+
+			// $this->salvar($doc_id, 25, $autoria, null, null, null, $duvida_id);
+		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
+
+		}		
+
+
+
+		public function salvarAcessoRevisao($doc_id, $duvida_id, $autoria = null)
+
+		{    	 
+
+			// $this->salvar($doc_id, 25, $autoria, null, null, null, $duvida_id);
+		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
+
+		}		
+
+
+
+
+		public function salvarAcessoAcervo2($doc_id, $duvida_id, $autoria = null)
+
+		{    	 
+
+			// $this->salvar($doc_id, 25, $autoria, null, null, null, $duvida_id);
+		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
+
+		}		
+
 
 
 //session()->getId() is the correct session ID.

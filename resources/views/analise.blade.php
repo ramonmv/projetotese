@@ -55,7 +55,7 @@
 
 					@includeWhen(!isset($subPagina) ,'analise.index')
 					@includeWhen($subPagina == 1 ,'analise.pag_acervoDuvidas')
-					@includeWhen($subPagina == 9 ,'analise.pag_acervoCertezas')
+					
 					@includeWhen($subPagina == 2 ,'analise.pag_respostas')
 					@includeWhen($subPagina == 3 ,'analise.pag_posicionamentos')
 					@includeWhen($subPagina == 4 ,'analise.pag_esclarecimentos')
@@ -63,12 +63,14 @@
 					@includeWhen($subPagina == 6 ,'analise.pag_texto')
 					@includeWhen($subPagina == 7 ,'analise.index')
 					@includeWhen($subPagina == 8 ,'analise.index')
+					@includeWhen($subPagina == 9 ,'analise.pag_acervoCertezas')
 					@includeWhen($subPagina == 10 ,'analise.pag_leitura')
 					@includeWhen($subPagina == 11 ,'analise.admin.config')
 					@includeWhen($subPagina == 12 ,'analise.admin.participantes')
 					@includeWhen($subPagina == 13 ,'analise.admin.todasDuvidas')
 					@includeWhen($subPagina == 14 ,'analise.admin.todasCertezas')
 					@includeWhen($subPagina == 15 ,'analise.admin.todasRespostas')
+					@includeWhen($subPagina > 15 ,'analise.admin.index')
 					
 
 

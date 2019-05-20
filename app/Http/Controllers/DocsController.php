@@ -318,24 +318,37 @@ class DocsController extends Controller
 
 
 
-	public function autorizacao($autor, $user, $user_id)
+	public function abrirRelatorio(Request $request, $id)
 
 	{
 
 
-		// if( $autor )
+		$doc = Doc::find($id);
+
+ 		// Recuperar a lista de acessos para a subpagina timeline/sobre suas ações
+ 		// 	TIMELINE 
+		$Acesso = new Acesso();
+		$acessos = $Acesso->recuperarListaAcessos($doc->id, null, true);
+
+		$participantes = $doc->recuperarParticipantes($doc->id);
+	
 
 
+
+
+		
+		
+		return view('analise.admin.relatorio', compact('doc', "acessos"));
 
 	}
 
 
-	public function abrirResumo2(Request $request, $id)
+	// public function abrirResumo2(Request $request, $id)
 
-	{
-		$request->p = 6;
-		return $this->abrirAnalise($request,$id);
-	}
+	// {
+	// 	$request->p = 6;
+	// 	return $this->abrirAnalise($request,$id);
+	// }
 
 
 	public function abrirResumo(Request $request, $id)
@@ -484,7 +497,7 @@ class DocsController extends Controller
 
 		// RESPOSTAS
 		$Pergunta = new Pergunta();	
-		$perguntas 			   = $Pergunta->colecaoPerguntas($doc->id,$user_id);	
+		$perguntas 			   = $Pergunta->colecaoPerguntas($doc->id);	
 		$perguntasComRespostas = $Pergunta->colecaoPerguntasComRespostas($doc->id,$user_id);
 		$perguntasSemRespostas = $Pergunta->colecaoPerguntasSemRespostas($doc->id,$user_id);
 		$todasPerguntasRespostas = $Pergunta->recuperarTodasPerguntasRespostas($doc->id); //subpag 14 (mediador-respostas)
@@ -1161,6 +1174,7 @@ class DocsController extends Controller
 		$duvidas_outros  =  Duvida::where('doc_id', $id)
 		->where('user_id', "<>" , auth()->id() )
 		->with('respostas')
+		->orderBy('created_at', 'desc')
 		->whereDoesntHave('respostas', function($q)
 		{
 																		// dd($q);
@@ -1201,6 +1215,7 @@ class DocsController extends Controller
 		 // - <> posicionamento do usuario logado 
 			$respostas  =  Resposta::where('conceito_id', $conceitoid_Scroll )
 			->where('user_id', '<>', auth()->id() )
+			->where('naosei', 0 )
 															// ->with('posicionamento')
 			->whereDoesntHave('posicionamentos', function ($query) {
 				$query->where('user_id',  auth()->id());
@@ -1243,11 +1258,10 @@ class DocsController extends Controller
 
 
 		$Pergunta = new Pergunta();
-
 		$perguntasSemRespostas = $Pergunta->colecaoPerguntasSemRespostas($doc->id,auth()->id());
+		$perguntas 			   = $Pergunta->colecaoPerguntas($doc->id);	
 
-
-		return view('abrir', compact('doc', 'certezas', 'duvidas','duvidas_outros','autor', 'conceitoid_Scroll', 'ativarCarrosselAvaliacao', 'respostas', 'habilitarAviso', 'statusLeitura','perguntasSemRespostas') );
+		return view('abrir', compact('doc', 'certezas', 'duvidas','duvidas_outros','autor', 'conceitoid_Scroll', 'ativarCarrosselAvaliacao', 'respostas', 'habilitarAviso', 'statusLeitura','perguntasSemRespostas','perguntas') );
 
 	}
 

@@ -51,6 +51,7 @@ Route::get('/abrir/{id}/revisao', 'DocsController@abrirAnalise');
 Route::get('/abrir/{id}/analise', 'DocsController@abrirAnalise');
 Route::get('/{id}/analise', 'DocsController@abrirAnalise')->name('revisao');
 Route::get('/{id}/analise', 'DocsController@abrirAnalise')->name('analise');
+Route::get('/{id}/analise/completo', 'DocsController@abrirRelatorio')->name('relatorio');
 Route::get('/abrir/{id}/participantes', 'DocsController@listarParticipantes');
 Route::get('/abrir/{id}/analise?s=12', 'DocsController@listarParticipantes')->name('participantes');
 Route::get('/abrir/{id}/acesso/{user_id}', 'AcessoController@listarAcessos');

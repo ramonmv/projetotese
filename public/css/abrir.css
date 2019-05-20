@@ -475,7 +475,8 @@ $icons: 7;
 .menuAcervo a.list-group-item:hover,
 .menuAcervo a.list-group-item:focus {
   text-decoration: none;
-  color: #555;
+  /*color: #555;*/
+  color: black;
   background-color: #f5f5f5;
 }
 

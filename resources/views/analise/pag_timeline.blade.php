@@ -182,7 +182,6 @@
 
 			@if( ($acesso->tipo->id == 16 ) )
 
-
 			<li> 
 
 				@if($acesso->posicionamento->concorda)

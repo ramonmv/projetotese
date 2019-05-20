@@ -45,9 +45,9 @@
 
           <p class="orientacaoCerteza" >
 
-            Nesta etapa você deve <strong>elaborar uma síntese que contemple suas compreensões e "incompreensões" </strong> a respeito do texto lido e de suas reflexões originadas durante a leitura e suas interações. Suas certezas e dúvidas representam suas compreensões e  formalizadas a partir do uso do material. Assim, tendo como base o seu acervo de dúvidas e certezas,  elabore (em texto corrido) uma síntese das suas compreensões/incompreensões. <br><br>
+            Nesta etapa você deve <strong>elaborar uma síntese que contemple suas compreensões e "incompreensões" </strong> a respeito do texto lido e de suas reflexões originadas durante a leitura e suas interações. Assim, tendo como base o seu acervo de dúvidas e certezas,  elabore (em texto corrido) uma síntese das suas compreensões/incompreensões. <br><br>
 
-            Para facilitar listamos abaixo os itens do seu acervo de certezas e dúvidas. Assim, você pode acessar e atualizar suas dúvidas e certezas: registrando, excluindo ou assinalando uma dúvida como esclarecida.  Ao clicar sobre uma dúvida/certeza será apresentado mais informações sobre ela, bem como algumas ações possíveis.
+            Para facilitar o acesso ao seu acervo, listamos os itens do seu acervo de certezas e dúvidas. Assim, você poderá acessar e atualizar suas dúvidas e certezas: registrando, excluindo ou assinalando uma dúvida como esclarecida.  Ao clicar sobre uma dúvida/certeza será apresentado mais informações sobre ela, bem como algumas ações possíveis em cada uma delas.
 
           </p>    
 

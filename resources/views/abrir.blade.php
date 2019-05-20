@@ -79,7 +79,7 @@
     if(totalItensCarrossell == 0)
     {
       form_carrossel_visivel = false;
-  }
+    }
 
 </script>
 
@@ -326,7 +326,7 @@
 
       </div>
       <div class="modal-body">
-        Este material digital foi organizado para ampliar a interatividade entre o leitor e o texto. Ao longo da leitura estarão presentes alguns links (hiperlinks) criado pelo autor do material. Orientamos clicar sobre os links ao longo da leitura. <br>As respostas discurssivas poderão ser editadas e corrigidas em qualquer momento da leitura, para isso clique novamente sobre o link. Não é possível editar as respostas objetivas. <br> Após encerrar a leitura e responder todas as perguntas, clique sobre o link "Finalizar Leitura" no final da página. 
+        Este material digital foi organizado para ampliar a interatividade entre o leitor e o texto. Ao longo da leitura estarão presentes alguns links (hiperlinks) criado pelo autor do material. Orientamos clicar sobre os links ao longo da leitura. <br> <b>As respostas discursivas</b> poderão ser editadas e corrigidas em qualquer momento da leitura, para isso clique novamente sobre o link. Não é possível editar as respostas objetivas. <br> Após encerrar a leitura e responder todas as perguntas, clique sobre o link <b>"Finalizar Leitura"</b> no final da página. 
 
 
 

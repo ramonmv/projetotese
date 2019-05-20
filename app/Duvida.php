@@ -228,6 +228,7 @@ class Duvida extends Model
 						->where('deletado', 0)
 						->where('user_id',"<>", $user_id)						
 						->with('respostas')
+						->orderBy('created_at', 'desc')
 						->whereDoesntHave('respostas', function($q) use ($user_id)
 						{
 															
