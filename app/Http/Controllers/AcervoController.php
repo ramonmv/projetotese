@@ -223,15 +223,7 @@ class AcervoController extends Controller
 
 		$avancar = (is_null($subPagina)? $subpaginaDuvidas: $subpaginaCertezas );
 		
-		// $certezas = Certeza::where('doc_id', $id)->get();
-		// $certezas = Certeza::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
-		
-		// $duvidas = Duvida::where('doc_id', $id)->get();
-		// $duvidas  =  Duvida::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
-
-		// dd(compact('doc', 'certezas', 'duvidas') );
-		// dd(session('autor') ); 
-
+	
 		//Registro dos Acessos a página das Certezas
 		$acesso = new Acesso();
 		$acesso->salvarAcessoAcervo($id);		
@@ -251,19 +243,11 @@ class AcervoController extends Controller
 		//verifica se primeira leitura foi realizada
 		$statusLeitura["seLeituraFinalizada"] = $acesso->verificaSeLeituraFinalizada($doc->id) ; // boolean 
 		$statusLeitura["seLeituraIniciada"] = $acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean  
+		
 
 		return view('acervo',compact('doc', 'certezas', 'duvidas', "duvidasNaoEsclarecidas", 'statusLeitura', 'autor', 'habilitarMenuVoltarAoTexto', 'sintese', "avancar"));
 		//return view('acervo',compact('doc'));
 	}
 
-	public function bak()
 
-	{
-
-
-		// dd(compact('doc', 'certezas', 'duvidas') );
-
-		return view('bak.bak');
-		//return view('acervo',compact('doc'));
-	}
 }

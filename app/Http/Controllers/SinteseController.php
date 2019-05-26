@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Sintese;
+use App\Acesso;
 
 
 class SinteseController extends Controller
@@ -17,6 +18,11 @@ class SinteseController extends Controller
 		$Sintese = new Sintese();
 		$Sintese = $Sintese->add(request('conteudo'), $doc_id, auth()->id() );
 
+
+		$acesso = new Acesso();
+		$acesso->salvarSintese($doc_id, $Sintese->id, request('conteudo'));
+		// $doc_id, $sintese_id, $autoria = null
+
 		// return redirect('/docs');
 		return back();
 	}
@@ -29,6 +35,10 @@ class SinteseController extends Controller
 
 		$Sintese = Sintese::find($sintese_id);
 		$Sintese = $Sintese->edit(request('conteudo') );
+
+		$acesso = new Acesso();
+		$acesso->salvarEdicaoSintese($doc_id,$sintese_id,request('conteudo'));
+
 
 		// return redirect('/docs');
 		return back();

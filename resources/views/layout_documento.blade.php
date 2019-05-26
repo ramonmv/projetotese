@@ -125,6 +125,8 @@
 
    function criarVetorConceitos(doc_id) {
 
+    console.log("f(x) vetor conceitos!");
+
     var vetor = new Array();
         $.ajax({
             method: 'get',
@@ -147,7 +149,7 @@
           },
           error: function(data){
             //console.log(data);
-            //    alert("Erro inesperado: ERROR Recuperação de conceitos " + ' ' + data)
+                // alert("Erro inesperado: ERROR Recuperação de conceitos " + ' ' + data)
                 return false;
             },
             
@@ -683,7 +685,7 @@
 
 
 
-  function salvarApresentarPergunta(doc_id, pergunta_id = null) {
+  function salvarApresentarPergunta(doc_id, pergunta_id = null, autoria = null) {
 
  
 
@@ -693,7 +695,8 @@
             data: {
        
              'doc_id': doc_id,
-             'pergunta_id': pergunta_id
+             'pergunta_id': pergunta_id,
+             'autoria': autoria
 
              },
             //async: true,
@@ -714,10 +717,42 @@
   }
 
 
+  function salvarApresentarPosicionamento(doc_id, pergunta_id = null, resposta_id= null, resposta_texto= null) {
+
+ 
+
+     $.ajax({
+            method: 'get',
+            url: '/acesso/salvarApresentaPerguntaPosicionamento',
+            data: {
+       
+             'doc_id': doc_id,
+             'resposta_id': resposta_id,
+             'autoria': resposta_texto,
+             'pergunta_id': pergunta_id
+
+             },
+            //async: true,
+            success: function(data){
+               console.log('Sucesso: Pergunta Apresentada  ');              
+               // console.log(data);              
+            },
+            error: function(data){
+              alert("Erro: FAS2-34 - Erro no Registro de apresentar pergunta ")
+              // console.log('buuummm'); 
+              // console.log(data);     
+            },
+
+        });  
+
+    return false;
+
+  }
+
 
 
   //f3 intervencao automatica - esclarecimentos -> salvar momento que apresenta a nova duvida
-  function salvarApresentarDuvida(doc_id) {
+  function salvarApresentarDuvida(doc_id, pergunta_id, textoDuvida) {
 
 
      $.ajax({
@@ -725,7 +760,9 @@
             url: '/acesso/salvarApresentaDuvida',
             data: {
        
-             'doc_id': doc_id
+             'doc_id': doc_id,
+             'autoria': textoDuvida,
+             'pergunta_id': pergunta_id
 
              },
             //async: true,
@@ -734,7 +771,7 @@
                // console.log(data);              
             },
             error: function(data){
-              alert("Erro: RAD23 - Erro no Registro de apresentar duvida  ")
+              alert("Erro: FAS3-20 - Erro no Registro de apresentar duvida  ")
               // console.log('buuummm'); 
               // console.log(data);     
             },
@@ -817,7 +854,7 @@
       modal.find('.modal-title').text(pergunta_texto)
       modal.find('.modal-body textarea').val(resposta_textu)
 
-      salvarApresentarPergunta(doc_id, pergunta_id);
+      salvarApresentarPergunta(doc_id, pergunta_id, pergunta_texto);
 
       $("#resposta_modal").attr('readonly', false);  
       $("#body_grauCerteza_modalEditarResposta").hide();

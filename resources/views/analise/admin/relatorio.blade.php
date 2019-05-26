@@ -112,7 +112,8 @@
 				<tr>
 					<th data-field="state" data-checkbox="true"></th>
 					<th data-field="prenom" data-filter-control="input" data-sortable="true" data-footer-formatter="Rodape_nome">Nome</th>
-					<th data-field="examen" data-filter-control="select" data-sortable="true" data-footer-formatter="Rodape_acao">Ação</th>
+					{{-- <th data-field="examen" data-filter-control="select" data-sortable="true" data-footer-formatter="Rodape_acao">Ação</th> --}}
+					<th data-field="examen" data-filter-control="input" data-sortable="true" data-footer-formatter="Rodape_acao">Ação</th>
 					<th data-field="note" data-filter-control="input" data-sortable="true">Conteúdo</th>
 					<th data-field="date" data-filter-control="select" data-sortable="true">Data</th>
 				</tr>

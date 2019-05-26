@@ -225,7 +225,7 @@ class AcessoController extends Controller
 	{
 
 		$Acesso = new Acesso();
-		$Acesso->salvarApresentaPergunta(request('doc_id'),request('pergunta_id'));
+		$Acesso->salvarApresentaPergunta(request('doc_id'),request('pergunta_id'), request('autoria'));
 
 	}	
 
@@ -267,7 +267,7 @@ class AcessoController extends Controller
 	{
 
 		$Acesso = new Acesso();
-		$Acesso->salvarApresentaDuvida(request('doc_id'));
+		$Acesso->salvarApresentaDuvida(request('doc_id'),request('duvida_id'),request('autoria'));
 
 	}			
 
@@ -316,6 +316,15 @@ class AcessoController extends Controller
 
 		$Acesso = new Acesso();
 		$Acesso->salvarPosicionamento(request('doc_id'));
+
+	}	
+
+	public function salvarApresentaPerguntaPosicionamento(Request $request)
+
+	{
+
+		$Acesso = new Acesso();
+		$Acesso->salvarApresentaPerguntaPosicionamento(request('doc_id'),request('pergunta_id'),request('resposta_id'),request('autoria') );
 
 	}	
 

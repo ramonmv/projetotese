@@ -118,6 +118,17 @@ class Acesso extends Model
 						$acesso->pergunta->conceito = $conceito ;
 						$acesso->pergunta->Resposta = $acessos[$chave+1]->Resposta;
 
+					}else{
+
+						// $usuario = $acessos[$chave+2]->Resposta->user->name;
+						// $conceito = $acessos[$chave+2]->Resposta->Conceito->conceito;
+						// $resposta = $acessos[$chave+2]->Resposta->texto;
+
+						// $acesso->pergunta->texto = "Você concorda com a resposta (de $usuario) sobre $conceito:  $resposta" ;
+						// $acesso->pergunta->resposta = $resposta;
+						// $acesso->pergunta->respondente = $usuario;
+						// $acesso->pergunta->conceito = $conceito ;
+						// $acesso->pergunta->Resposta = $acessos[$chave+2]->Resposta;
 					}
 					// $acesso->pergunta->texto = "PERGUNTA MANUPULADA " ;
 					//$acesso->pergunta->texto = "Vocẽ concorda com a resposta apresentada sobre  ". $conceito;
@@ -886,11 +897,11 @@ class Acesso extends Model
 
 
 	//
-		public function salvarApresentaPergunta($doc_id, $pergunta_id = null )
+		public function salvarApresentaPergunta($doc_id, $pergunta_id = null, $autoria = null )
 
 		{    	 
 
-			$this->salvar($doc_id, 14, null , $pergunta_id);
+			$this->salvar($doc_id, 14,  $autoria , $pergunta_id);
 
 		}
 
@@ -962,12 +973,12 @@ class Acesso extends Model
 
 	// TODO
 	// FALTA IMPLEMENTAR
-		public function salvarApresentaDuvida($doc_id)
+		public function salvarApresentaDuvida($doc_id, $duvida_id, $autoria = null)
 
 		{    	 
 
-			$this->salvar($doc_id, 20);
-
+			$this->salvar($doc_id, 20, $autoria, null, null, null, $duvida_id);
+			//($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
 		}
 
 	// TODO
@@ -1010,14 +1021,6 @@ class Acesso extends Model
 
 		}	
 
-		public function salvarDuvidaEsclarecida($doc_id, $duvida_id, $autoria = null)
-
-		{    	 
-
-			$this->salvar($doc_id, 30, $autoria, null, null, null, $duvida_id);
-		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
-
-		}
 
 		public function salvarExcluirDuvida($doc_id, $duvida_id, $autoria = null)
 
@@ -1027,6 +1030,17 @@ class Acesso extends Model
 		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
 
 		}
+
+
+		public function salvarDuvidaEsclarecida($doc_id, $duvida_id, $autoria = null)
+
+		{    	 
+
+			$this->salvar($doc_id, 30, $autoria, null, null, null, $duvida_id);
+		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
+
+		}
+
 		
 		public function salvarReverterDuvidaEsclarecida($doc_id, $duvida_id, $autoria = null)
 
@@ -1038,35 +1052,59 @@ class Acesso extends Model
 		}				
 
 
-		public function salvarSintese($doc_id, $duvida_id, $autoria = null)
+		public function salvarSintese($doc_id, $sintese_id, $autoria = null)
 
 		{    	 
 
-			// $this->salvar($doc_id, 25, $autoria, null, null, null, $duvida_id);
+			$this->salvar($doc_id, 33, $autoria, null, null, null,  null, null, $sintese_id );
+		// salvar($doc_id,    $tipo,     $autoria = null,      $pergunta_id = null, 
+		// $resposta_id = null,    $posicionamento_id = null,   $duvida_id =null,    $certeza_id =null, 
+		//	$sintese_id = null )
+
+		}		
+
+		public function salvarEdicaoSintese($doc_id, $sintese_id, $autoria = null)
+
+		{    	 
+
+			$this->salvar($doc_id, 35, $autoria, null, null, null,  null, null, $sintese_id );
+		// salvar($doc_id,    $tipo,     $autoria = null,      $pergunta_id = null, 
+		// $resposta_id = null,    $posicionamento_id = null,   $duvida_id =null,    $certeza_id =null, 
+		//	$sintese_id = null )
+
+		}		
+
+		public function salvarAcessoSintese($doc_id)
+
+		{    	 
+
+			$this->salvar($doc_id, 34 );
+		// salvar($doc_id,    $tipo,     $autoria = null,      $pergunta_id = null, 
+		// $resposta_id = null,    $posicionamento_id = null,   $duvida_id =null,    $certeza_id =null, 
+		//	$sintese_id = null )
+
+		}		
+
+
+		//Acesso a pagina da Analise - Revisão
+		public function salvarAcessoRevisao($doc_id)
+
+		{    	 
+
+			$this->salvar($doc_id, 29 );
 		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
 
 		}		
 
 
 
-		public function salvarAcessoRevisao($doc_id, $duvida_id, $autoria = null)
+
+		public function salvarApresentaPerguntaPosicionamento($doc_id, $pergunta_id = null, $resposta_id = null, $autoria = null )
 
 		{    	 
 
-			// $this->salvar($doc_id, 25, $autoria, null, null, null, $duvida_id);
-		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
-
-		}		
-
-
-
-
-		public function salvarAcessoAcervo2($doc_id, $duvida_id, $autoria = null)
-
-		{    	 
-
-			// $this->salvar($doc_id, 25, $autoria, null, null, null, $duvida_id);
-		// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
+			$this->salvar($doc_id, 32, $autoria, $pergunta_id, $resposta_id);
+			// public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null )
 
 		}		
 
@@ -1078,7 +1116,7 @@ class Acesso extends Model
 	// $request->session()->regenerate();
 
 
-		public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null, $certeza_id =null )
+		public function salvar($doc_id, $tipo, $autoria = null, $pergunta_id = null, $resposta_id = null, $posicionamento_id = null, $duvida_id =null, $certeza_id =null, $sintese_id = null )
 
 		{    	 
 			$this->unguard();
@@ -1122,6 +1160,7 @@ class Acesso extends Model
 				'posicionamento_id'=> $posicionamento_id,
 				'duvida_id'=> $duvida_id,
 				'certeza_id'=> $certeza_id,
+				'sintese_id'=> $sintese_id,
 
 				'tipo_id'=> $tipo,
 				'doc_id' =>  $doc_id

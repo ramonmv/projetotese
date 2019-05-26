@@ -97,7 +97,7 @@
 
        <!-- / AreaTresColunas --> 
 
-       <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
+       <div id="carrosselRespostas" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
           <div class="carousel-inner" role="listbox">
 
             @foreach ($respostas as $resposta)
@@ -117,7 +117,7 @@
                           ])
                       </div> --}}
 
-                      <div class="carousel-item active" data-codigo="{{$resposta->id}}" >
+                      <div class="carousel-item active" data-codigo="{{$resposta->id}}" data-pergunta_id="{{$resposta->conceito->pergunta->id}}" data-respostaTexto="{{$resposta->texto}}">
                           @include('abrir.carrossel',[
                             'usuario' => $resposta->user->primeiroNome(),
                             'desc' => 'Respondeu abaixo...',
@@ -133,7 +133,7 @@
 
             @else
 
-                        <div class="carousel-item" data-codigo="{{$resposta->id}}">
+                        <div class="carousel-item" data-codigo="{{$resposta->id}}" data-respostaTexto="{{$resposta->texto}}">
                             @include('abrir.carrossel',[
                               'usuario' => $resposta->user->primeiroNome(),
                               'desc' => 'Respondeu abaixo...',
@@ -199,14 +199,14 @@
 
          <!-- / AreaTresColunas --> 
 
-         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
+         <div id="carrosselDuvidas" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
             <div class="carousel-inner" role="listbox">
 
               @foreach ($duvidas_outros as $duvida)
 
               @if ($loop->first)
 
-              <div class="carousel-item active" data-codigo="{{$duvida->id}}" >
+              <div class="carousel-item active" data-codigo="{{$duvida->id}}" data-duvida_id="{{$duvida->id}}" data-duvidaTexto="{{$duvida->texto}}" >
                 @include('abrir.carrossel',[
                   'usuario' => $duvida->user->primeiroNome(),
                   'desc' => 'Possui a seguinte dúvida...',
@@ -222,7 +222,7 @@
 
               @else
 
-              <div class="carousel-item" data-codigo="{{$duvida->id}}">
+              <div class="carousel-item" data-codigo="{{$duvida->id}}" data-duvida_id="{{$duvida->id}}" data-duvidaTexto="{{$duvida->texto}}" >
                   @include('abrir.carrossel',[
                     'usuario' => $duvida->user->primeiroNome(),
                     'desc' => 'Possui a seguinte dúvida...',
@@ -368,6 +368,8 @@
   var contVetorCarrosel = -1;
   var adminLimiteQtdPosicionamentos = 1;
   var adminLimiteQtdEsclarecimentos = 1;
+  var carrosselDuvidasIniciada = false; 
+  var controleAberturaCarroselDuvidas = false; // var de controle para salvar apresentacao da primeira pergunta do carossel de duvidas (esclarecimentos). Pois o bug é quando o carrossel de respostas é aberto antes do carrosel de duvidas
 
 
   jquery("#divFormAcervo").hide();
@@ -452,8 +454,6 @@
       jquery('.active').find('#botao').css("border-color",'#0080FF');     
       jquery('.active').find('#botao').prop('disabled', false);
     }
-
-
 
 
 
@@ -555,7 +555,7 @@
 
 
 
-//fx utilizada pelo carrossel de respostas 
+//fx utilizada pelo CARROSSEL de RESPOSTAS 
 function verificarNavegacaoCarrosel() 
 
 {
@@ -564,16 +564,50 @@ function verificarNavegacaoCarrosel()
 
 
 
-
   if(contador_itemCarrossel < totalItensCarrossell)
   {
 
     
-    //Acesso - Registro quando a pergunta é apresentada pela 
-    salvarApresentarPergunta(doc_id);
+    // salvarApresentarPergunta(doc_id);
+    // salvarApresentarPosicionamento(doc_id);
 
     jquery('.carousel').carousel('next');
+  
+    jquery('#carrosselRespostas').on('slid.bs.carousel', function (e) {
 
+
+      if(carrosselDuvidasIniciada == false)
+      {
+
+         
+         proxPerguntaPosicionamento_resposta_id = jquery('#carrosselRespostas .active').attr('data-codigo');
+         proxPerguntaPosicionamento_respostaTexto = jquery('#carrosselRespostas .active').attr('data-respostaTexto') ;
+         proxPerguntaPosicionamento_pergunta_id = jquery('#carrosselRespostas .active').attr('data-pergunta_id') ;
+
+
+         // console.log("&&&&[CARROSELRESṔOSTA]:::CODIGO-RESPOSTA:"+resp_id+":::TEXTO-RESPOSTA:"+resp_text );
+
+         console.log(" <P> SALVOU Prox PERGUNTA POSICIONAMENTO ");     
+         salvarApresentarPosicionamento(doc_id,proxPerguntaPosicionamento_pergunta_id, proxPerguntaPosicionamento_resposta_id, proxPerguntaPosicionamento_respostaTexto );
+
+      }
+
+      // ERROR TB 
+      // else{
+
+      //    duv_id = jquery('.active').attr('data-duvida-id'); 
+      //    duv_texto = jquery('.active').attr('data-duvida-texto'); 
+      //    console.log("CLICKDENTRO////[CARROSELDUVIDA]:::CODIGO-duv:"+duv_id+":::TEXTO-duv:"+duv_texto );
+
+      // }
+
+
+    })
+
+
+    
+    respostaTexto = jquery('.active').attr('data-respostaTexto');
+       
     contador_itemCarrossel++;
 
    
@@ -728,7 +762,6 @@ function fecharCarrossel()
 
 
 
-
 function iniciarCarrosselDuvidas() 
 
 {
@@ -745,8 +778,43 @@ function iniciarCarrosselDuvidas()
 
         //Registro Acesso - Inicio intervencao automatica - esclarecimentos de duvidas de outrem
         salvarInicioIntervencaoAutomatica(doc_id);
+        carrosselDuvidasIniciada = true;
 
-        // salvarApresentarDuvida(doc_id);
+        if(controleAberturaCarroselDuvidas == false){
+
+          proxPerguntaEsclarecimentos_duvida_id = jquery('#carrosselDuvidas .active').attr('data-duvida_id'); 
+          proxPerguntaEsclarecimentos_duvidaTexto = jquery('#carrosselDuvidas .active').attr('data-duvidaTexto');            
+
+          console.log(" <E> SALVOU [PRIMEIRA] PERGUNTA ESCLARECIMENTOS ");  
+          salvarApresentarDuvida(doc_id, proxPerguntaEsclarecimentos_duvida_id, proxPerguntaEsclarecimentos_duvidaTexto ); 
+          controleAberturaCarroselDuvidas = true;           
+        }
+
+        
+
+
+        jquery('#carrosselDuvidas').on('slid.bs.carousel', function (e) {
+
+            if(carrosselDuvidasIniciada == true)
+            {
+        
+              proxPerguntaEsclarecimentos_duvida_id = jquery('#carrosselDuvidas .active').attr('data-duvida_id'); 
+              proxPerguntaEsclarecimentos_duvidaTexto = jquery('#carrosselDuvidas .active').attr('data-duvidaTexto'); 
+
+              console.log(" <E> SALVOU prox PERGUNTA ESCLARECIMENTOS ");     
+              salvarApresentarDuvida(doc_id, proxPerguntaEsclarecimentos_duvida_id, proxPerguntaEsclarecimentos_duvidaTexto );   
+
+            }
+            
+
+
+          })
+
+
+
+
+
+
 
         exibirCarrosselDuvidas();
 
@@ -789,7 +857,8 @@ function proximaDuvida()
 
     {
 
-      salvarApresentarDuvida(doc_id);  
+      // salvarApresentarDuvida(doc_id); 
+      // console.log(" <P> SALVOU PERGUNTA ESCLARECIMENTOS INI");   
 
       jquery('.carousel').carousel(indice);
 
@@ -975,9 +1044,16 @@ jquery(document).ready(function(){
      
       salvarInicioIntervencaoAutomatica(doc_id);
 
-      salvarApresentarPergunta(doc_id);
+      proxPerguntaPosicionamento_resposta_id = jquery('#carrosselRespostas .active').attr('data-codigo');
+      proxPerguntaPosicionamento_respostaTexto = jquery('#carrosselRespostas .active').attr('data-respostaTexto') ;
+      proxPerguntaPosicionamento_pergunta_id = jquery('#carrosselRespostas .active').attr('data-pergunta_id') ;
+         // console.log("&&&&[CARROSELRESṔOSTA]:::CODIGO-RESPOSTA:"+resp_id+":::TEXTO-RESPOSTA:"+resp_text );
 
-      //@todo diferente da funcao  fecharCarrossel()  exibirCarrosselDuvidas() ???
+      console.log(" <P> SALVOU PERGUNTA POSICIONAMENTO ");     
+      salvarApresentarPosicionamento(doc_id,proxPerguntaPosicionamento_pergunta_id, proxPerguntaPosicionamento_resposta_id, proxPerguntaPosicionamento_respostaTexto );
+    
+
+      //TODO diferente da funcao  fecharCarrossel()  exibirCarrosselDuvidas() ???
       
       jquery("#BlackScreen_Respostas").show(600);
 
@@ -988,6 +1064,13 @@ jquery(document).ready(function(){
       
 
     }
+
+
+// // $('#myCarousel').bind('slid', function (e) {
+// jquery('.carousel').bind('slid', function (e) {
+//     console.log("slid event!!!!!!!!!!!!!%%%%%%%%");
+// });
+
 
 
 });

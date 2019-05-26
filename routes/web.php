@@ -68,9 +68,10 @@ Route::get('/acesso/fimLeitura/', 'AcessoController@salvarFimLeitura'); // ok
 Route::get('/acesso/salvarConcordanciaTermos/', 'AcessoController@salvarConcordanciaTermos'); // ok
 Route::get('/acesso/salvarDiscordanciaTermos/', 'AcessoController@salvarDiscordanciaTermos'); // ok
 Route::get('/acesso/salvarApresentaPergunta/', 'AcessoController@salvarApresentaPergunta'); // ok
+Route::get('/acesso/salvarApresentaPerguntaPosicionamento/', 'AcessoController@salvarApresentaPerguntaPosicionamento'); // ok
 Route::get('/acesso/salvarInicioIntervencaoAutomatica/', 'AcessoController@salvarInicioIntervencaoAutomatica'); // ok
 Route::get('/acesso/salvarFimIntervencaoAutomatica/', 'AcessoController@salvarFimIntervencaoAutomatica'); // ok
-Route::get('/acesso/salvarApresentaPergunta/', 'AcessoController@salvarApresentaPergunta'); // ok
+// Route::get('/acesso/salvarApresentaPergunta/', 'AcessoController@salvarApresentaPergunta'); // ok
 Route::get('/acesso/salvarApresentaDuvida/'	 , 'AcessoController@salvarApresentaDuvida'); // ok
 Route::get('/acesso/salvarDesistencia/'		 , 'AcessoController@salvarDesistencia'); ///ok
 

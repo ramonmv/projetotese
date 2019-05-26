@@ -381,8 +381,7 @@ class DocsController extends Controller
 		
 		$autor = $doc->verificarAutoria( auth()->id() );
 		
-		
-		
+				
 		// $duvidas  =  Duvida::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
 
 
@@ -421,31 +420,30 @@ class DocsController extends Controller
 		$habilitarMenuVoltarAoTexto = true;
 
 
-
-		// Carbon::setLocale('pt')
-		//dd($id );
-
 		$doc = Doc::find($doc_id);
-
 
 
 		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
 		$autor = $doc->verificarAutoria( auth()->id() );
 
-		//Registro dos Acessos a página das Certezas
+
+		//Registro dos Acesso a Sintese
 		$acesso = new Acesso();
-		$acesso->salvarAcessoAcervo($doc_id);		
+		$acesso->salvarAcessoSintese($doc->id);		
 		
-				// preleitura Duvidas
+				
 		$Duvida = new Duvida(); 
 		$duvidasNaoEsclarecidas  =  $Duvida->recuperarDuvidasNaoEsclarecidas($doc->id);
-		//CERTEZAS
+		
+
 		$Certeza = new Certeza(); 
 		$certezas  =  $Certeza->recuperarCertezas($doc->id);
+
 
 		//verifica se primeira leitura foi realizada
 		$statusLeitura["seLeituraFinalizada"] = $acesso->verificaSeLeituraFinalizada($doc->id) ; // boolean 
 		$statusLeitura["seLeituraIniciada"] = $acesso->verificaSePrimeiraLeitura($doc->id) ; // boolean 
+
 
 		$sintese = new Sintese();
 		$sintese = $sintese->recuperarSintese($doc->id);
@@ -511,6 +509,7 @@ class DocsController extends Controller
  		// Recuperar a lista de acessos para a subpagina timeline/sobre suas ações
  		// 	TIMELINE 
 		$Acesso = new Acesso();
+		$Acesso->salvarAcessoRevisao($doc->id);
 		$acessos = $Acesso->recuperarListaAcessos($doc->id, $user_id);
 
 
