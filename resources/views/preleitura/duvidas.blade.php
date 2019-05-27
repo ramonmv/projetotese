@@ -4,7 +4,9 @@
 	
 	<p class="orientacaoDuvida" >
 
-		Após a leitura do título e do resumo você conseguiria elaborar suas dúvidas a respeito? Entendemos que as dúvidas são temporárias e podem ser manifestadas por meio de incertezas e inquietações - momentâneas ou persistentes. As dúvidas podem ser formalizadas sob formas de afirmações, negações ou questões sobre o assunto. As dúvidas podem estar associadas ao assunto central ou aos aspectos relacionados, conforme destacados no resumo.     
+		Após a leitura do título e do resumo você conseguiria elaborar suas dúvidas a respeito? Entendemos que as dúvidas são temporárias e podem ser manifestadas por meio de incertezas e inquietações - momentâneas ou persistentes. As dúvidas podem ser formalizadas sob formas de afirmações, negações ou questões sobre o assunto. As dúvidas podem estar associadas ao assunto central ou aos aspectos relacionados, conforme destacados no resumo.
+		<br><br>
+		Após escrever a primeira dúvida, clique no botão "+1 Dúvida" para salvar sua dúvida. A sua dúvida aparecerá logo abaixo. Repita a operação para cada dúvida que desejar registrar. Após concluir os registros de suas dúvidas, clique novamente em <b>avançar</b> no menu lateral.     
 
 	</p>    
 

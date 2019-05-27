@@ -4,7 +4,9 @@
 	
 	<p class="orientacaoCerteza" >
 
-		Após a leitura do título, do resumo e da elaboração das suas dúvidas, convidamos você a elaborar suas certezas. Isto é, aquilo que você pode afirmar que você já sabe sobre o assunto. As certezas podem estar associadas ao assunto central do documento ou aos aspectos relacionados, conforme destacado pelo resumo. Suas certezas podem ser elaboradas sob formas de afirmação ou negação. Entendemos que as certezas são provisórias e que podem ser reconstruidas a todo momento, ou ainda podem ser validadas posterioremente a partir das suas experiências (apropriações decorridas das leituras, reflexões, experimentações, etc.).     
+		Após a leitura do título, do resumo e da elaboração das suas dúvidas, convidamos você a elaborar suas certezas. Isto é, aquilo que você pode afirmar que você já sabe sobre o assunto. As certezas podem estar associadas ao assunto central do documento ou aos aspectos relacionados, conforme destacado pelo resumo. Suas certezas podem ser elaboradas sob formas de afirmação ou negação. Entendemos que as certezas são provisórias e que podem ser reconstruidas a todo momento, ou ainda podem ser validadas posterioremente a partir das suas experiências (apropriações decorridas das leituras, reflexões, experimentações, etc.). 
+				<br><br>
+		Após escrever a primeira certeza, clique no botão "+1 Certeza" para salvá-la no sistema. A sua certeza, após salva, aparecerá logo abaixo. Repita a operação para cada certeza que desejar registrar. Após incluir todas as certezas que tens a respeito do assunto, clique em <b>Iniciar</b> no menu lateral.         
 
 	</p>    
 
