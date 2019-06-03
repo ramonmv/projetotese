@@ -1219,7 +1219,7 @@ class DocsController extends Controller
 			->whereDoesntHave('posicionamentos', function ($query) {
 				$query->where('user_id',  auth()->id());
 			})
-			->latest()
+			// ->latest()
 			->get();
 															//  ->doesntHave('posicionamento') //PAREI AQUI!!!!!!!!!!!!!!!!!!!!!!
 															// ->whereHas('posicionamento', function ($query) {
