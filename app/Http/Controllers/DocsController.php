@@ -528,11 +528,23 @@ class DocsController extends Controller
 		
 		
 
-
-
-
-		//SOBRE OS REGISTROS (INICIO E FIM) DE LEITURAS
-		$listaLeituras = $Acesso->formatarCiclosLeitura($doc->id, $user_id); 
+		if(!is_null($request->u))
+		{ 
+			// autor visualizando páginas dos leitores
+			$listaLeituras = $Acesso->formatarCiclosLeitura($doc->id, $user_id); 
+		}
+		elseif($autor)
+		{
+			// autor
+			// $listaLeituras = false;
+		}
+		else
+		{
+			// leitor
+			//SOBRE OS REGISTROS (INICIO E FIM) DE LEITURAS
+			$listaLeituras = $Acesso->formatarCiclosLeitura($doc->id, $user_id); 
+		}
+		
 
 
 		// SOBRE O TEMPO DE LEITURA
@@ -1185,7 +1197,6 @@ class DocsController extends Controller
 
 
 		$duvidas_outros = $Duvida->recuperarDuvidasOutros($doc->id);
-
 
 
 

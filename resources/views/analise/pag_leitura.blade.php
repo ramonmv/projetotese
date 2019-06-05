@@ -68,6 +68,11 @@
 
 @endphp
 
+
+{{-- TODO VERICAR COMO APLICAR A CONTAGEM DE LEITURA PARA AUTOR TAMBÉM  --}}
+{{-- @if($autor) --}}
+@isset($listaLeituras)
+
 @foreach($listaLeituras as $leitura)
 
 	@if($leitura->tipo_id == 2)
@@ -104,5 +109,8 @@
 
 
 @endforeach
+
+{{-- @endif --}}
+@endisset
 {{-- @include('analise.trecho_perguntasRespostas', ['$perguntasComRespostas' => '$perguntasComRespostas', '$perguntasSemRespostas' => '$perguntasSemRespostas','$perguntas' => '$perguntas'])
  --}}
