@@ -530,7 +530,7 @@ class DocsController extends Controller
 
 		if(!is_null($request->u))
 		{ 
-			// autor visualizando páginas dos leitores
+			// autor visualizando páginaas dos leitores
 			$listaLeituras = $Acesso->formatarCiclosLeitura($doc->id, $user_id); 
 		}
 		elseif($autor)
@@ -1167,8 +1167,17 @@ class DocsController extends Controller
 
 					// $conceito_html = "<a href='www.globo.com'> <abbr title='clique aqui' >  TESTE </abbr></a>";
 
-			$doc->conteudo = $this->replace($conceito->conceito, $conceito_html ,$doc->conteudo); 
-				//}
+
+			if($doc->id > 10)
+			{
+				$converterHtml = false;
+			}
+			else
+			{				
+				$converterHtml = true;
+			}
+
+			$doc->conteudo = $this->replace($conceito->conceito, $conceito_html ,$doc->conteudo, $converterHtml); 
 			
 		}
 
@@ -1334,11 +1343,17 @@ class DocsController extends Controller
 
 
 
-	public function replace($find, $replace, $subject) 
+	public function replace($find, $replace, $subject, $converterHtml = false) 
 
 	{
 
-		$find = htmlentities($find, 0, "UTF-8");
+		// echo mb_detect_encoding($find);
+
+		if( $converterHtml){
+			$find = htmlentities($find, 0, "UTF-8");
+		}	
+		
+
 
 	// // $output = htmlentities($value, 0, "UTF-8");
 	//    var_dump($find);
