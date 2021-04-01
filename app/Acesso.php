@@ -59,13 +59,17 @@ class Acesso extends Model
 
 		
 
-		if ($todos){
+		if ($todos)
+		{
 			$acessos = $this->where('doc_id', $doc_id)->get();	
 		}
-		else{
+		
+		else
+		{
 			$user_id = (is_null($user_id)) ? auth()->id() :  $user_id;	
 			$acessos = $this->where('doc_id', $doc_id)->where('user_id', $user_id)->get();
 		}
+
 		$intervencaoAuto = FALSE;
 
 		foreach ($acessos as $chave => $acesso) {

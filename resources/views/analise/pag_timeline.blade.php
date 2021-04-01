@@ -1,6 +1,16 @@
 
+{{-- 	   			@php
+				// die("aaaaaa");
+				
+				dd($acesso->created_at->format('d/m/Y H:i:s')) ;
+				dd("paro9uuuuuuuuuuuuu") ;
+				@endphp	 --}}
+
+
 <div class="row">
 	<div class="col-md-12">
+
+
 		<ul class="timeline">
 			
 
@@ -37,7 +47,7 @@
 			<li> 
 				<i class="fa fa-question-circle bg-maroon"></i>
 				<div class="timeline-item"> 
-					<span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}}</span>
+					<span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}} - {{$acesso->created_at->addHours(3)->format("d/m/Y H:i:s")}} </span>
 
 					<h3 class="timeline-header">
 						<a href="#">Registrou uma Dúvida</a> em seu acervo
@@ -62,7 +72,7 @@
 			<li> 
 				<i class="fa fa-check-circle bg-aqua"></i>
 				<div class="timeline-item"> 
-					<span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}}</span>
+					<span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}} - {{$acesso->created_at->addHours(3)->format("d/m/Y H:i:s")}} </span>
 
 					<h3 class="timeline-header">
 						<a href="#">Registrou uma Certeza</a> em seu acervo
@@ -89,7 +99,8 @@
 
 				<i class="fa fa-pinterest bg-verdeEscuro" aria-hidden="true"></i>
 
-				<div class="timeline-item"> <span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}}</span>
+				<div class="timeline-item"> 
+					<span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}} - {{$acesso->created_at->addHours(3)->format("d/m/Y H:i:s")}} </span>
 					<h3 class="timeline-header no-border">
 						
 						@if( isset($acesso->pergunta->user->name)  )
@@ -136,7 +147,8 @@
 
 				<i class="fa fa-registered bg-roxo" aria-hidden="true"></i>
 
-				<div class="timeline-item"> <span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}}</span>
+				<div class="timeline-item"> 
+					<span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}} - {{$acesso->created_at->addHours(3)->format("d/m/Y H:i:s")}} </span>
 					<h3 class="timeline-header no-border">
 						<a href="#">Respondeu a Pergunta </a> 
 					</h3>
@@ -161,7 +173,8 @@
 
 				<i class="fa fa-registered bg-roxo" aria-hidden="true"></i>
 
-				<div class="timeline-item"> <span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}}</span>
+				<div class="timeline-item"> 
+					<span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}} - {{$acesso->created_at->addHours(3)->format("d/m/Y H:i:s")}} </span>
 					<h3 class="timeline-header no-border">
 						<a href="#">Editou a resposta para responder novamente a Pergunta </a> 
 					</h3>
@@ -197,7 +210,8 @@
 				@endif
 				
 
-				<div class="timeline-item"> <span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}}</span>
+				<div class="timeline-item"> 
+					<span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}} - {{$acesso->created_at->addHours(3)->format("d/m/Y H:i:s")}} </span>
 					<h3 class="timeline-header no-border">
 						O posicionamento foi:   <a href="#">{{ $acesso->autoria  }}  {{$label}} </a>
 					</h3>
@@ -228,7 +242,8 @@
 
 				<i class="fa fa-registered bg-roxo" aria-hidden="true"></i>
 
-				<div class="timeline-item"> <span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}}</span>
+				<div class="timeline-item"> 
+					<span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}} - {{$acesso->created_at->addHours(3)->format("d/m/Y H:i:s")}} </span>
 					
 					<h3 class="timeline-header no-border">
 						<a href="#">Respondeu a uma dúvida de {{ $acesso->resposta->duvidas->first()->user->name}} </a> 
@@ -254,7 +269,7 @@
 
 				<i class="fa fa-question-circle bg-maroon" aria-hidden="true"></i>
 
-				<div class="timeline-item"> <span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}}</span>
+				<div class="timeline-item"> <span class="time"><i class="fa fa-clock-o"></i> {{$acesso->created_at->diffForHumans()}} - {{$acesso->created_at->addHours(3)->format("d/m/Y H:i:s")}} </span>
 					
 					<h3 class="timeline-header no-border">
 						<a href="#">Adicionou a dúvida de {{  $acesso->duvida->duvida->user->name }}</a>  em seu acervo 

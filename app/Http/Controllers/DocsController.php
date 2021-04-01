@@ -25,6 +25,9 @@ class DocsController extends Controller
 {
 		//
 
+	 public $id = null;
+
+
 	public function __construct()
 
 	{
@@ -33,10 +36,13 @@ class DocsController extends Controller
 		
 		//tradução
 		Carbon::setLocale('pt_BR');
-		//essas linhas abaixo parece nao fazer efeito
-		Carbon::setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-		setlocale (LC_TIME, 'pt_BR');
-		
+		// Carbon::setLocale(config('app.locale'));
+		// //essas linhas abaixo parece nao fazer efeito
+		// Carbon::setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+		// setlocale (LC_TIME, 'pt_BR');
+
+		// Carbon::setLocale('fr');
+		// setlocale(LC_TIME, config('app.locale'));
 				// dd(auth()->user()->id );
 		 // dd(auth()->id() );
 
@@ -311,7 +317,7 @@ class DocsController extends Controller
 		// ACERVO VAZIO?
 		if($status["seAcervoVazio"] 			== true )	 { return true; }
 
-				
+
 
 		return false ;
 	}
@@ -331,7 +337,7 @@ class DocsController extends Controller
 		$acessos = $Acesso->recuperarListaAcessos($doc->id, null, true);
 
 		$participantes = $doc->recuperarParticipantes($doc->id);
-	
+
 
 
 
@@ -381,7 +387,7 @@ class DocsController extends Controller
 		
 		$autor = $doc->verificarAutoria( auth()->id() );
 		
-				
+
 		// $duvidas  =  Duvida::where('doc_id', $id)->where('user_id', auth()->id())->latest()->get();
 
 
@@ -431,7 +437,7 @@ class DocsController extends Controller
 		$acesso = new Acesso();
 		$acesso->salvarAcessoSintese($doc->id);		
 		
-				
+
 		$Duvida = new Duvida(); 
 		$duvidasNaoEsclarecidas  =  $Duvida->recuperarDuvidasNaoEsclarecidas($doc->id);
 		
@@ -454,7 +460,261 @@ class DocsController extends Controller
 
 
 
+	public function removerItem($vetor, $valor)
 
+	{
+
+		foreach ($vetor as $key => $value) {
+			
+
+			if($value == $valor )
+			{
+
+				unset($vetor[$key]);
+			}			
+
+		}
+
+		return $vetor;
+	}
+
+
+	public function removerItemSession($vetor, $valor)
+
+	{
+
+		foreach (session($vetor) as $key => $value) {
+			
+
+			if($value == $valor )
+			{
+
+				 // dump("$vetor.$key");
+				// dump(session("user_id_removido"));
+				 
+				$id = session()->pull("$vetor.$key",$valor);
+				// session()->push($vetor, 100);
+				// dump(session()->pull("user_id_removido.0") );
+				// dump(session()->pull("user_id_removido".0) );
+				
+				
+				// dump(session('user_id_removido'));
+				 
+			}			
+
+		}
+
+
+
+		return $id;
+	}
+
+
+	public function addItemSession($chave, $valor)
+
+	{
+
+		if ( !session()->exists($chave) ) 
+		
+		{
+
+			session( [$chave => array()] );	
+
+
+				
+		} 
+
+		session()->push($chave, $valor);
+
+		
+	}
+
+
+
+	public function addVetorSession($chave, $vetor, $limpar = true )
+
+	{
+
+
+		if( $limpar )
+		{
+			
+			session()->forget($chave);
+			
+		}
+
+
+		foreach ($vetor as $key => $value) 
+		{	
+
+			session()->push($chave,$value);				
+				
+		}
+
+		// return $valor;
+	}
+
+
+	public function adicionarTodosSession($chave, $vetor )
+
+	{
+
+		session()->forget($chave);
+
+		// session($chave, array());		
+
+		foreach ($vetor as $key => $value) {
+			# code...
+
+			session()->push($chave,$value);	
+
+		}
+
+	}
+
+
+	public function removerTodosSession( $chave )
+
+	{
+		session()->forget($chave);
+	}
+
+
+	// Para add todos é preciso remover todos (user_id) da lista de removidos
+	public function adicionarTodosPainel()
+
+	{
+		$this->removerTodosSession("user_id_removido");
+	}
+
+	// para remover todos do painel é necessário qe todos id_user estejam na session de user_removidos
+	// Para isso atribui a lista
+	public function removerTodosPainel( $lista_user_id )
+
+	{
+		$this->adicionarTodosSession('user_id_removido', $lista_user_id);
+	}
+
+
+	public function alterarLabelPainel_nome()
+
+	{
+		session()->put('label_painel_nome', true);	
+	}
+
+
+	public function alterarLabelPainel_id()
+
+	{
+		session()->put('label_painel_nome', false);
+
+	}
+
+
+	public function alterarDatasPainel($dataini , $datafim)
+
+	{
+
+		// $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s', '2015-5-6 3:30:34');
+		// $to = \Carbon\Carbon::createFromFormat('d-m-Y h:s', '2015-5-6 3:30:34');
+
+		// dd($dataini);
+
+		$dataini = (!is_null($dataini) ) ? Carbon::createFromFormat('d/m/Y H:i', $dataini) : null;	
+		$datafim = (!is_null($datafim) ) ? Carbon::createFromFormat('d/m/Y H:i', $datafim) : null;	
+		
+		session()->put('dataini_painel', $dataini);
+		session()->put('datafim_painel', $datafim);
+
+	}
+
+
+
+	public function abrirSubpaginaPainel($user_login, $request)
+
+	{
+		$doc = new Doc();
+		$doc_id					= $this->id;
+		$dadosTimeline 	 		= 	 null;
+		$participantesPainel 		= 	 null;
+		$participantesPainel_removidos	= null;	
+		$participantes = $doc->recuperarParticipantes($doc_id); 
+		$lista_user_id = $participantes->pluck('id'); // tranformar em array de id - //todo verificacao colecao paricipantes vazio
+		$user_selecionado = (is_null($request->u) ) ? null  :  $request->u;
+		$config = (is_null($request->c) ) ? null  :  $request->c;
+		
+		// set true na config do label do painel =  nome | caso falso = P[id]
+		// true = nome | falso = ID  >> fx de preparo para o grafico
+		($request->session()->exists('label_painel_nome') ) ? null  :  session()->put('label_painel_nome', true);
+
+
+
+		if( !is_null($user_selecionado) )
+
+		{
+
+			$lista_para_removidos = $lista_user_id->reject(function ($value, $key)  use ($user_selecionado) { // excluir um id
+			    return $value == $user_selecionado ;
+			});			
+
+			$this->addVetorSession("user_id_removido", $lista_para_removidos );
+
+		}
+
+		// dump("------------------------");
+		
+		// dump($request->input('dataini'));
+		// dump($request->input('datafim'));
+
+		// dump("------------------------");
+
+		// CONFIGURAÇÕES PAINEL
+		if( !is_null($config) )
+
+		{
+			
+			($config == 1 ) ? $this->adicionarTodosPainel() : null ;
+			($config == 2 ) ? $this->removerTodosPainel($lista_user_id) : null;
+			($config == 3 ) ? $this->alterarLabelPainel_nome() : null;
+			($config == 4 ) ? $this->alterarLabelPainel_id() : null;			
+			// ($config == 5 ) ? $this->alterarLabelPainel_id() : null;			MAXIMIZAR PAINEL
+			($config == 6 ) ? $this->alterarDatasPainel($request->input('dataini'), $request->input('datafim')) : null;			
+
+			
+		}
+
+		
+		
+		
+		(is_null($request->del) ) ? null  :  $this->addItemSession('user_id_removido', $request->del);	
+
+		(is_null($request->add) ) ? null  :  $this->removerItemSession('user_id_removido', $request->add );
+		
+				
+		$lista_user_id_removidos = (is_null(session('user_id_removido')) ) ? null  :   session('user_id_removido');	// endereco/9/analise?s=8	
+
+		
+		if( is_null($lista_user_id_removidos) )
+
+		{
+			
+			$participantesPainel 	= 	 $participantes;			
+			
+		}
+
+		else
+
+		{
+
+			$participantesPainel 		= 	 $participantes->whereNotIn('id', $lista_user_id_removidos);
+			$participantesPainel_removidos = $participantes->whereIn('id', $lista_user_id_removidos);
+		
+		}		
+
+		$dadosTimeline = $this->prepararDadosGraficoTimeline($participantesPainel, $doc_id); 
+		return compact('dadosTimeline','participantesPainel_removidos','participantesPainel');
+
+	}
 
 
 
@@ -463,8 +723,22 @@ class DocsController extends Controller
 
 	{
 
+				// setlocale (LC_TIME, 'pt_BR');
+		// Carbon::setLocale('pt_BR');
+
+		// Carbon::setLocale('pt_BR');
+		// //essas linhas abaixo parece nao fazer efeito
+		// Carbon::setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+		// setlocale (LC_TIME, 'pt_BR');
+
+		// setlocale(LC_TIME, config('app.locale'));
+		// Carbon::setLocale(config('app.locale'));
+
+
 		$doc = Doc::find($id);
-		if(is_null($doc)){  return redirect('/'); }
+		$this->id = $id;
+
+		if( is_null($doc) ) {  return redirect('/'); }
 
 		
 		//VERIFICA SE É AUTOR / ADMIN => ATUALIZA SESSION
@@ -472,15 +746,51 @@ class DocsController extends Controller
 
 		// UTILIZADO PARA SUBSTITUIR AS INFORMAÇÕES DO USUÁRIO AUTENTICADO PELO USUARIO NA URL/GET PELA VARIAVEL U
 		// UTILIZADO NO SUBMENU LATERAL ANÁLISE>MEDIADOR>PARTICIPANTES PARA ACESSAR OS DADOS DE CADA PARTICIPANTE EM SUAS REFERIDAS PÁG
-		$user_id = (is_null($request->u)) ? auth()->id()  :  $request->u;	
+		$user_id = (is_null($request->u)) ? auth()->id()  :  $request->u;
 
-		
-
-		// dd($request->session());
 
 		$subPagina = $request->s ; // Menu lateral (sidebar) GET URL?s=
 		$numMinimoPosicionamentos = 3; //@todo admin deve setar
 		// $numMinimoEsclarecimenos = 3; //@todo admin deve setar
+
+
+
+
+
+
+
+		if ($subPagina == 8) // PAINEL
+		
+		{
+
+			 $var = $this->abrirSubpaginaPainel($user_id, $request);
+			 return view('analise', compact('doc', "subPagina", "acessos", "autor", "participantes", "user", "var"));
+
+
+
+		} 
+
+		elseif ($subPagina == 1) 
+		
+		{
+			
+			echo "i equals 1";
+
+		} 
+
+		elseif ($subPagina == 2) 
+		
+		{
+		
+			echo "i equals 2";
+		
+		}
+
+
+
+
+
+
 
 
 		// DUVIDAS
@@ -511,6 +821,7 @@ class DocsController extends Controller
 		$Acesso = new Acesso();
 		$Acesso->salvarAcessoRevisao($doc->id);
 		$acessos = $Acesso->recuperarListaAcessos($doc->id, $user_id);
+		// $acessosTodos = $Acesso->recuperarListaAcessos($doc->id, false, true);
 
 
 		$statusLeitura["numTotalPerguntas"] = count($perguntas);
@@ -575,17 +886,226 @@ class DocsController extends Controller
 
 		// ADMIN - Participantes
 		$participantes = $doc->recuperarParticipantes($doc->id);
+	
+
+
+
 		$todasDuvidas = ($request->s == 13)?  $Duvida->recuperarTodasDuvidas($doc->id)   : null;
 		$todasCertezas = ($request->s == 14)?  $Certeza->recuperarTodasCertezas($doc->id)   : null;
 		$user 	 = (is_null($request->u)) ? User::find(auth()->id()) :  User::find($user_id);	 // recuperar dados do usuer - do usuario da subpagina ou do logado, caso nao tenha o GET->u
 
 
 
-
-
+		 // $dadosTimeline = $this->prepararDadosGraficoTimeline($participantesPainel, $doc->id);
 		
 		
-		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas", "autor", "participantes", "todasDuvidas","todasCertezas", "todasPerguntasRespostas", "user", "sintese"));
+		return view('analise', compact('doc', 'certezas', 'duvidas', 'perguntas', 'perguntasSemRespostas', 'perguntasComRespostas', "statusLeitura", "subPagina", "acessos", "tempoTotalLeitura", "listaLeituras", "leituraIniciada_semFim", "listaPosicionamentos", "posicionamentosEmGrupo", "esclarecimentos", 'duvidasPuladas','duvidasApropriadas', "duvidasNaoEsclarecidas", "duvidasEsclarecidas", "autor", "participantes", "todasDuvidas","todasCertezas", "todasPerguntasRespostas", "user", "sintese", "dadosTimeline", 'participantesPainel' ,'participantesPainel_removidos'));
+	}
+
+
+
+	// https://visjs.github.io/vis-network/examples/network/data/dotLanguage/dotEdgeStyles.html
+	// gaph grafico network 
+	public function prepararDadosGraficoTimeline($participantes, $doc_id)
+
+	{
+		// echo $dt->subSecond(); 
+
+		// $agora = Carbon::now()->toDateTimeString();
+		 $cont = 0;
+		 $dados = array();
+		 $Acesso = new Acesso();
+
+		 $tempoPadrao = 1;
+		 $tempoAutoria = 10;
+
+		 $year = 2019;
+		 $month = 3;  
+		 $day = 28;
+		 $hour = 10;
+		 $minute = 0;
+		 $second = 0;
+
+
+
+		$ini_static = Carbon::create($year, $month, $day, $hour, $minute, $second);		
+		$fim_static = Carbon::create($year, $month+12, $day, $hour, $minute, $second); 
+
+		$ini = ( !is_null(session("dataini_painel")) ) ? session("dataini_painel") : $ini_static;	
+		$fim = ( !is_null(session("datafim_painel")) ) ? session("datafim_painel") : $fim_static;	
+
+					 // 	dump($ini_static);
+					 // 	dump($fim_static);
+					 // 	dump($ini);
+					  	// dump($fim);
+					 
+
+		foreach($participantes as $user)
+		{
+
+			$acessos = $Acesso->recuperarListaAcessos($doc_id, $user->id);	
+
+			 // dd($acessos);
+
+
+			foreach($acessos as $acesso)
+			{
+
+
+				if ($cont==0){
+			        $acessoAnterior = $acesso;
+			        
+				}
+				if ($cont >= 2) {
+					$acessoAnterior = $proximo;
+				}
+					
+				
+				$cont++;
+			    $proximo = 	$acesso;
+
+
+			    // DATA PAINEL PARA LIMITAR O PERÍODO
+			    // VAI IMPEDIR DATAS SUPERIORES A VAR $FIM (OBTIDA NA SESSION)
+			    // gt = greater ou than
+				if ($acesso->created_at->gt($fim) ){	
+				
+					continue;					
+				}
+
+			    // DATA PAINEL PARA LIMITAR O PERÍODO
+			    // VAI IMPEDIR DATAS SUPERIORES A VAR $FIM (OBTIDA NA SESSION)
+			    // lt less or than
+				if ($acesso->created_at->lt($ini) ){	
+				
+					continue;					
+				}
+
+
+				if( session("label_painel_nome") )
+				
+				{
+
+					$label = $acesso->user->primeiroNome();
+
+				}
+
+				else
+
+				{
+					// dd("ramon");
+					
+					$label = "P".$acesso->user->id;
+
+				}
+
+				
+
+
+
+
+
+
+				if( $acesso->tipo->id == 9 ) // INI LEITURA  amarelo escuro
+				{
+
+				$dados[] = array( $label, 'Iniciou a Primeira da leitura', '#c87a25', $acesso->created_at->subSecond($tempoPadrao)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+				}
+
+
+
+				if( $acesso->tipo->id == 2 ) // FIM LEITURA  amarelo MAIS escuro
+				{
+
+					
+
+				$dados[] = array( $label, 'Finalizou a leitura', '#995d1b', $acesso->created_at->subSecond($tempoPadrao)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+				}
+
+
+				if( $acesso->tipo->id == 6 ) // DUVIDA  vermelho
+				{
+
+
+
+				$dados[] = array( $label, 'Nova Dúvida: '.$acesso->autoria, 'red', $acesso->created_at->subSecond($tempoAutoria)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+				}
+
+
+				if( $acesso->tipo->id == 7 ) // CERTEZA verde
+				{
+
+				$dados[] = array( $label, 'Nova Certeza: '.$acesso->autoria, '#5fb72b', $acesso->created_at->subSecond($tempoAutoria)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+				}
+
+
+				if( $acesso->tipo->id == 13 ) //ALTERAÇÃO RESPOSTA
+				{
+
+				$dados[] = array( $label, 'Nova Resposta: '.$acesso->autoria, '#0d2139', $acessoAnterior->created_at->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+				}
+
+
+				// if( $acesso->tipo->id == 14 ) // PERGUNTA
+				// {
+
+				// $dados[] = array( $label, 'Pergunta', '#c6caef', $acesso->created_at->subSecond($tempoPadrao)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+				// }
+
+
+
+				if( $acesso->tipo->id == 15 ) // RESPOSTA
+				{
+
+			
+				$dados[] = array( $label, 'Resposta: '.$acesso->autoria, '#6e8dc2', $acessoAnterior->created_at->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+				}
+
+
+
+				if( $acesso->tipo->id == 16 ) // POSICIONAMENTO
+				{
+
+				$dados[] = array( $label, 'Posicionamento: '.$acesso->autoria, '#cfdbdb', $acesso->created_at->subSecond($tempoPadrao)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+				}
+
+
+
+
+
+
+				if( $acesso->tipo->id == 18 ) // ESCLARECIMENTO: APROPRIACAO DE DUVIDAS
+				{
+
+			
+				$dados[] = array( $label, 'Esclarecimento: '.$acesso->autoria, '#ff7f75', $acessoAnterior->created_at->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+				}	
+
+				if( $acesso->tipo->id == 19 ) // ESCLARECIMENTO: APROPRIACAO DE DUVIDAS
+				{
+
+			
+				$dados[] = array( $label, 'Duvida Apropriada: '.$acesso->autoria, '#6e0000', $acessoAnterior->created_at->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+				}	
+
+
+			}
+
+		}	
+
+		return $dados;
+
+
 	}
 
 
@@ -593,6 +1113,253 @@ class DocsController extends Controller
 
 
 
+
+
+
+
+	public function prepararDadosGraficoTimeline2($acessos)
+
+	{
+		// echo $dt->subSecond(); 
+
+		// $agora = Carbon::now()->toDateTimeString();
+		 $cont = 0;
+		 $dados = array();
+
+		 $tempoPadrao = 1;
+		 $tempoAutoria = 10;
+
+		 $year = 2019;
+		 $month = 2;  
+		 $day = 28;
+		 $hour = 10;
+		 $minute = 0;
+		 $second = 0;
+
+			$ini = Carbon::create($year, $month, $day, $hour, $minute, $second);
+			$fim = Carbon::create($year, $month, $day+2, $hour, $minute, $second); 
+
+		foreach($acessos as $acesso)
+		{
+
+
+			if ($cont==0){
+		        $acessoAnterior = $acesso;
+		        
+			}
+			if ($cont >= 2) {
+				$acessoAnterior = $proximo;
+			}
+				
+			
+			$cont++;
+		    $proximo = 	$acesso;
+
+		    if( ($acesso->user_id > 61) || ($acesso->user_id < 48) ) 
+		    {
+		    	
+		    	continue;
+
+		    }
+
+			// if ($acesso->created_at->between($ini, $fim)) {
+			// if ($ini > $acesso->created_at) {	
+			// if ($fim->gt($$acesso->created_at) ) {	
+				
+			// 	continue;
+			// }
+
+			if ($fim->gt($acesso->created_at) == true ){	
+				
+				continue;
+			}
+
+			if( $acesso->tipo->id == 9 ) // INI LEITURA  amarelo escuro
+			{
+
+				//dd();
+
+			$dados[] = array( $acesso->user->primeiroNome(), 'Inicio da leitura', '#c87a25', $acesso->created_at->subSecond($tempoPadrao)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+			}
+
+
+			if( $acesso->tipo->id == 6 ) // DUVIDA  vermelho
+			{
+
+				//dd();
+
+			$dados[] = array( $acesso->user->primeiroNome(), 'Duvida', 'red', $acesso->created_at->subSecond($tempoAutoria)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+			}
+
+
+			if( $acesso->tipo->id == 7 ) // CERTEZA verde
+			{
+
+			$dados[] = array( $acesso->user->primeiroNome(), 'Certeza', '#5fb72b', $acesso->created_at->subSecond($tempoAutoria)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+			}
+
+
+			if( $acesso->tipo->id == 13 ) //ALTERAÇÃO RESPOSTA
+			{
+
+			$dados[] = array( $acesso->user->primeiroNome(), 'A', 'black', $acesso->created_at->subSecond($tempoPadrao)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+			}
+
+
+			if( $acesso->tipo->id == 14 ) // PERGUNTA
+			{
+
+			$dados[] = array( $acesso->user->primeiroNome(), 'Pergunta', '#c6caef', $acesso->created_at->subSecond($tempoPadrao)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+			}
+
+
+
+			if( $acesso->tipo->id == 15 ) // RESPOSTA
+			{
+
+			// $dados[] = array( $acesso->user->primeiroNome(), 'R', '#4a5487', $acesso->created_at->subSecond($tempoAutoria)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+			$dados[] = array( $acesso->user->primeiroNome(), 'R:'.$acesso->autoria, '#4a5487', $acessoAnterior->created_at->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+			}			
+
+		}
+
+
+		return $dados;
+
+
+
+	}
+
+// BACKUP
+
+	// public function prepararDadosGraficoTimeline($acessos)
+
+	// {
+	// 	// echo $dt->subSecond(); 
+
+	// 	// $agora = Carbon::now()->toDateTimeString();
+	// 	 $cont = 0;
+	// 	 $dados = array();
+
+	// 	 $tempoPadrao = 1;
+	// 	 $tempoAutoria = 10;
+
+	// 	 $year = 2019;
+	// 	 $month = 2;  
+	// 	 $day = 28;
+	// 	 $hour = 10;
+	// 	 $minute = 0;
+	// 	 $second = 0;
+
+	// 		$ini = Carbon::create($year, $month, $day, $hour, $minute, $second);
+	// 		$fim = Carbon::create($year, $month, $day+2, $hour, $minute, $second); 
+
+	// 	foreach($acessos as $acesso)
+	// 	{
+
+
+
+	// 		if ($cont==0){
+	// 	        $acessoAnterior = $acesso;
+		        
+	// 		}
+	// 		if ($cont >= 2) {
+	// 			$acessoAnterior = $proximo;
+	// 		}
+				
+			
+	// 		$cont++;
+	// 	    $proximo = 	$acesso;
+
+	// 	    if( ($acesso->user_id > 61) || ($acesso->user_id < 48) ) 
+	// 	    {
+		    	
+	// 	    	continue;
+
+	// 	    }
+
+	// 		// if ($acesso->created_at->between($ini, $fim)) {
+	// 		// if ($ini > $acesso->created_at) {	
+	// 		// if ($fim->gt($$acesso->created_at) ) {	
+				
+	// 		// 	continue;
+	// 		// }
+
+	// 		// if ($fim->gt($acesso->created_at) == true ){	
+				
+	// 		// 	continue;
+	// 		// }
+
+	// 		if( $acesso->tipo->id == 9 ) // INI LEITURA  amarelo escuro
+	// 		{
+
+	// 			//dd();
+
+	// 		$dados[] = array( $acesso->user->primeiroNome(), 'Inicio da leitura', '#c87a25', $acesso->created_at->subSecond($tempoPadrao)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+	// 		}
+
+
+	// 		if( $acesso->tipo->id == 6 ) // DUVIDA  vermelho
+	// 		{
+
+	// 			//dd();
+
+	// 		$dados[] = array( $acesso->user->primeiroNome(), 'Duvida', 'red', $acesso->created_at->subSecond($tempoAutoria)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+	// 		}
+
+
+	// 		if( $acesso->tipo->id == 7 ) // CERTEZA verde
+	// 		{
+
+	// 		$dados[] = array( $acesso->user->primeiroNome(), 'Certeza', '#5fb72b', $acesso->created_at->subSecond($tempoAutoria)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+	// 		}
+
+
+	// 		if( $acesso->tipo->id == 13 ) //ALTERAÇÃO RESPOSTA
+	// 		{
+
+	// 		$dados[] = array( $acesso->user->primeiroNome(), 'A', 'black', $acesso->created_at->subSecond($tempoPadrao)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+	// 		}
+
+
+	// 		if( $acesso->tipo->id == 14 ) // PERGUNTA
+	// 		{
+
+	// 		$dados[] = array( $acesso->user->primeiroNome(), 'Pergunta', '#c6caef', $acesso->created_at->subSecond($tempoPadrao)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+	// 		}
+
+
+
+	// 		if( $acesso->tipo->id == 15 ) // RESPOSTA
+	// 		{
+
+	// 		// $dados[] = array( $acesso->user->primeiroNome(), 'R', '#4a5487', $acesso->created_at->subSecond($tempoAutoria)->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+	// 		$dados[] = array( $acesso->user->primeiroNome(), 'R:'.$acesso->autoria, '#4a5487', $acessoAnterior->created_at->toDateTimeString(), $acesso->created_at->toDateTimeString()); 
+
+	// 		}			
+
+	// 	}
+
+
+	// 	return $dados;
+	// 	 // $obj = array();
+	// 	 // $obj[] = array( 'pedro', 'P3',   'green',    '2006-01-01 10:10:00',  "$agora"  ); 
+	// 	 // $obj[] = array( 'pedro', 'P3',   'black',    '2009-01-01 10:10:00',  "$agora"  ); 
+	// 	 // $obj[] = array( 'ramon', 'P1',   'red',    '2006-01-01 10:10:00',  '2006-01-01 10:11:10'  ); 
+
+
+	// }
 
 
 
@@ -621,9 +1388,10 @@ class DocsController extends Controller
 		$numEsclarecimentos = null;
 		$numDesistencias = null; //esclarecimntos
 
+		$this->id = $id;
 		$doc = Doc::find($id);		
 
-		$perguntas = Pergunta::where('doc_id', 1)->get();
+		$perguntas = Pergunta::where('doc_id', $id)->get();
 
 
 		$respostas = Resposta::where('user_id', auth()->id() )
@@ -1284,7 +2052,7 @@ class DocsController extends Controller
 
 	}
 
-
+// {{-- <?php dd($var['dadosTimeline'] )  --}}
 
 
 
@@ -1447,40 +2215,40 @@ class DocsController extends Controller
 
 
 
-public function add(Request $request)
+	public function add(Request $request)
 
-{
+	{
 
 
 		 // dd($request->all() );
 
-	
-	if(is_null(request('doc_id') ) )
-	{
 
-		$Doc = new Doc();
+		if(is_null(request('doc_id') ) )
+		{
 
-		$Doc = $Doc->add(request('titulo'),request('conteudo'), auth()->id());
+			$Doc = new Doc();
 
-		return response($Doc->id);
-	}	
+			$Doc = $Doc->add(request('titulo'),request('conteudo'), auth()->id());
 
-	else
-	{
+			return response($Doc->id);
+		}	
+
+		else
+		{
 
 
-		$Doc = Doc::find(request('doc_id'));
+			$Doc = Doc::find(request('doc_id'));
 
-		$Doc->edit(request('titulo'),request('conteudo') );
+			$Doc->edit(request('titulo'),request('conteudo') );
 
-		return response($Doc->id);
+			return response($Doc->id);
+
+		}
+
+
+
 
 	}
-
-
-
-
-}
 
 
 

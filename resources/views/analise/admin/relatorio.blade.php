@@ -346,6 +346,40 @@
 
 
 
+				{{-- SINTESE ===================================  --}}
+
+				@if( ($acesso->tipo->id == 33 ) )
+
+
+				<tr>
+					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#s01 SINTESE </td>
+					<td> {{ $acesso->autoria}} </td>
+					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
+				</tr>
+
+
+				@endif
+
+
+				{{-- SINTESE ===================================  --}}
+
+				@if( ($acesso->tipo->id == 35 ) )
+
+
+				<tr>
+					<td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
+					<td>#p{{$acesso->user->id}} {{$acesso->user->name}} </td>
+					<td>#s01 ED SINTESE </td>
+					<td> {{ $acesso->autoria}} </td>
+					<td>{{$acesso->created_at->format('d/m/Y - H:i:s')}}  ({{$acesso->created_at->diffForHumans()}})</td>
+				</tr>
+
+
+				@endif
+
+
 
 
 
